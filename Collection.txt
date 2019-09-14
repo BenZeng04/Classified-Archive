@@ -99,4 +99,3 @@
 98/card/Ilem/9 9 4 3 9/When this card is attacked, deal 3 damage to all of your opponents' cards. When this card dies: It gets to resurrect one time. When resurrecting, change this card's ATK and HP to 20, and boost all Elite cards' attack by 2./2
 99/spell/Windmill/4/Double one of your cards' HP (Can only increase by 14 MAX), and increase its movement by 1./targetsYou
 100/card/Mr. Farewell/2 12 3 1 6/Summon a random $2 or less card in a random lane, whenever you manually place a card. Destroy this card after 3 turns./6
-101/card/testingNewCard/63 89 4 4 1/When placed, all of your cards double HP and Attack./6
