@@ -1,6 +1,7 @@
 public void useSpell(String name, int indexEffect)
 {
-  startAnimation(7, playField.get(indexEffect).x, playField.get(indexEffect).y, name);
+  Card Effected = playField.get(indexEffect);
+  startAnimation(7, Effected.x, Effected.y, name);
   int index = -1;
   for(int i = 0; i < collection.length; i++)
   {
@@ -17,17 +18,16 @@ public void useSpell(String name, int indexEffect)
   }
   if(name == "German Machine Guns")
   {
-    playField.get(indexEffect).attackCount++;
+    Effected.attackCount++;
   }
   if(name == "Defense Position")
   {
     addEffect(-1, indexEffect, "Resurrect");
     addEffect(-1, indexEffect, "Defense");
-  }
-  
+  }  
   if(name == "Attack Position")
   {
-    playField.get(indexEffect).ATK+=6;
+    Effected.ATK+=6;
     addEffect(-1, indexEffect, "Attack");
   }
   if(name == "Fireball")
@@ -42,13 +42,13 @@ public void useSpell(String name, int indexEffect)
   {
     for(int l = 0; l < 9; l++)
     {
-      int x = playField.get(indexEffect).x, y = playField.get(indexEffect).y;
+      int x = Effected.x, y = Effected.y;
       x += l % 3 - 1;
       y += l / 3 - 1;
-      if(findCard(x, y, playField.get(indexEffect).player) != -1)
+      if(findCard(x, y, Effected.player) != -1)
       {
-        playField.get(findCard(x, y, playField.get(indexEffect).player)).ATK = max(0, playField.get(findCard(x, y, playField.get(indexEffect).player)).ATK - 4);
-        playField.get(findCard(x, y, playField.get(indexEffect).player)).HP = max(0, playField.get(findCard(x, y, playField.get(indexEffect).player)).HP - 4);
+        playField.get(findCard(x, y, Effected.player)).ATK = max(0, playField.get(findCard(x, y, Effected.player)).ATK - 4);
+        playField.get(findCard(x, y, Effected.player)).HP = max(0, playField.get(findCard(x, y, Effected.player)).HP - 4);
       }
     }
   }
@@ -59,11 +59,11 @@ public void useSpell(String name, int indexEffect)
     {
       if(l != 4)
       {
-        int x = playField.get(indexEffect).x, y = playField.get(indexEffect).y;
+        int x = Effected.x, y = Effected.y;
         x += l % 3 - 1;
         y += l / 3 - 1;
-        if(findCard(x, y, playField.get(indexEffect).player) != -1)
-          attackCard(-6, findCard(x, y, playField.get(indexEffect).player), true);
+        if(findCard(x, y, Effected.player) != -1)
+          attackCard(-6, findCard(x, y, Effected.player), true);
       }
     }
   }
@@ -79,21 +79,20 @@ public void useSpell(String name, int indexEffect)
   }
   if(name == "Dragon Wings")
   {
-    playField.get(indexEffect).MVMT += 2;
-    playField.get(indexEffect).RNG += 1;
+    Effected.MVMT += 2;
+    Effected.RNG += 1;
   }
   if(name == "Mr. Sketch")
   {
-    playField.get(indexEffect).ATK += 5;
-    if(!playField.get(indexEffect).NBTTags.contains("Unhealable"))
-      playField.get(indexEffect).HP += 8;
+    Effected.ATK += 5;
+    heal(Effected, 8);
   }
   if(name == "T-Pose") 
   {
     int oppCount = 0;
     for(Card c: playField)
     {
-      if(c.player != playField.get(indexEffect).player) {
+      if(c.player != Effected.player) {
         oppCount++;
         if(!hasEffect(c, "NoEffect"))
         {
@@ -102,8 +101,8 @@ public void useSpell(String name, int indexEffect)
         }
       }
     }
-    playField.get(indexEffect).ATK += oppCount;
-    playField.get(indexEffect).HP += oppCount;
+    Effected.ATK += oppCount;
+    heal(Effected, oppCount);
   }
   if(name == "Hit It Boys!")
   {
@@ -111,7 +110,7 @@ public void useSpell(String name, int indexEffect)
   }
   if(name == "Raw Eggs and Soy Sauce")
   {
-    playField.get(indexEffect).ATK += 4;
+    Effected.ATK += 4;
     addEffect(-1, indexEffect, "RawEggs");
   }
   if(name == "Sebastian’s Tea")
@@ -120,14 +119,14 @@ public void useSpell(String name, int indexEffect)
   }
   if(name == "Novelty Wings")
   {
-    if(playField.get(indexEffect).category.contains(6))
+    if(Effected.category.contains(6))
       addEffect(2, indexEffect, "NVW");
     else
       addEffect(1, indexEffect, "NVW");
   }
   if(name == "Mr. Tornado")
   {
-    String temp = playField.get(indexEffect).name;
+    String temp = Effected.name;
     Card c = collection[searchCard(temp)].copy();
     c.summoned = true;
     if(mode == 0 && index != -1)
@@ -138,16 +137,16 @@ public void useSpell(String name, int indexEffect)
   }
   if(name == "Windmill")
   {
-    String eName = playField.get(indexEffect).name;
+    String eName = Effected.name;
     if(eName != "Ridge Rhea")
-      playField.get(indexEffect).MVMT++;
-    if(!playField.get(indexEffect).NBTTags.contains("Unhealable"))
-      playField.get(indexEffect).HP = min(playField.get(indexEffect).HP * 2, playField.get(indexEffect).HP + 14);
+      Effected.MVMT++;
+    heal(Effected, min(Effected.HP, 14));
   }
 }
 
 public void spawnEffects(String name, int indexName, int indexSpawn)
 {
+  Card Effected = playField.get(indexSpawn);
   if(mode == 0)
   {
     Move m = new Move();
@@ -157,12 +156,12 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     m.name = name;
     moves.add(m);
   }
-  startAnimation(3, playField.get(indexSpawn).x, playField.get(indexSpawn).y);
+  startAnimation(3, Effected.x, Effected.y);
   playFieldSelected = indexName;
   if(name == "Jason C")
   {
-    playField.get(indexSpawn).ATK = max(playField.get(indexSpawn).ATK - 8, 0);
-    playField.get(indexSpawn).MVMT = max(playField.get(indexSpawn).MVMT - 1, 0);
+    Effected.ATK = max(Effected.ATK - 8, 0);
+    Effected.MVMT = max(Effected.MVMT - 1, 0);
   }
   else if(name == "Esther")
   {
@@ -170,7 +169,7 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     int index = -1;
     for(int i = 0; i < collection.length; i++)
     {
-      if(collection[i].name == playField.get(indexSpawn).name)
+      if(collection[i].name == Effected.name)
         { index = i; temp = collection[i].copy(); }
     }
     temp.summoned = true;
@@ -181,41 +180,39 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   }
   else if(name == "Jefferson")
   {
-    playField.get(indexSpawn).effects.clear();
+    Effected.effects.clear();
     Effect e = new Effect();
     e.name = "NoEffect";
     e.duration = -1;
-    playField.get(indexSpawn).effects.add(e);
+    Effected.effects.add(e);
     
     e = new Effect();
     e.name = "Nullify";
     e.duration = -1;
-    playField.get(indexSpawn).effects.add(e);
+    Effected.effects.add(e);
   }
   else if(name == "Mandaran")
   {
     Effect e = new Effect();
     e.name = "Invincible";
     e.duration = 1;
-    playField.get(indexSpawn).effects.add(e);
+    Effected.effects.add(e);
   }
   else if(name == "George")
   {
-    playField.get(indexSpawn).ATK += 3;
-    if(!playField.get(indexSpawn).NBTTags.contains("Unhealable"))
-      playField.get(indexSpawn).HP += 4;
+    Effected.ATK += 3;
+    heal(Effected, 4);
   }
   else if(name == "Anthony")
   {
-    if(!playField.get(indexSpawn).NBTTags.contains("Unhealable"))
-      playField.get(indexSpawn).ATK += 6;
-    playField.get(indexSpawn).HP += 8;
-    playField.get(indexSpawn).MVMT += 1;
+    Effected.ATK += 6;
+    heal(Effected, 8);
+    Effected.MVMT += 1;
   }
   else if(name == "Jawnie Dirp")
   {
-    playField.get(indexSpawn).ATK -= 8; playField.get(indexSpawn).ATK = max(0, playField.get(indexSpawn).ATK);
-    playField.get(indexSpawn).HP -= 8;
+    Effected.ATK -= 8; Effected.ATK = max(0, Effected.ATK);
+    Effected.HP -= 8;
   }
 }
 
@@ -234,7 +231,7 @@ public void specialAbility(int indexUser, int indexOpp, String type)
   if(type == "Hubert")
   {
     playFieldSelected = indexUser;
-    playField.get(indexOpp).HP+=4;
+    heal(playField.get(indexOpp), 4);
     startAnimation(2, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
   if(type == "Ethan")
@@ -293,7 +290,7 @@ public void useSpell(int y, String name) // y is player.
         {
           c.cost+=1;
           c.ATK += 4;
-          c.HP += 4;
+          heal(c, 4);
         }
       }
     }
@@ -335,8 +332,7 @@ public void useSpell(int y, String name) // y is player.
       if(c.player == y && c.category.contains(2) && !hasEffect(c, "noEffect"))
       {
         c.ATK += 3;
-        if(!c.NBTTags.contains("Unhealable"))
-          c.HP += 2;
+        heal(c, 2);
       }
     }
   }
@@ -421,4 +417,10 @@ public void useSpell(int y, String name) // y is player.
       placeCard(y, c, i, yPos, true);
     }
   }
+}
+
+public void heal(Card c, int hp)
+{
+  if(!c.NBTTags.contains("Unhealable") && !hasEffect(c, "NoEffect"))
+    c.HP += hp;
 }

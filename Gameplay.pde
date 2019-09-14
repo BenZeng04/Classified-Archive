@@ -504,7 +504,7 @@ public void play()
     
     if(p[playerTurn].hand.get(cardSelected).isSpell)
     {
-      if(p[playerTurn].hand.get(cardSelected).targetsYou) // placed on your own cards
+      if(p[playerTurn].hand.get(cardSelected).spellTarget == "You") // placed on your own cards
       {
         String name = p[playerTurn].hand.get(cardSelected).name;
         for(Card c: playField)
@@ -515,7 +515,7 @@ public void play()
           }
         }
       }
-      else if(p[playerTurn].hand.get(cardSelected).name == "Expectations Ever Increasing" || p[playerTurn].hand.get(cardSelected).name == "Propaganda Machine" || p[playerTurn].hand.get(cardSelected).name == "Terminator" || p[playerTurn].hand.get(cardSelected).name == "Elite's Calling" || p[playerTurn].hand.get(cardSelected).name == "Awakening" || p[playerTurn].hand.get(cardSelected).name == "The Duality of an Illiken") // Can be placed anywhere
+      else if(p[playerTurn].hand.get(cardSelected).spellTarget == "All") // Can be placed anywhere
       {
         rectMode(CORNER);
         strokeWeight(20); // Bigger Strokeweight
@@ -524,7 +524,7 @@ public void play()
         rect(100, 100, 500, 600);
         rectMode(CENTER);
       } 
-      else 
+      else if(p[playerTurn].hand.get(cardSelected).spellTarget == "Opp")
       {
         for(Card c: playField)
         {
@@ -1066,7 +1066,7 @@ public void draggingCards()
       
       if(p[playerTurn].hand.get(cardSelected).isSpell && p[playerTurn].hand.get(cardSelected).cost <= p[playerTurn].cash && canPlaceDown)
       {
-        if(p[playerTurn].hand.get(cardSelected).targetsYou) // placed on your own cards
+        if(p[playerTurn].hand.get(cardSelected).spellTarget == "You") // placed on your own cards
         {
           String name = p[playerTurn].hand.get(cardSelected).name;
           for(Card c: playField)
@@ -1087,7 +1087,7 @@ public void draggingCards()
             }
           }
         }
-        else if(p[playerTurn].hand.get(cardSelected).name == "Expectations Ever Increasing" || p[playerTurn].hand.get(cardSelected).name == "Propaganda Machine" || p[playerTurn].hand.get(cardSelected).name == "Terminator" || p[playerTurn].hand.get(cardSelected).name == "Elite's Calling" || p[playerTurn].hand.get(cardSelected).name == "Awakening" || p[playerTurn].hand.get(cardSelected).name == "The Duality of an Illiken") // Can be placed anywhere
+        else if(p[playerTurn].hand.get(cardSelected).spellTarget == "All")
         {
           if(x < 600 && x > 100 && y > 100 && y < 700)
           {
@@ -1099,7 +1099,7 @@ public void draggingCards()
             useSpell(playerTurn, name);
           }
         }
-        else
+        else if(p[playerTurn].hand.get(cardSelected).spellTarget == "Opp")
         {
           for(Card c: playField)
           {

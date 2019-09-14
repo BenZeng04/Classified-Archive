@@ -22,8 +22,7 @@ class Card
   int player = -1; // Which side is the card on?
   String ability = ""; // Ability Description 
   boolean isSpell = false; // Is the card a spell?
-  boolean targetsYou = false; // Does this spell target your own cards? Or the opponents' cards?
-
+  String spellTarget;
   public Card copy() // Deep Copy
   {
     Card c = new Card();
@@ -56,7 +55,7 @@ class Card
     c.isSpell = isSpell;
     c.summoned = summoned;
     c.spawned = spawned;
-    c.targetsYou = targetsYou;
+    c.spellTarget = spellTarget;
     c.icon = icon;
     return c;
   }
