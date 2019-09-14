@@ -333,7 +333,7 @@ public void play()
     
     if(inAnimation)
     {
-      if(animationMode == 0)
+      if(moveAnimation) // This is a very different type of animation than everything else.
       {
         if(playField.indexOf(c) == indexMove)
         {
@@ -350,6 +350,7 @@ public void play()
               {
                 c.y = c.y + distMove;
                 inAnimation = false;
+                moveAnimation = false;
               }
             }
             else
@@ -362,6 +363,7 @@ public void play()
               {
                 c.y = c.y + distMove;
                 inAnimation = false;
+                moveAnimation = false;
               }
             }
           }
@@ -375,6 +377,7 @@ public void play()
               {
                 c.x = c.x + distMove;
                 inAnimation = false;
+                moveAnimation = false;
               }
             }
             else
@@ -384,6 +387,7 @@ public void play()
               {
                 c.x = c.x + distMove;
                 inAnimation = false;
+                moveAnimation = false;
               }
             }
           }
@@ -511,7 +515,7 @@ public void play()
           }
         }
       }
-      else if(p[playerTurn].hand.get(cardSelected).name == "Expectations Ever Increasing" || p[playerTurn].hand.get(cardSelected).name == "Propaganda Machine" || p[playerTurn].hand.get(cardSelected).name == "Terminator" || p[playerTurn].hand.get(cardSelected).name == "EVAN IS THE COOLEST KID" || p[playerTurn].hand.get(cardSelected).name == "Awakening" || p[playerTurn].hand.get(cardSelected).name == "The Duality of an Illiken") // Can be placed anywhere
+      else if(p[playerTurn].hand.get(cardSelected).name == "Expectations Ever Increasing" || p[playerTurn].hand.get(cardSelected).name == "Propaganda Machine" || p[playerTurn].hand.get(cardSelected).name == "Terminator" || p[playerTurn].hand.get(cardSelected).name == "Elite's Calling" || p[playerTurn].hand.get(cardSelected).name == "Awakening" || p[playerTurn].hand.get(cardSelected).name == "The Duality of an Illiken") // Can be placed anywhere
       {
         rectMode(CORNER);
         strokeWeight(20); // Bigger Strokeweight
@@ -1083,7 +1087,7 @@ public void draggingCards()
             }
           }
         }
-        else if(p[playerTurn].hand.get(cardSelected).name == "Expectations Ever Increasing" || p[playerTurn].hand.get(cardSelected).name == "Propaganda Machine" || p[playerTurn].hand.get(cardSelected).name == "Terminator" || p[playerTurn].hand.get(cardSelected).name == "EVAN IS THE COOLEST KID" || p[playerTurn].hand.get(cardSelected).name == "Awakening" || p[playerTurn].hand.get(cardSelected).name == "The Duality of an Illiken") // Can be placed anywhere
+        else if(p[playerTurn].hand.get(cardSelected).name == "Expectations Ever Increasing" || p[playerTurn].hand.get(cardSelected).name == "Propaganda Machine" || p[playerTurn].hand.get(cardSelected).name == "Terminator" || p[playerTurn].hand.get(cardSelected).name == "Elite's Calling" || p[playerTurn].hand.get(cardSelected).name == "Awakening" || p[playerTurn].hand.get(cardSelected).name == "The Duality of an Illiken") // Can be placed anywhere
         {
           if(x < 600 && x > 100 && y > 100 && y < 700)
           {

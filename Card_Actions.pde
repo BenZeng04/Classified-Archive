@@ -3,7 +3,7 @@ public void moveCard(int index, int dist)
   playFieldSelected = index; // Sets the selected card as the card moving.
   distMove = dist; // Sets the distance to be moved.
   moveType = 0; // Vertical Movement
-  indexMove = index; inAnimation = true; animationMode = 0; aniTimer = 0; // Starts the animation
+  indexMove = index; inAnimation = true; moveAnimation = true; aniTimer = 0; // Starts the animation
 }
 
 public void moveCardSide(int index, int dist)
@@ -11,7 +11,7 @@ public void moveCardSide(int index, int dist)
   playFieldSelected = index; // Sets the selected card as the card moving.
   distMove = dist; // Sets the distance to be moved.
   moveType = 1; // Horizontal Movement
-  indexMove = index; inAnimation = true; animationMode = 0; aniTimer = 0; // Starts the animation
+  indexMove = index; inAnimation = true; moveAnimation = true; aniTimer = 0; // Starts the animation
 }
 
 public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
@@ -22,6 +22,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
     m.type = 1;
     m.player = player;
     m.cardPlaced = baseCard; 
+    m.cardSpawned = spawned;
     m.x = x;
     m.y = y;
     moves.add(m); // Puts this card into the queue, for when it is your opponents' turn. (Animating your moves to your opponent)
@@ -31,7 +32,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
   temp.player = player;
   temp.x = x;
   temp.y = y;
-  targetX = temp.x; targetY = temp.y; inAnimation = true; aniTimer = 0; animationMode = 5; // Starts Animation
+  startAnimation(5, temp.x, temp.y);
   temp.attackCount = 1;
   temp.canMove = true;
   temp.turnPlacedOn = p[player].turn;
@@ -470,14 +471,15 @@ public void attackPlayer(int attacker)
   for(Card c: playField)
   {
     if(c.name == "Ben 2.0" && c.player == opp && !hasEffect(c, "Nullify"))
-    {
       hasBen20 = true;
-    }
   }
   if(hasBen20)
   {
     attackCard(attacker, -1, true);
-  } else { ATKX.add(-1); ATKY.add(-1); inAnimation = true; animationMode = 1; aniTimer = 0; }
+    return;
+  }
+  else 
+    startAnimation(1, -1, -1);
   
   if(name == "A.L.I.C.E.")
   {
@@ -599,8 +601,8 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
   // Here, nullified cards automatically get their effects removed as their name is changed. Some cards still need to be hardcoded however.
   if(attacker == -1) playerSelected = true;
   if(attacker < -1) { spellAttack = attacker; attacker = -1; loop = false;} // FIREBALL
-  if(spellAttack == -1) {
-  ATKX.add(playField.get(takeHit).x); ATKY.add(playField.get(takeHit).y); inAnimation = true; animationMode = 1; aniTimer = 0; }
+  if(spellAttack == -1) 
+    startAnimation(1, playField.get(takeHit).x, playField.get(takeHit).y);
   
   if(attacker == -1)
     atkName = "NonCard";

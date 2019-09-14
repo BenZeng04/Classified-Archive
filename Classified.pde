@@ -6,9 +6,6 @@ Started On: 2019-06-28
 Current Date: 2019-09-10
 */
 
-// Horray! You guys are actually checking my program.
-// Message me on Discord if you want to know more about how this program works, there's a lot of stuff to take in, and actually playing the game is priority!!
-
 Card [] collection = new Card [101]; // All cards and spells in the game.
 int [] categTot = new int [7]; // Total amount of cards per category. This is used for sorting purposes/design!
 
@@ -81,7 +78,7 @@ boolean playerSelected = false; // Is the player (Not a card!) attacking?
 
 // ALL ANIMATION STUFF
 boolean inAnimation = false;
-int animationMode; // Move: 0, Attack: 1, Heal: 2, Bomb: 3
+boolean moveAnimation = false;
 int aniTimer; // Set to 0 once beginning animation
 
   // Moving
@@ -90,11 +87,8 @@ int aniTimer; // Set to 0 once beginning animation
   int moveType;
   
   // Ability / Attack
-  int targetX, targetY; // General
-  String targetName; // Spells
+  ArrayList <Animation> targets = new ArrayList<Animation>();// General
   int selfX, selfY; // Ethan's suicide bomb
-  ArrayList <Integer> ATKX = new ArrayList<Integer>(), ATKY = new ArrayList<Integer>(); // Cards that get attacked
-  ArrayList <Integer> DiscardX = new ArrayList<Integer>(), DiscardY = new ArrayList<Integer>(); // Discarded and Decay
 
 // Images
 PImage menuBG;
@@ -231,7 +225,7 @@ public void setup()
   collection[87].name = "Ms. Iceberg"; collection[87].ATK = 10; collection[87].HP = 14; collection[87].MVMT = 2; collection[87].RNG = 2; collection[87].cost = 5; collection[87].ability = "Special: Each turn, you can do a special attack that does 4 damage to any of your opponents' cards."; collection[87].category.addAll(Arrays.asList(6));
   collection[88].name = "Raw Eggs and Soy Sauce"; collection[88].cost = 1; collection[88].ability = "Target one of your cards: It gains 4 attack, but now takes 3 extra damage from all attacks."; collection[88].isSpell = true; collection[88].targetsYou = true;
   collection[89].name = "Sebastian’s Tea"; collection[89].cost = 4; collection[89].ability = "Target one of your opponents' cards: Each turn, this card loses 5 HP and 5 ATK."; collection[89].isSpell = true; 
-  collection[90].name = "EVAN IS THE COOLEST KID"; collection[90].cost = 12; collection[90].ability = "When Used: Summon 'Ben', 'Hubert', aswell as 3 random Elite cards on the start row."; collection[90].isSpell = true; 
+  collection[90].name = "Elite's Calling"; collection[90].cost = 13; collection[90].ability = "When Used: Summon 'Ben', 'Hubert', aswell as 3 random $4 or less Elite cards on the start row."; collection[90].isSpell = true; 
   collection[91].name = "Awakening"; collection[91].cost = 3; collection[91].ability = "All your Elite cards gain +2 HP and +3 ATK."; collection[91].isSpell = true; 
   collection[92].name = "The Duality of an Illiken"; collection[92].cost = 7; collection[92].ability = "Summon Mr. Willikens and Mr. Billikens in random lanes, who cannot be attacked this turn."; collection[92].isSpell = true; 
   collection[93].name = "Novelty Wings"; collection[93].cost = 1; collection[93].ability = "Increase a card's range by 1 for 1 turn, and 2 turns if the card is a novelty card."; collection[93].isSpell = true; collection[93].targetsYou = true;
@@ -382,6 +376,7 @@ public void transition() // Other Player's Turn
 
 public void setupGame() // Starting Game
 {
+  targets.clear();
   playFieldIcon = loadImage("playField1.png"); // Icon for playfield/arena (Will add more in the future!)
   // Resetting Variables
   discardsUsed = 0;
@@ -449,8 +444,6 @@ public void setupGame() // Starting Game
 public void handOverTurn() // Logic for handing over turns (Game-wise)
 {
   discardsUsed = 0;
-  DiscardX.clear();
-  DiscardY.clear();
   clickDelay = 10;
   mode = 1;
   int opp = playerTurn % 2 + 1;
@@ -566,7 +559,7 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
       {
         c.HP = -Integer.MAX_VALUE; // Makes sure they are dead
         c.effects.clear(); // Removes any effects that allow them to resurrect
-        DiscardX.add(c.x); DiscardY.add(c.y); inAnimation = true; animationMode = 8; aniTimer = 0; // Animation
+        startAnimation(8, c.x, c.y);
       }
       if(tempRemove.size() > 0)
       {
@@ -685,7 +678,7 @@ public void oppMoves() // Animating Opponents' Moves
           while(newM.type == 1 && moves.size() > 0) // Checks first if the next card is of type 1 (Placing)
           {
             newM = moves.get(0);
-            if(newM.cardPlaced.spawned) // If cards are being spawned out of another card, spawn them instantly instead of replaying multiple times
+            if(newM.cardSpawned) // If cards are being spawned out of another card, spawn them instantly instead of replaying multiple times
             {
               m = moves.get(0); 
               moves.remove(m);
@@ -701,7 +694,24 @@ public void oppMoves() // Animating Opponents' Moves
         if(!m.nonTargeted)
           useSpell(m.name, m.targeted);
         else 
+        {
           useSpell(m.player, m.name); 
+          if(moves.size() > 0)
+          {
+            Move newM = moves.get(0);
+            while(newM.type == 1 && moves.size() > 0) // Checks first if the next card is of type 1 (Placing)
+            {
+              newM = moves.get(0);
+              if(newM.cardSpawned) // If cards are being spawned out of another card, spawn them instantly instead of replaying multiple times
+              {
+                m = moves.get(0); 
+                moves.remove(m);
+                placeCard(m.player, m.cardPlaced.copy(), m.x, m.y, true);
+              } 
+              else break;
+            }
+          }
+        }
       }
       if(m.type == 3) // Spawn Effects
         spawnEffects(m.name, m.targeter, m.targeted);
@@ -876,4 +886,27 @@ public void addEffect(int duration, Card c, String name) // Adding effect to car
     }
   }
   if(!continues) c.effects.add(e);
+}
+
+public void startAnimation(int mode, int x, int y)
+{
+  Animation a = new Animation();
+  a.x = x;
+  a.y = y;
+  a.type = mode;
+  inAnimation = true; 
+  aniTimer = 0;
+  targets.add(a);
+}
+
+public void startAnimation(int mode, int x, int y, String name)
+{
+  Animation a = new Animation();
+  a.x = x;
+  a.y = y;
+  a.type = mode;
+  a.name = name;
+  inAnimation = true; 
+  aniTimer = 0;
+  targets.add(a);
 }

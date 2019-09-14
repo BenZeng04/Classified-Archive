@@ -98,6 +98,7 @@ class Move
   int targeted;
   // Placing Cards and Spells
   Card cardPlaced;
+  boolean cardSpawned;
   int player;
   int x, y;
   boolean nonTargeted;
@@ -105,4 +106,11 @@ class Move
   // Moving
   boolean sideMove;
   int distance;
+}
+class Animation
+{
+  int type;
+  int x;
+  int y;
+  String name = "";
 }

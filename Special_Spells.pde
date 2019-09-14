@@ -1,5 +1,6 @@
 public void useSpell(String name, int indexEffect)
 {
+  startAnimation(7, playField.get(indexEffect).x, playField.get(indexEffect).y, name);
   int index = -1;
   for(int i = 0; i < collection.length; i++)
   {
@@ -10,7 +11,7 @@ public void useSpell(String name, int indexEffect)
   {
     Move m = new Move();
     m.type = 2;
-    m.targeted= indexEffect;
+    m.targeted = indexEffect;
     m.name = name;
     moves.add(m);
   }
@@ -132,7 +133,6 @@ public void useSpell(String name, int indexEffect)
     if(mode == 0 && index != -1)
       p[playerTurn % 2 + 1].hand.add(c);
       
-    targetX = playField.get(indexEffect).x; targetY = playField.get(indexEffect).y; inAnimation = true; animationMode = 3; aniTimer = 0;
     playField.remove(indexEffect);
     playFieldSelected = playField.indexOf(c);
   }
@@ -143,10 +143,6 @@ public void useSpell(String name, int indexEffect)
       playField.get(indexEffect).MVMT++;
     if(!playField.get(indexEffect).NBTTags.contains("Unhealable"))
       playField.get(indexEffect).HP = min(playField.get(indexEffect).HP * 2, playField.get(indexEffect).HP + 14);
-  }
-  if(name != "Mr. Tornado")
-  {
-    targetX = playField.get(indexEffect).x; targetY = playField.get(indexEffect).y; targetName = name; inAnimation = true; animationMode = 7; aniTimer = 0;
   }
 }
 
@@ -161,12 +157,12 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     m.name = name;
     moves.add(m);
   }
+  startAnimation(3, playField.get(indexSpawn).x, playField.get(indexSpawn).y);
   playFieldSelected = indexName;
   if(name == "Jason C")
   {
     playField.get(indexSpawn).ATK = max(playField.get(indexSpawn).ATK - 8, 0);
     playField.get(indexSpawn).MVMT = max(playField.get(indexSpawn).MVMT - 1, 0);
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
   }
   else if(name == "Esther")
   {
@@ -180,8 +176,6 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     temp.summoned = true;
     if(mode == 0 && index != -1)
       p[playerTurn % 2 + 1].hand.add(temp);
-      
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
     playField.remove(indexSpawn);
     playFieldSelected = playField.indexOf(temp);
   }
@@ -197,7 +191,6 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     e.name = "Nullify";
     e.duration = -1;
     playField.get(indexSpawn).effects.add(e);
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
   }
   else if(name == "Mandaran")
   {
@@ -205,15 +198,12 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     e.name = "Invincible";
     e.duration = 1;
     playField.get(indexSpawn).effects.add(e);
-
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
   }
   else if(name == "George")
   {
     playField.get(indexSpawn).ATK += 3;
     if(!playField.get(indexSpawn).NBTTags.contains("Unhealable"))
       playField.get(indexSpawn).HP += 4;
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
   }
   else if(name == "Anthony")
   {
@@ -221,13 +211,11 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
       playField.get(indexSpawn).ATK += 6;
     playField.get(indexSpawn).HP += 8;
     playField.get(indexSpawn).MVMT += 1;
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
   }
   else if(name == "Jawnie Dirp")
   {
     playField.get(indexSpawn).ATK -= 8; playField.get(indexSpawn).ATK = max(0, playField.get(indexSpawn).ATK);
     playField.get(indexSpawn).HP -= 8;
-    targetX = playField.get(indexSpawn).x; targetY = playField.get(indexSpawn).y; inAnimation = true; animationMode = 3; aniTimer = 0;
   }
 }
 
@@ -242,11 +230,12 @@ public void specialAbility(int indexUser, int indexOpp, String type)
     m.name = type;
     moves.add(m);
   }
+  
   if(type == "Hubert")
   {
     playFieldSelected = indexUser;
     playField.get(indexOpp).HP+=4;
-    targetX = playField.get(indexOpp).x; targetY = playField.get(indexOpp).y; inAnimation = true; animationMode = 2; aniTimer = 0;
+    startAnimation(2, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
   if(type == "Ethan")
   {
@@ -254,13 +243,13 @@ public void specialAbility(int indexUser, int indexOpp, String type)
     playField.get(indexOpp).HP = 0;
     playField.get(indexUser).effects.clear();
     playField.get(indexOpp).effects.clear();
-    targetX = playField.get(indexOpp).x; targetY = playField.get(indexOpp).y; selfX = playField.get(indexUser).x; selfY = playField.get(indexUser).y; inAnimation = true; animationMode = 4; aniTimer = 0;
+    startAnimation(4, playField.get(indexOpp).x, playField.get(indexOpp).y); selfX = playField.get(indexUser).x; selfY = playField.get(indexUser).y;
   }
   if(type == "Ms. Iceberg")
   {
     playFieldSelected = indexUser;
     attackCard(-4, indexOpp, false);
-    targetX = playField.get(indexOpp).x; targetY = playField.get(indexOpp).y; inAnimation = true; animationMode = 10; aniTimer = 0;
+    startAnimation(10, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
 }
 
@@ -278,7 +267,7 @@ public void discard(int index)
   e.name = "Alive";
   e.duration = 1;
   playField.get(index).effects.add(e);
-  targetX = playField.get(index).x; targetY = playField.get(index).y; inAnimation = true; animationMode = 6; aniTimer = 0;
+  startAnimation(6, playField.get(index).x, playField.get(index).y);
 }
 
 public void useSpell(int y, String name) // y is player.
@@ -289,9 +278,13 @@ public void useSpell(int y, String name) // y is player.
     m.type = 2;
     m.player = y;
     m.name = name;
+    m.nonTargeted = true;
     moves.add(m);
   }
-  targetX = 3; if(playerTurn == 1) targetY = 4; else targetY = 3; targetName = name; inAnimation = true; animationMode = 7; aniTimer = 0;
+  if(playerTurn == 1)
+    startAnimation(7, 3, 4, name);
+  else 
+    startAnimation(7, 3, 3, name);
   
   if(name == "Expectations Ever Increasing")
   {
@@ -350,12 +343,12 @@ public void useSpell(int y, String name) // y is player.
       }
     }
   }
-  if(name == "EVAN IS THE COOLEST KID" && mode == 0)
+  if(name == "Elite's Calling" && mode == 0)
   {
     ArrayList <Card> Elites = new ArrayList <Card>();
     for(Card c: collection)
     {
-      if(c.category.contains(2)) Elites.add(c);
+      if(c.category.contains(2) && c.cost <= 4) Elites.add(c);
     }
     ArrayList <Integer> availible = new ArrayList<Integer>();
     int yPos = 6; if(y == 2) yPos = 1;
