@@ -541,12 +541,14 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
           }
         }
       }
-      // Discarding Cards, Removing Effects
-      ArrayList <Effect> tempRemove = new ArrayList <Effect>();
-      boolean finishedDiscarding = false;
-      for(Effect e: c.effects)
+    }
+    // Discarding Cards, Removing Effects
+    ArrayList <Effect> tempRemove = new ArrayList <Effect>();
+    boolean finishedDiscarding = false;
+    for(Effect e: c.effects)
+    {
+      if(e.givenBy == opp)
       {
-        
         e.duration--;
         if(e.duration == 0)
         {
@@ -555,17 +557,17 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
             finishedDiscarding = true;
         }
       }
-      if(finishedDiscarding)
-      {
-        c.HP = -Integer.MAX_VALUE; // Makes sure they are dead
-        c.effects.clear(); // Removes any effects that allow them to resurrect
-        startAnimation(8, c.x, c.y);
-      }
-      if(tempRemove.size() > 0)
-      {
-        for(Effect e : tempRemove)
-          c.effects.remove(e); // BOOOM DEAD EFFECT
-      }
+    }
+    if(finishedDiscarding)
+    {
+      c.HP = -Integer.MAX_VALUE; // Makes sure they are dead
+      c.effects.clear(); // Removes any effects that allow them to resurrect
+      startAnimation(8, c.x, c.y);
+    }
+    if(tempRemove.size() > 0)
+    {
+      for(Effect e : tempRemove)
+        c.effects.remove(e); // BOOOM DEAD EFFECT
     }
   }
   for(Card c: playField)
@@ -853,15 +855,17 @@ public void addEffect(int duration, int index, String name) // Adding effect to 
   if(hasEffect(playField.get(index), "NoEffect")) return;
   Effect e = new Effect();
   e.duration = duration;
-  if(playField.get(index).player != playerTurn && mode == 0 && duration >= 0) e.duration++;
+  if(mode == 0) e.givenBy = playerTurn; else e.givenBy = playerTurn % 2 + 1;
   e.name = name;
   boolean continues = false;
   for(Effect ef: playField.get(index).effects)
   {
     if(ef.name == name) 
     {
-      if(ef.duration >= 0 && ef.duration < duration)
-      ef.duration = duration;
+      if(ef.duration >= 0 && duration >= 0)
+        ef.duration = max(duration, ef.duration);
+      if(duration < 0)
+        ef.duration = duration;
       continues = true;
     }
   }
@@ -873,7 +877,7 @@ public void addEffect(int duration, Card c, String name) // Adding effect to car
   if(hasEffect(c, "NoEffect")) return;
   Effect e = new Effect();
   e.duration = duration;
-  if(c.player != playerTurn && mode == 0 && duration >= 0) e.duration++;
+  if(mode == 0) e.givenBy = playerTurn; else e.givenBy = playerTurn % 2 + 1;
   e.name = name; 
   boolean continues = false;
   for(Effect ef: c.effects)

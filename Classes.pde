@@ -76,6 +76,7 @@ class Effect
 {
   int duration; // Rounds it lasts for. Negative numbers: Forever
   String name;
+  int givenBy;
 }
 
 class Player 

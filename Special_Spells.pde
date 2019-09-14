@@ -263,10 +263,7 @@ public void discard(int index)
     moves.add(m);
   }
   playFieldSelected = index;
-  Effect e = new Effect();
-  e.name = "Alive";
-  e.duration = 1;
-  playField.get(index).effects.add(e);
+  addEffect(1, index, "Alive");
   startAnimation(6, playField.get(index).x, playField.get(index).y);
 }
 
