@@ -18,7 +18,7 @@
 17/card/Esther/9 6 3 3 3/Upon place: Return one of your opponent's cards on the field to your opponent's hand./0 4
 18/card/Jennifer/7 6 3 3 1/Upon attacking: This card gains +2 attack./0 4
 19/card/Sharnujan/3 16 2 1 4/Upon place: If there is another card that costs more than 4 dollars on the field, increase range by +4./1 4
-20/card/Richard/3 25 2 1 5/Upon place: Send a random card in the opponent's hand back to their deck./1 4
+20/card/Richard/3 27 2 1 5/Upon place: Send a random card in the opponent's hand back to their deck./1 4
 21/card/Annika/4 6 2 3 1/Upon attacking: Card being attacked gets sent back to opponent's hand with base stats./1 4
 22/card/Antnohy/8 15 4 3 6/Upon attacking: If card being attacked costs more than $4, this does +3 damage. Special: All attacks also splash onto the 8 cards around the card being attacked./2
 23/card/Vinod/4 11 3 3 3/Special: This card takes -8 damage from all sources if there is an 'Class H' card on the field./1 4
@@ -61,7 +61,7 @@
 60/card/Hexagonal/9 12 3 3 8/When any of your cards get attacked, attack the attacker using this card and take 2 damage. When this card dies, deal 4 damage to all of your opponent's cards. This card's HP or survivability cannot be increased in any way./3
 61/card/Physouie/11 6 2 1 9/Destroy this card after 3 rounds. When this card dies, summon 3 Elite cards from collection and put them in your hand. These cards now have +2 HP and +2 ATK and are $2 cheaper./3
 62/card/GeeTraveller/12 9 2 3 6/This card deals damage to all cards in the lane that it is attacking./3
-63/card/Ridge Rhea/1 27 1 1 8/Cards in the same lane as this card have 2 extra range. Movement cannot be increased./3
+63/card/Ridge Rhea/1 30 1 1 8/Cards in the same lane as this card have 2 extra range. Movement cannot be increased./3
 64/card/Jawnie Dirp/11 11 5 2 5/Target an opponent's card: Reduce it's damage and health by 8./3
 65/card/Yebanow/18 11 3 3 7/All Traveller cards gain 1 HP and 1 ATK upon placing down. Upon placing, spawn a random $1 card on all tiles horizontally or vertically adjacent to this one./3
 66/spell/Zoo Wee Mama!/2/Target one of your opponent's cards: Deal 8 damage./targetsOpp
@@ -83,8 +83,8 @@
 82/card/Mr. Stirrychigg/9 8 3 3 4/When placed, summon a 'Mr. Utnapis' in front of this card./6
 83/spell/Hit It Boys!/2/Target one of your cards: For 3 turns, it can move sideways./targetsYou
 84/card/Mr. Filascario/18 45 2 2 11/Special: All future cards placed by the opponent will have -4 HP and -4 ATK, while this card is alive. Whenever you draw a card, deal 3 damage to your opponent./6
-85/card/Crystal Clear/5 18 4 2 6/This card gains 8 attack every time it gets attacked./5
-86/card/Ms. Aftner/6 8 2 4 3/Knockback 2: When this card attacks an opponents' card, send it back a maximum of 2 tiles, if possible. That card cannot move for 1 turn./6
+85/card/Crystal Clear/5 21 4 2 6/This card gains 12 attack every time it gets attacked./5
+86/card/Ms. Aftner/6 8 2 4 3/Knockback 2: When this card attacks an opponents' card, send it back a maximum of 2 tiles, if possible. That card has -2 MVMT for 1 turn./6
 87/card/Ms. Iceberg/10 14 2 2 5/Special: Each turn, you can do a special attack that does 4 damage to any of your opponents' cards./6
 88/spell/Raw Eggs and Soy Sauce/1/Target one of your cards: It gains 4 attack, but now takes 3 extra damage from all attacks./targetsYou
 89/spell/Sebastian's Tea/4/Target one of your opponents' cards: Each turn, this card loses 5 HP and 5 ATK./targetsOpp
@@ -93,7 +93,7 @@
 92/spell/The Duality of an Illiken/7/Summon Mr. Willikens and Mr. Billikens in random lanes, who cannot be attacked this turn./targetsAll
 93/spell/Novelty Wings/1/Increase a card's range by 1 for 1 turn, and 2 turns if the card is a novelty card./targetsYou
 94/card/Mr. Websterien/7 7 5 4 4/Each Turn: This card gains 2 HP and 2 ATK. Upon death: Draw a Mr. Pengamah with +1 Range./6
-95/card/Mr. Pegamah/4 3 2 4 1/This card can attack the player first turn. This card does twice the damage towards the player. This card's attack cannot be modified./6
+95/card/Mr. Pegamah/4 3 2 4 1/This card can attack the player first turn. This card does 8 damage towards the player./6
 96/spell/Mr. Tornado/2/Send an opponent's card back to their hand./targetsOpp
 97/card/Ms. Nicke/2 4 2 2 0/If 'Esther' is on your field, this card does +12 damage to Elite cards and +7 damage to all other cards./6
 98/card/Ilem/9 9 4 3 9/When this card is attacked, deal 3 damage to all of your opponents' cards. When this card dies: It gets to resurrect one time. When resurrecting, change this card's ATK and HP to 20, and boost all Elite cards' attack by 2./2

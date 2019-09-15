@@ -5,10 +5,10 @@ public void useSpell(String name, int indexEffect)
   int index = -1;
   for(int i = 0; i < collection.length; i++)
   {
-    if(collection[i].name == name)
+    if(collection[i].name.equals(name))
       index = i;
   }
-  if(mode == 0)
+  if(mode==0)
   {
     Move m = new Move();
     m.type = 2;
@@ -16,29 +16,29 @@ public void useSpell(String name, int indexEffect)
     m.name = name;
     moves.add(m);
   }
-  if(name == "German Machine Guns")
+  if(name.equals("German Machine Guns"))
   {
     Effected.attackCount++;
   }
-  if(name == "Defense Position")
+  if(name.equals("Defense Position"))
   {
     addEffect(-1, indexEffect, "Resurrect");
     addEffect(-1, indexEffect, "Defense");
   }  
-  if(name == "Attack Position")
+  if(name.equals("Attack Position"))
   {
     Effected.ATK+=6;
     addEffect(-1, indexEffect, "Attack");
   }
-  if(name == "Fireball")
+  if(name.equals("Fireball"))
   {
     attackCard(-12, indexEffect, true); // -2: Fireball, -3: Holy Hand Grenade Center, -4 
   }
-  if(name == "Zoo Wee Mama!")
+  if(name.equals("Zoo Wee Mama!"))
   {
     attackCard(-8, indexEffect, true); // -2: Fireball, -3: Holy Hand Grenade Center, -4 
   }
-  if(name == "Mini Gulag")
+  if(name.equals("Mini Gulag"))
   {
     for(int l = 0; l < 9; l++)
     {
@@ -52,7 +52,7 @@ public void useSpell(String name, int indexEffect)
       }
     }
   }
-  if(name == "Holy Hand Grenade")
+  if(name.equals("Holy Hand Grenade"))
   {
     attackCard(-9, indexEffect, true);
     for(int l = 0; l < 9; l++)
@@ -67,27 +67,27 @@ public void useSpell(String name, int indexEffect)
       }
     }
   }
-  if(name == "Stall")
+  if(name.equals("Stall"))
   {
     addEffect(1, indexEffect, "Stun");
-    if(mode == 0)
+    if(mode==0)
       drawCard();
   }
-  if(name == "Miss Me")
+  if(name.equals("Miss Me"))
   {
     addEffect(1, indexEffect, "Invincible");
   }
-  if(name == "Dragon Wings")
+  if(name.equals("Dragon Wings"))
   {
     Effected.MVMT += 2;
     Effected.RNG += 1;
   }
-  if(name == "Mr. Sketch")
+  if(name.equals("Mr. Sketch"))
   {
     Effected.ATK += 5;
     heal(Effected, 8);
   }
-  if(name == "T-Pose") 
+  if(name.equals("T-Pose"))
   {
     int oppCount = 0;
     for(Card c: playField)
@@ -104,41 +104,37 @@ public void useSpell(String name, int indexEffect)
     Effected.ATK += oppCount;
     heal(Effected, oppCount);
   }
-  if(name == "Hit It Boys!")
-  {
+  if(name.equals("Hit It Boys!"))
     addEffect(3, indexEffect, "SideMove");
-  }
-  if(name == "Raw Eggs and Soy Sauce")
+  if(name.equals("Raw Eggs and Soy Sauce"))
   {
     Effected.ATK += 4;
     addEffect(-1, indexEffect, "RawEggs");
   }
-  if(name == "Sebastian’s Tea")
-  {
+  if(name.equals("Sebastian’s Tea"))
     addEffect(-1, indexEffect, "Tea");
-  }
-  if(name == "Novelty Wings")
+  if(name.equals("Novelty Wings"))
   {
     if(Effected.category.contains(6))
       addEffect(2, indexEffect, "NVW");
     else
       addEffect(1, indexEffect, "NVW");
   }
-  if(name == "Mr. Tornado")
+  if(name.equals("Mr. Tornado"))
   {
     String temp = Effected.name;
     Card c = collection[searchCard(temp)].copy();
     c.summoned = true;
-    if(mode == 0 && index != -1)
+    if(mode==0 && index != -1)
       p[playerTurn % 2 + 1].hand.add(c);
       
     playField.remove(indexEffect);
     playFieldSelected = playField.indexOf(c);
   }
-  if(name == "Windmill")
+  if(name.equals("Windmill"))
   {
     String eName = Effected.name;
-    if(eName != "Ridge Rhea")
+    if(!eName.equals("Ridge Rhea"))
       Effected.MVMT++;
     heal(Effected, min(Effected.HP, 14));
   }
@@ -147,7 +143,7 @@ public void useSpell(String name, int indexEffect)
 public void spawnEffects(String name, int indexName, int indexSpawn)
 {
   Card Effected = playField.get(indexSpawn);
-  if(mode == 0)
+  if(mode==0)
   {
     Move m = new Move();
     m.type = 3;
@@ -158,58 +154,54 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   }
   startAnimation(3, Effected.x, Effected.y);
   playFieldSelected = indexName;
-  if(name == "Jason C")
+  if(name.equals("Jason C"))
   {
     Effected.ATK = max(Effected.ATK - 8, 0);
     Effected.MVMT = max(Effected.MVMT - 1, 0);
   }
-  else if(name == "Esther")
+  else if(name.equals("Esther"))
   {
     Card temp = playField.get(indexName);
     int index = -1;
     for(int i = 0; i < collection.length; i++)
     {
-      if(collection[i].name == Effected.name)
+      if(collection[i].name.equals(Effected.displayName))
         { index = i; temp = collection[i].copy(); }
     }
     temp.summoned = true;
-    if(mode == 0 && index != -1)
+    if(mode==0 && index != -1)
       p[playerTurn % 2 + 1].hand.add(temp);
     playField.remove(indexSpawn);
     playFieldSelected = playField.indexOf(temp);
   }
-  else if(name == "Jefferson")
+  else if(name.equals("Jefferson"))
   {
     Effected.effects.clear();
     Effect e = new Effect();
     e.name = "NoEffect";
     e.duration = -1;
     Effected.effects.add(e);
-    
-    e = new Effect();
-    e.name = "Nullify";
-    e.duration = -1;
-    Effected.effects.add(e);
+    Effected.name = "Nullified";
   }
-  else if(name == "Mandaran")
+  else if(name.equals("Mandaran"))
   {
     Effect e = new Effect();
     e.name = "Invincible";
     e.duration = 1;
     Effected.effects.add(e);
   }
-  else if(name == "George")
+  else if(name.equals("George"))
   {
     Effected.ATK += 3;
     heal(Effected, 4);
   }
-  else if(name == "Anthony")
+  else if(name.equals("Anthony"))
   {
     Effected.ATK += 6;
     heal(Effected, 8);
     Effected.MVMT += 1;
   }
-  else if(name == "Jawnie Dirp")
+  else if(name.equals("Jawnie Dirp"))
   {
     Effected.ATK -= 8; Effected.ATK = max(0, Effected.ATK);
     Effected.HP -= 8;
@@ -218,7 +210,7 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
 
 public void specialAbility(int indexUser, int indexOpp, String type)
 {
-  if(mode == 0)
+  if(mode==0)
   {
     Move m = new Move();
     m.type = 11;
@@ -228,13 +220,13 @@ public void specialAbility(int indexUser, int indexOpp, String type)
     moves.add(m);
   }
   
-  if(type == "Hubert")
+  if(type.equals("Hubert"))
   {
     playFieldSelected = indexUser;
     heal(playField.get(indexOpp), 4);
     startAnimation(2, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
-  if(type == "Ethan")
+  if(type.equals("Ethan"))
   {
     playField.get(indexUser).HP = 0;
     playField.get(indexOpp).HP = 0;
@@ -242,7 +234,7 @@ public void specialAbility(int indexUser, int indexOpp, String type)
     playField.get(indexOpp).effects.clear();
     startAnimation(4, playField.get(indexOpp).x, playField.get(indexOpp).y); selfX = playField.get(indexUser).x; selfY = playField.get(indexUser).y;
   }
-  if(type == "Ms. Iceberg")
+  if(type.equals("Ms. Iceberg"))
   {
     playFieldSelected = indexUser;
     attackCard(-4, indexOpp, false);
@@ -252,7 +244,7 @@ public void specialAbility(int indexUser, int indexOpp, String type)
 
 public void discard(int index)
 {
-  if(mode == 0)
+  if(mode==0)
   {
     Move m = new Move();
     m.type = 6;
@@ -266,7 +258,7 @@ public void discard(int index)
 
 public void useSpell(int y, String name) // y is player.
 {
-  if(mode == 0)
+  if(mode==0)
   {
     Move m = new Move();
     m.type = 2;
@@ -275,14 +267,14 @@ public void useSpell(int y, String name) // y is player.
     m.nonTargeted = true;
     moves.add(m);
   }
-  if(playerTurn == 1)
+  if(playerTurn==1)
     startAnimation(7, 3, 4, name);
   else 
     startAnimation(7, 3, 3, name);
   
-  if(name == "Expectations Ever Increasing")
+  if(name.equals("Expectations Ever Increasing"))
   {
-    if(mode == 0)
+    if(mode==0)
     {
       for(Card c: p[y].hand)
       {
@@ -295,9 +287,9 @@ public void useSpell(int y, String name) // y is player.
       }
     }
   }
-  if(name == "Propaganda Machine")
+  if(name.equals("Propaganda Machine"))
   {
-    if(mode == 0)
+    if(mode==0)
     {
       ArrayList<Card> temporary = new ArrayList<Card>();
       for(Card c: collection)
@@ -310,7 +302,7 @@ public void useSpell(int y, String name) // y is player.
       p[y].hand.add(c);
     }
   }
-  if(name == "Terminator")
+  if(name.equals("Terminator"))
   {
     for(int i = 0; i < 30; i++)
     {
@@ -325,18 +317,18 @@ public void useSpell(int y, String name) // y is player.
       }
     }
   }
-  if(name == "Awakening")
+  if(name.equals("Awakening"))
   {
     for(Card c: playField)
     {
-      if(c.player == y && c.category.contains(2) && !hasEffect(c, "noEffect"))
+      if(c.player==y && c.category.contains(2) && !hasEffect(c, "noEffect"))
       {
         c.ATK += 3;
         heal(c, 2);
       }
     }
   }
-  if(name == "Elite's Calling" && mode == 0)
+  if(name.equals("Elite's Calling") && mode==0)
   {
     ArrayList <Card> Elites = new ArrayList <Card>();
     for(Card c: collection)
@@ -344,10 +336,10 @@ public void useSpell(int y, String name) // y is player.
       if(c.category.contains(2) && c.cost <= 4) Elites.add(c);
     }
     ArrayList <Integer> availible = new ArrayList<Integer>();
-    int yPos = 6; if(y == 2) yPos = 1;
+    int yPos = 6; if(y==2) yPos = 1;
     for(int i = 1; i <= 5; i++)
     {
-      if(findCard(i, yPos) == -1) availible.add(i);
+      if(findCard(i, yPos)==-1) availible.add(i);
     }
     // Ben
     if(availible.size() > 0)
@@ -384,13 +376,13 @@ public void useSpell(int y, String name) // y is player.
     }
     
   }
-  if(name == "The Duality of an Illiken" && mode == 0)
+  if(name.equals("The Duality of an Illiken") && mode==0)
   {
     ArrayList <Integer> availible = new ArrayList<Integer>();
-    int yPos = 6; if(y == 2) yPos = 1;
+    int yPos = 6; if(y==2) yPos = 1;
     for(int i = 1; i <= 5; i++)
     {
-      if(findCard(i, yPos) == -1) availible.add(i);
+      if(findCard(i, yPos)==-1) availible.add(i);
     }
     // Williken
     if(availible.size() > 0)

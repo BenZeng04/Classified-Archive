@@ -124,8 +124,6 @@ public void setup()
   p[1] = new Player();
   p[2] = new Player();
   moneyFarm.name = "Money Farm"; moneyFarm.ATK = 0; moneyFarm.HP = 1; moneyFarm.MVMT = 1; moneyFarm.RNG = 0; moneyFarm.cost = 5; moneyFarm.ability = "This card will generate $1 extra in cash each turn. This card can be attacked over.";
-  // 
-  
   // Setting Stats of Cards!
   String [] cards = loadStrings("Collection.txt");
   collection = new Card [cards.length];
@@ -134,7 +132,6 @@ public void setup()
   for(String s: cards)
   {
     String [] decode = s.split("/");
-    println(Integer.parseInt(decode[0]));
     if(decode[1].equals("card"))
     {
       String [] stats = decode[3].split(" ");
@@ -164,9 +161,9 @@ public void setup()
       collection[Integer.parseInt(decode[0])] = setCard;
     }
   }
-  
   sortCollection();
   for(Card c: collection) c.setupNBT(); // Setting up NBT Values.
+  moneyFarm.setupNBT();
   
   // Setting up the deck selection
   for(int i = 0; i < 2; i++)
@@ -198,7 +195,7 @@ public void setup()
     offlineDecks[0] [i] = collection [decode[correctIndex]];
     offlineDecks[1] [i] = collection [decode2[correctIndex]];
   }
-  
+
   // Setting up total number of cards in each category
   for(Card c: collection)
   {
@@ -243,38 +240,38 @@ public void draw() // Modes
   //
   
   // Modes
-  if(mode == 0)
+  if(mode==0)
   {
     timer++;
     play();
   }
-  if(mode == 1)
+  if(mode==1)
     transition();
-  if(mode == 2)
+  if(mode==2)
   {
     oppMoves();
     play();
   }
-  if(mode == 3)
+  if(mode==3)
     mainMenu();
-  if(mode == 4)
+  if(mode==4)
     chooseDeck(0);
-  if(mode == 5)
+  if(mode==5)
     chooseDeck(1);
-  if(mode == 7) options("S  E  T  T  I  N  G  S  !");
-  if(mode == 8) options("H O W  T O  P L A Y !");
-  if(mode == 9) options("C  R  E  D  I  T  S  !");
-  if(mode == 10) victory();
+  if(mode==7) options("S  E  T  T  I  N  G  S  !");
+  if(mode==8) options("H O W  T O  P L A Y !");
+  if(mode==9) options("C  R  E  D  I  T  S  !");
+  if(mode==10) victory();
   if(clickDelay > 0)
     clickDelay --;
   if(inTransition) 
   {
     transitionTime++; // Transition Variable increases
     
-    if(transitionTime == 25) // Halfway mark. This is when the black screen starts fading out instead of fading in and revealing the screen
+    if(transitionTime==25) // Halfway mark. This is when the black screen starts fading out instead of fading in and revealing the screen
     {
       mode = transitionToMode; // Switches the mode once the screen is totally black, so that the switch isn't visible.
-      if(transitionToMode == 6) // Game will setup mid-transition if the transition is to the play screen
+      if(transitionToMode==6) // Game will setup mid-transition if the transition is to the play screen
         setupGame();
     }
       
@@ -349,7 +346,7 @@ public void setupGame() // Starting Game
     temp2.remove(tempValue);
   }
   
-  if(ruleset == 1) // WIP ruleset, has twice the card size but only a limited amount
+  if(ruleset==1) // WIP ruleset, has twice the card size but only a limited amount
   {
     for(int i = 0; i < offlineDecks[0].length; i++)
     {
@@ -364,7 +361,7 @@ public void setupGame() // Starting Game
     drawCard(1);
     drawCard(2);
   }
-  if(ruleset == 1)
+  if(ruleset==1)
   {
     p[1].hand.add(moneyFarm);
     p[2].hand.add(moneyFarm);
@@ -378,23 +375,23 @@ public void handOverTurn() // Logic for handing over turns (Game-wise)
   mode = 1;
   int opp = playerTurn % 2 + 1;
   p[opp].turn++;
-  if(ruleset == 0) // Default Money Generation
+  if(ruleset==0) // Default Money Generation
     p[opp].cash = p[opp].turn + 2;
   else
     p[opp].cash += 3;
   for(Card c : playField) // Money Generation (Cards)
   {
-    if(c.name == "Money Farm" && !hasEffect(c, "Nullify") && c.player == opp)
+    if(c.name.equals("Money Farm") && c.player==opp)
           p[opp].cash += 1;
-    if(c.name == "Yucen" && !hasEffect(c, "Nullify") && c.player == opp) p[opp].cash+=2;
+    if(c.name.equals("Yucen") && c.player==opp) p[opp].cash+=2;
   }
   p[opp].canAttack = true; // Sets the player to be able to attack again
-  if(ruleset == 0)
+  if(ruleset==0)
   {
     if(p[opp].deck.size() > 0) // Draws a card each turn
       drawCard(opp);
   }
-  if(ruleset == 1)
+  if(ruleset==1)
   {
     if(p[opp].deck.size() > 0)
     {
@@ -404,10 +401,8 @@ public void handOverTurn() // Logic for handing over turns (Game-wise)
     boolean hasFarm = false;
     for(Card c: p[opp].hand)
     {
-      if(c.name == "Money Farm")
-      {
+      if(c.name.equals("Money Farm"))
         hasFarm = true;
-      }
     }
     if(!hasFarm) p[opp].hand.add(moneyFarm);
   }
@@ -422,52 +417,48 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
 {
   for(Card c: playField)
   {
-    if(c.player == opp)
+    if(c.player==opp)
     {
       // All cards can move and attack once a turn
       c.canMove = true;
       c.attackCount = 1;
       
-      if(!hasEffect(c, "Nullify")) // Assuming they aren't nullified
+      if(hasEffect(c, "HealDisable")) // "Lina"'s Effect, which increases 1 HP per turn while the card has not been attacked yet
+        c.HP++;
+      if(hasEffect(c, "Tea")) // Spell Effect
       {
-        if(hasEffect(c, "HealDisable")) // "Lina"'s Effect, which increases 1 HP per turn while the card has not been attacked yet
-          c.HP++;
-        if(hasEffect(c, "Tea")) // Spell Effect
+        c.HP -= 5;
+        c.ATK -= 5;
+      }
+      // Stat Buffs
+      if(name(c, "Mr. Homas")) 
+        c.ATK += 3;
+      if(c.name.equals("Mr. Websterien"))
+      {
+        c.ATK += 2;
+        c.HP += 2;
+      }
+      if(c.NBTTags.contains("SpecialMove")) // Some cards have a special 4th option besides Attacking, Moving, Discarding. 
+        c.canSpecial = true;
+      if(c.name.equals("Bonnie")) // Can attack twice each turn.
+        c.attackCount = 2;
+      if(c.name.equals("Ben")) // Deals direct damage to enemy player.
+        p[opp % 2 + 1].HP -= 2;
+      if(c.name.equals("King Henry") && mode==0) // Draws an extra card.
+        drawCard(opp);
+      if(c.name.equals("Ultrabright")) // Heals you, ticks them.
+      {
+        p[opp % 2 + 1].HP--;
+        p[opp].HP++;
+      }
+      if(c.name.equals("A.L.I.C.E.")) // Buffing
+      {
+        for(Card d: playField)
         {
-          c.HP -= 5;
-          c.ATK -= 5;
-        }
-        // Stat Buffs
-        if(c.name == "Mr. Homas") 
-          c.ATK += 3;
-        if(c.name == "Mr. Websterien")
-        {
-          c.ATK += 2;
-          c.HP += 2;
-        }
-        if(c.NBTTags.contains("SpecialMove")) // Some cards have a special 4th option besides Attacking, Moving, Discarding. 
-          c.canSpecial = true;
-        if(c.name == "Bonnie") // Can attack twice each turn.
-          c.attackCount = 2;
-        if(c.name == "Ben") // Deals direct damage to enemy player.
-          p[opp % 2 + 1].HP -= 2;
-        if(c.name == "King Henry" && mode == 0) // Draws an extra card.
-          drawCard(opp);
-        if(c.name == "Ultrabright") // Heals you, ticks them.
-        {
-          p[opp % 2 + 1].HP--;
-          p[opp].HP++;
-        }
-        if(c.name == "A.L.I.C.E.") // Buffing
-        {
-          for(Card d: playField)
+          if(!hasEffect(d, "NoEffect") && d.player==c.player)
           {
-            if(!hasEffect(d, "NoEffect") && d.player == c.player)
-            {
-              d.ATK+=1;
-              if(!d.NBTTags.contains("Unhealable"))
-                d.HP+=1;
-            }
+            d.ATK+=1;
+            heal(d, 1);
           }
         }
       }
@@ -477,13 +468,13 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
     boolean finishedDiscarding = false;
     for(Effect e: c.effects)
     {
-      if(e.givenBy == opp)
+      if(e.givenBy==opp) // If the effect was GIVEN BY the opponent. Effects you give yourself go away on your turn, effects the opponent gives you go away on their turn.
       {
         e.duration--;
-        if(e.duration == 0)
+        if(e.duration==0)
         {
           tempRemove.add(e); // Normal Removal of Cards
-          if(e.name == "Alive") // Discarded Cards
+          if(e.name.equals("Alive")) // Discarded Cards
             finishedDiscarding = true;
         }
       }
@@ -495,14 +486,12 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
       startAnimation(8, c.x, c.y);
     }
     if(tempRemove.size() > 0)
-    {
       for(Effect e : tempRemove)
         c.effects.remove(e); // BOOOM DEAD EFFECT
-    }
   }
   for(Card c: playField)
   {
-    if(c.name == "King Henry" && !hasEffect(c, "Nullify") && c.player == opp) // Double attack this turn
+    if(c.name.equals("King Henry") && c.player==opp) // Double attack this turn
     {
       for(Card d: playField)
         addEffect(1, d, "2X ATK");
@@ -515,7 +504,7 @@ public int findCard(int x, int y, int player)
   // Finds card at specified location.
   for(Card c: playField)
   {
-    if(c.x == x && c.y == y && c.player == player)
+    if(c.x==x && c.y==y && c.player==player)
     {
       return playField.indexOf(c);
     }
@@ -528,7 +517,7 @@ public int findCard(int x, int y)
   // Finds card at specified location.
   for(Card c: playField)
   {
-    if(c.x == x && c.y == y)
+    if(c.x==x && c.y==y)
     {
       return playField.indexOf(c);
     }
@@ -540,7 +529,7 @@ public boolean hasEffect(Card c, String name)
 {
   for(Effect e: c.effects)
   {
-    if(e.name == name)
+    if(e.name.equals(name))
       return true;
   }
   return false;
@@ -551,10 +540,8 @@ public int searchCard(String name)
   int i = 0;
   for(Card c: collection)
   {
-    if(c.name == name)
-    {
+    if(c.name.equals(name))
       return i;
-    }
     i++;
   }
   return -1;
@@ -563,20 +550,20 @@ public int searchCard(String name)
 public void copyPlayfield(ArrayList <Card> stuff, String copyTo) // Deep Copying the playfield. 
 {
   // stuff refers to the playfield that will be duplicated. copyTo is the name of the playfield that will recieve the duplicate.
-  if(copyTo == "playField")
+  if(copyTo.equals("playField"))
       playField = new ArrayList<Card>();
-  if(copyTo == "oldPlayField")
+  if(copyTo.equals("oldPlayField"))
     oldPlayField = new ArrayList<Card>();
-  if(copyTo == "currentPlayField")
+  if(copyTo.equals("currentPlayField"))
     currentPlayField = new ArrayList<Card>();
   for(Card c: stuff)
   {
     Card card = c.copy();
-    if(copyTo == "playField")
+    if(copyTo.equals("playField"))
       playField.add(card);
-    if(copyTo == "oldPlayField")
+    if(copyTo.equals("oldPlayField"))
       oldPlayField.add(card);
-    if(copyTo == "currentPlayField")
+    if(copyTo.equals("currentPlayField"))
       currentPlayField.add(card);
   }
 }
@@ -588,11 +575,11 @@ int animateTimer;
 public void oppMoves() // Animating Opponents' Moves
 {
   animateTimer++;
-  if(animateTimer == 15 && animationToggle)
+  if(animateTimer==15 && animationToggle)
   {
     handOverEffects(playerTurn % 2 + 1);
   }
-  else if(animateTimer % 60 == 15 && animationToggle) // Every Second
+  else if(animateTimer % 60==15 && animationToggle) // Every Second
   {
     if(moves.size() > 0) // Looks through the moves arraylist, checks if there are any moves that need to be displayed.
     {
@@ -600,14 +587,14 @@ public void oppMoves() // Animating Opponents' Moves
       Move m = moves.get(0);
       moves.remove(m);
 
-      if(m.type == 1) // Placing Cards
+      if(m.type==1) // Placing Cards
       {
         Card c = m.cardPlaced.copy();
         placeCard(m.player, c, m.x, m.y, false);
         if(moves.size() > 0)
         {
           Move newM = moves.get(0);
-          while(newM.type == 1 && moves.size() > 0) // Checks first if the next card is of type 1 (Placing)
+          while(newM.type==1 && moves.size() > 0) // Checks first if the next card is of type 1 (Placing)
           {
             newM = moves.get(0);
             if(newM.cardSpawned) // If cards are being spawned out of another card, spawn them instantly instead of replaying multiple times
@@ -621,7 +608,7 @@ public void oppMoves() // Animating Opponents' Moves
           }
         }
       }
-      if(m.type == 2) // Using Spells
+      if(m.type==2) // Using Spells
       {
         if(!m.nonTargeted)
           useSpell(m.name, m.targeted);
@@ -631,7 +618,7 @@ public void oppMoves() // Animating Opponents' Moves
           if(moves.size() > 0)
           {
             Move newM = moves.get(0);
-            while(newM.type == 1 && moves.size() > 0) // Checks first if the next card is of type 1 (Placing)
+            while(newM.type==1 && moves.size() > 0) // Checks first if the next card is of type 1 (Placing)
             {
               newM = moves.get(0);
               if(newM.cardSpawned) // If cards are being spawned out of another card, spawn them instantly instead of replaying multiple times
@@ -645,15 +632,15 @@ public void oppMoves() // Animating Opponents' Moves
           }
         }
       }
-      if(m.type == 3) // Spawn Effects
+      if(m.type==3) // Spawn Effects
         spawnEffects(m.name, m.targeter, m.targeted);
-      if(m.type == 4) // Attacking
+      if(m.type==4) // Attacking
       {
         playFieldSelected = m.targeter;
         attackCard(m.targeter, m.targeted, true);
         if(m.targeter != -1)
         {
-          if(m.name == "Antnohy" && !hasEffect(playField.get(playFieldSelected), "Nullify") && !hasEffect(playField.get(m.targeted), "Invincible"))
+          if(m.name.equals("Antnohy") && !hasEffect(playField.get(m.targeted), "Invincible"))
           {
             int x = m.x, y = m.y;
             for(int l = 0; l < 9; l++)
@@ -668,7 +655,7 @@ public void oppMoves() // Animating Opponents' Moves
               }
             }
           }
-          if(m.name == "GeeTraveller" && !hasEffect(playField.get(playFieldSelected), "Nullify") && !hasEffect(playField.get(m.targeted), "Invincible"))
+          if(m.name.equals("GeeTraveller") && !hasEffect(playField.get(m.targeted), "Invincible"))
           {
             int x = m.x;
             for(int l = 1; l <= 6; l++)
@@ -682,16 +669,16 @@ public void oppMoves() // Animating Opponents' Moves
           }
         }
       }
-      if(m.type == 5) // Moving
+      if(m.type==5) // Moving
         if(!m.sideMove)
           moveCard(m.targeter, m.distance);
         else
           moveCardSide(m.targeter, m.distance);
-      if(m.type == 6) // Discarding
+      if(m.type==6) // Discarding
         discard(m.targeter); 
-      if(m.type == 7) // Attacking the Player
+      if(m.type==7) // Attacking the Player
         attackPlayer(m.targeter);
-      if(m.type == 11) // Special
+      if(m.type==11) // Special
         specialAbility(m.targeter, m.targeted, m.name);
     }
     else
@@ -727,7 +714,7 @@ public void drawCard()
   {
     for(Card c: playField)
     {
-      if(c.name == "Mr. Filascario" && !hasEffect(c, "Nullify") && c.player == playerTurn) p[playerTurn % 2 + 1].HP -= 3;
+      if(c.name.equals("Mr. Filascario") && c.player == playerTurn) p[playerTurn % 2 + 1].HP -= 3;
     }
     p[playerTurn].hand.add(p[playerTurn].deck.get(0).copy());
     p[playerTurn].deck.remove(0);
@@ -739,7 +726,7 @@ public void drawCard(int opp)
   {
     for(Card c: playField)
     {
-      if(c.name == "Mr. Filascario" && !hasEffect(c, "Nullify") && c.player == opp) p[opp % 2 + 1].HP -= 3;
+      if(c.name.equals("Mr. Filascario") && c.player == opp) p[opp % 2 + 1].HP -= 3;
     }
     p[opp].hand.add(p[opp].deck.get(0).copy());
     p[opp].deck.remove(0);
@@ -750,11 +737,11 @@ public void drawCard(String mode)
   
   if(p[playerTurn].deck.size() > 0)
   {
-    if(mode != "Cycle")
+    if(!mode.equals("Cycle"))
     {
       for(Card c: playField)
       {
-        if(c.name == "Mr. Filascario" && !hasEffect(c, "Nullify") && c.player == playerTurn) p[playerTurn % 2 + 1].HP -= 3;
+        if(c.name.equals("Mr. Filascario") && c.player==playerTurn) p[playerTurn % 2 + 1].HP -= 3;
       }
     }
     p[playerTurn].hand.add(p[playerTurn].deck.get(0).copy());
@@ -764,10 +751,8 @@ public void drawCard(String mode)
 public Card resetCard(Card c)
 {
   for(Card d: collection)
-  {
-    if(c.name == d.name) return d; 
-  }
-  if(c.name == "Money Farm") return moneyFarm;
+    if(c.displayName.equals(d.name)) return d; 
+  if(c.name.equals("Money Farm")) return moneyFarm;
   return c;
 }
 
@@ -775,7 +760,7 @@ public int indexOfCard(Card c)
 {
   for(int i = 0; i<collection.length; i++)
   {
-    if(c.name == collection[i].name) return i;
+    if(c.name.equals(collection[i].name)) return i;
   }
   return -1;
 }
@@ -785,12 +770,12 @@ public void addEffect(int duration, int index, String name) // Adding effect to 
   if(hasEffect(playField.get(index), "NoEffect")) return;
   Effect e = new Effect();
   e.duration = duration;
-  if(mode == 0) e.givenBy = playerTurn; else e.givenBy = playerTurn % 2 + 1;
+  if(mode==0) e.givenBy = playerTurn; else e.givenBy = playerTurn % 2 + 1;
   e.name = name;
   boolean continues = false;
   for(Effect ef: playField.get(index).effects)
   {
-    if(ef.name == name) 
+    if(ef.name.equals(name)) 
     {
       if(ef.duration >= 0 && duration >= 0)
         ef.duration = max(duration, ef.duration);
@@ -807,12 +792,12 @@ public void addEffect(int duration, Card c, String name) // Adding effect to car
   if(hasEffect(c, "NoEffect")) return;
   Effect e = new Effect();
   e.duration = duration;
-  if(mode == 0) e.givenBy = playerTurn; else e.givenBy = playerTurn % 2 + 1;
+  if(mode==0) e.givenBy = playerTurn; else e.givenBy = playerTurn % 2 + 1;
   e.name = name; 
   boolean continues = false;
   for(Effect ef: c.effects)
   {
-    if(ef.name == name) 
+    if(ef.name.equals(name)) 
     {
       if(ef.duration >= 0 && ef.duration < duration)
       ef.duration = duration;

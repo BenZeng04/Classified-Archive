@@ -13,6 +13,7 @@ class Card
   ArrayList<Effect> effects = new ArrayList<Effect>(); // Status Effects
   ArrayList<Integer> category = new ArrayList<Integer>(); // 0: 8G, 1: 8H, 2: Elite
   String name = ""; 
+  String displayName = "";
   int x = 0, y = 0; // Position relative to playfield.
   int attackCount = 0; // Amount of times a card can attack this turn. (Usually 1)
   boolean canMove = false; // If the card has already moved, it cannot move any more.
@@ -45,6 +46,7 @@ class Card
     c.NBTTags = new ArrayList<String>();
     for(String s: NBTTags) c.NBTTags.add(s);
     c.name = name;
+    c.displayName = displayName;
     c.x = x;
     c.y = y;
     c.attackCount = attackCount;
@@ -59,17 +61,71 @@ class Card
     c.icon = icon;
     return c;
   }
-  
   boolean spawned = false; // Has the card been spawned out of a special effect or spell? Or has it been manually placed?
   boolean summoned = false; // Has the card been summoned out of a special effect or spell? Or is it actually from your deck?
   
   public void setupNBT() // WIP
   {
-    if(name == "Ethan" || name == "Hubert" || name == "Ms. Iceberg") NBTTags.add("SpecialMove");
-    if(name == "Ben 2.0" || name == "Hexagonal") NBTTags.add("Unhealable");
-    if(name == "Mr. Pegamah") NBTTags.add("Unbuffable");
-    if(name == "Attack Positon" || name == "Raw Eggs and Soy Sauce") NBTTags.add("AttackBoostSpell");
+    displayName = name;
+    if(name.equals("Ethan") || name.equals("Hubert") || name.equals("Ms. Iceberg")) NBTTags.add("SpecialMove");
+    if(name.equals("Ben 2.0") || name.equals("Hexagonal")) NBTTags.add("Unhealable");
+    if(name.equals("Mr. Pegamah")) NBTTags.add("Unbuffable");
+    if(name.equals("Attack Positon") || name.equals("Raw Eggs and Soy Sauce")) NBTTags.add("AttackBoostSpell");
+    if(name.equals("Jonathan") || name.equals("Samuel") || name.equals("Kenneth") || name.equals("Mr. Willikens") || name.equals("Mr. Billikens") || name.equals("A.L.I.C.E.") || name.equals("Yebanow") || name.equals("Jefferson")) 
+    {
+      NBTTags.add("InstantBuffer");
+      switch(name)
+      {
+        case "Jonathan":
+          ATKBuff = 1;
+          condition = 4;
+          conditionHPBuff = 1;
+          conditionATKBuff = 2;
+          break;
+        case "Samuel":
+          ATKBuff = 1;
+          condition = 2;
+          conditionHPBuff = 0;
+          conditionATKBuff = 2;
+          break;
+        case "Kenneth":
+          ATKBuff = 2;
+          condition = 2;
+          conditionHPBuff = 2;
+          conditionATKBuff = 2;
+          break;
+        case "Mr. Willikens":
+          condition = 6;
+          conditionHPBuff = 3;
+          break;
+        case "Mr. Billikens":
+          condition = 6;
+          conditionATKBuff = 3;
+          break;
+        case "A.L.I.C.E.":
+          ATKBuff = 3;
+          HPBuff = 3;
+          condition = 5;
+          conditionHPBuff = 6;
+          conditionATKBuff = 6;
+          break;
+        case "Yebanow":
+          condition = 3;
+          conditionHPBuff = 1;
+          conditionATKBuff = 1;
+          break;
+        case "Jefferson":
+          condition = 2;
+          conditionATKBuff = 1;
+          break;
+      }
+    }
   }
+  
+  // Special NBT Stuff
+  int HPBuff = 0, conditionHPBuff = 0;
+  int ATKBuff = 0, conditionATKBuff = 0;
+  int condition = 0;
 }
 class Effect
 {
@@ -77,7 +133,6 @@ class Effect
   String name;
   int givenBy;
 }
-
 class Player 
 {
   ArrayList<Card> hand = new ArrayList<Card>(); 
