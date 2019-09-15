@@ -194,6 +194,11 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   {
     Effected.ATK += 3;
     heal(Effected, 4);
+    if(Effected.category.contains(4))
+    {
+      Effected.ATK += 1;
+      heal(Effected, 1);
+    }
   }
   else if(name.equals("Anthony"))
   {

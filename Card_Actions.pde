@@ -159,7 +159,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
   {
     for(Card c: playField)
     {
-      if(c.player==player && !hasEffect(c, "NoEffect"))
+      if(c.player == player && !hasEffect(c, "NoEffect"))
       {
         if(temp.name.equals("A.L.I.C.E.") && temp==c) break;
         if(c.category.contains(temp.condition))

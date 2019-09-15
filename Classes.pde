@@ -59,6 +59,11 @@ class Card
     c.spawned = spawned;
     c.spellTarget = spellTarget;
     c.icon = icon;
+    c.HPBuff = HPBuff;
+    c.ATKBuff = ATKBuff;
+    c.condition = condition;
+    c.conditionHPBuff = conditionHPBuff;
+    c.conditionATKBuff = conditionATKBuff;
     return c;
   }
   boolean spawned = false; // Has the card been spawned out of a special effect or spell? Or has it been manually placed?
