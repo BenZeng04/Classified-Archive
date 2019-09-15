@@ -149,7 +149,7 @@ class Card
       attackCount = 2;
     if(name.equals("Ben")) // Deals direct damage to enemy player.
       p[player % 2 + 1].HP -= 2;
-    if(name.equals("King Henry") && mode==0) // Draws an extra card.
+    if(name.equals("King Henry") && mode == 0) // Draws an extra card.
       drawCard(player);
     if(name.equals("Ultrabright")) // Heals you, ticks them.
     {
@@ -160,7 +160,7 @@ class Card
     {
       for(Card d: playField)
       {
-        if(!hasEffect(d, "NoEffect") && d.player==player)
+        if(!hasEffect(d, "NoEffect") && d.player == player)
         {
           d.ATK+=1;
           heal(d, 1);

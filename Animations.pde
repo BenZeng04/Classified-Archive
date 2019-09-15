@@ -3,33 +3,33 @@ void actionAnimate()
   int transparency = 255 - 7 * aniTimer;
   for(Animation a: targets)
   {
-    if(a.type==1)
+    if(a.type == 1)
     {
       noStroke();
       fill(0xffD60606, transparency - 50);
       rect(width / 2, height / 2, width, height);
       strokeWeight(15);
-      if(a.x==-1 && a.y==-1) // Player
+      if(a.x == -1 && a.y == -1) // Player
       {   
         fill(0xffD60606, transparency);
         stroke(0xffF24747, transparency);
-        if(mode==0)
+        if(mode == 0)
           ellipse(350, 50, 180, 180);
         else
           ellipse(350, 750, 180, 180);
       }
       else 
       {
-        int yF = a.y * 100 + 50; if(playerTurn==2) yF = a.y * -100 + 750;
+        int yF = a.y * 100 + 50; if(playerTurn == 2) yF = a.y * -100 + 750;
         fill(0xffD60606, transparency);
         stroke(0xffF24747, transparency);
         rect(a.x * 100 + 50, yF, 130, 130);
       }
     }
-    else if(a.type==8)
+    else if(a.type == 8)
     {
       strokeWeight(15);
-      int yF = a.y * 100 + 50; if(playerTurn==2) yF = a.y * -100 + 750;
+      int yF = a.y * 100 + 50; if(playerTurn == 2) yF = a.y * -100 + 750;
       fill(50, transparency);
       stroke(0, transparency);
       ellipse(a.x * 100 + 50, yF, 220, 220);
@@ -44,12 +44,12 @@ void actionAnimate()
     }
     else
     {
-      int sw = 15; if(a.type==5) sw = 140;
-      int offset = 0; if(a.type==7) offset = 70;
+      int sw = 15; if(a.type == 5) sw = 140;
+      int offset = 0; if(a.type == 7) offset = 70;
       int lighter = 0, darker = 0;
       String textDisplay = "";
       strokeWeight(sw);
-      int yF = a.y * 100 + 50; if(playerTurn==2) yF = a.y * -100 + 750;
+      int yF = a.y * 100 + 50; if(playerTurn == 2) yF = a.y * -100 + 750;
       
       switch(a.type) 
       {
@@ -79,9 +79,9 @@ void actionAnimate()
       fill(darker, transparency + offset);
       text(textDisplay, a.x * 100 + 50, yF);
       
-      if(a.type==4)
+      if(a.type == 4)
       {
-        yF = selfY * 100 + 50; if(playerTurn==2) yF = selfY * -100 + 750;
+        yF = selfY * 100 + 50; if(playerTurn == 2) yF = selfY * -100 + 750;
         ellipse(selfX * 100 + 50, yF, 220, 220);
       }
     }

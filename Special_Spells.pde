@@ -8,7 +8,7 @@ public void useSpell(String name, int indexEffect)
     if(collection[i].name.equals(name))
       index = i;
   }
-  if(mode==0)
+  if(mode == 0)
   {
     Move m = new Move();
     m.type = 2;
@@ -70,7 +70,7 @@ public void useSpell(String name, int indexEffect)
   if(name.equals("Stall"))
   {
     addEffect(1, indexEffect, "Stun");
-    if(mode==0)
+    if(mode == 0)
       drawCard();
   }
   if(name.equals("Miss Me"))
@@ -125,7 +125,7 @@ public void useSpell(String name, int indexEffect)
     String temp = Effected.name;
     Card c = collection[searchCard(temp)].copy();
     c.summoned = true;
-    if(mode==0 && index != -1)
+    if(mode == 0 && index != -1)
       p[playerTurn % 2 + 1].hand.add(c);
       
     playField.remove(indexEffect);
@@ -143,7 +143,7 @@ public void useSpell(String name, int indexEffect)
 public void spawnEffects(String name, int indexName, int indexSpawn)
 {
   Card Effected = playField.get(indexSpawn);
-  if(mode==0)
+  if(mode == 0)
   {
     Move m = new Move();
     m.type = 3;
@@ -169,7 +169,7 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
         { index = i; temp = collection[i].copy(); }
     }
     temp.summoned = true;
-    if(mode==0 && index != -1)
+    if(mode == 0 && index != -1)
       p[playerTurn % 2 + 1].hand.add(temp);
     playField.remove(indexSpawn);
     playFieldSelected = playField.indexOf(temp);
@@ -215,7 +215,7 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
 
 public void specialAbility(int indexUser, int indexOpp, String type)
 {
-  if(mode==0)
+  if(mode == 0)
   {
     Move m = new Move();
     m.type = 11;
@@ -249,7 +249,7 @@ public void specialAbility(int indexUser, int indexOpp, String type)
 
 public void discard(int index)
 {
-  if(mode==0)
+  if(mode == 0)
   {
     Move m = new Move();
     m.type = 6;
@@ -263,7 +263,7 @@ public void discard(int index)
 
 public void useSpell(int y, String name) // y is player.
 {
-  if(mode==0)
+  if(mode == 0)
   {
     Move m = new Move();
     m.type = 2;
@@ -272,14 +272,14 @@ public void useSpell(int y, String name) // y is player.
     m.nonTargeted = true;
     moves.add(m);
   }
-  if(playerTurn==1)
+  if(playerTurn == 1)
     startAnimation(7, 3, 4, name);
   else 
     startAnimation(7, 3, 3, name);
   
   if(name.equals("Expectations Ever Increasing"))
   {
-    if(mode==0)
+    if(mode == 0)
     {
       for(Card c: p[y].hand)
       {
@@ -294,7 +294,7 @@ public void useSpell(int y, String name) // y is player.
   }
   if(name.equals("Propaganda Machine"))
   {
-    if(mode==0)
+    if(mode == 0)
     {
       ArrayList<Card> temporary = new ArrayList<Card>();
       for(Card c: collection)
@@ -326,14 +326,14 @@ public void useSpell(int y, String name) // y is player.
   {
     for(Card c: playField)
     {
-      if(c.player==y && c.category.contains(2) && !hasEffect(c, "noEffect"))
+      if(c.player == y && c.category.contains(2) && !hasEffect(c, "noEffect"))
       {
         c.ATK += 3;
         heal(c, 2);
       }
     }
   }
-  if(name.equals("Elite's Calling") && mode==0)
+  if(name.equals("Elite's Calling") && mode == 0)
   {
     ArrayList <Card> Elites = new ArrayList <Card>();
     for(Card c: collection)
@@ -341,10 +341,10 @@ public void useSpell(int y, String name) // y is player.
       if(c.category.contains(2) && c.cost <= 4) Elites.add(c);
     }
     ArrayList <Integer> availible = new ArrayList<Integer>();
-    int yPos = 6; if(y==2) yPos = 1;
+    int yPos = 6; if(y == 2) yPos = 1;
     for(int i = 1; i <= 5; i++)
     {
-      if(findCard(i, yPos)==-1) availible.add(i);
+      if(findCard(i, yPos) == -1) availible.add(i);
     }
     // Ben
     if(availible.size() > 0)
@@ -381,13 +381,13 @@ public void useSpell(int y, String name) // y is player.
     }
     
   }
-  if(name.equals("The Duality of an Illiken") && mode==0)
+  if(name.equals("The Duality of an Illiken") && mode == 0)
   {
     ArrayList <Integer> availible = new ArrayList<Integer>();
-    int yPos = 6; if(y==2) yPos = 1;
+    int yPos = 6; if(y == 2) yPos = 1;
     for(int i = 1; i <= 5; i++)
     {
-      if(findCard(i, yPos)==-1) availible.add(i);
+      if(findCard(i, yPos) == -1) availible.add(i);
     }
     // Williken
     if(availible.size() > 0)

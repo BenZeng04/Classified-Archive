@@ -1,7 +1,7 @@
 public void play()
 {  
   textAlign(CENTER, CENTER);
-  if(mode==0 && !inTransition) // Victory
+  if(mode == 0 && !inTransition) // Victory
   {
     if(p[1].HP <= 0 || p[2].HP <= 0)
     {
@@ -21,7 +21,7 @@ public void play()
   image(playFieldIcon, 350, 400);
   noTint();
   
-  if(playerSelected && mode==0) fill(255, 0, 0, 100); else
+  if(playerSelected && mode == 0) fill(255, 0, 0, 100); else
   fill(#CB9F0C, 200);
   
   if(cardSelected != -1)
@@ -45,7 +45,7 @@ public void play()
   // Not Shadow
   if(p[playerTurn].canAttack)
   {
-    if(playerTurn==1)
+    if(playerTurn == 1)
       fill(#FF5555, 150);
     else 
       fill(#5A55FF, 150);
@@ -54,7 +54,7 @@ public void play()
   strokeWeight(3);
   if(p[playerTurn].canAttack)
   {
-    if(playerTurn==1)
+    if(playerTurn == 1)
       stroke(#C40A04, 150);
     else 
       stroke(#0904C4, 150);
@@ -118,12 +118,12 @@ public void play()
   text("PLAYER "+playerTurn+" (You!)", 503, 736);
   
   // Not Shadow
-  if(playerTurn==2)
+  if(playerTurn == 2)
     fill(#FF5555, 150);
   else 
     fill(#5A55FF, 150);
   strokeWeight(3);
-  if(playerTurn==2)
+  if(playerTurn == 2)
     stroke(#C40A04, 150);
   else 
     stroke(#0904C4, 150);
@@ -132,12 +132,12 @@ public void play()
   fill(255);
   text("PLAYER "+(playerTurn % 2 + 1), 200, 53);
   
-  if(playerTurn==1)
+  if(playerTurn == 1)
     fill(#FF5555, 150);
   else 
     fill(#5A55FF, 150);
   strokeWeight(3);
-  if(playerTurn==1)
+  if(playerTurn == 1)
     stroke(#C40A04, 150);
   else 
     stroke(#0904C4, 150);
@@ -271,19 +271,19 @@ public void play()
     // Duo Cards which get buffed from other cards
     if(c.name.equals("Joseph"))
       for(Card d: playField)
-        if(d.name.equals("Annika") && d.player==c.player)
+        if(d.name.equals("Annika") && d.player == c.player)
           atk *= 3;
     if(c.name.equals("A.L.I.C.E."))
       for(Card d: playField)
-        if(d.name.equals("Moonlight") && d.player==c.player)
+        if(d.name.equals("Moonlight") && d.player == c.player)
           atk *= 2;
     if(c.name.equals("Ms. Nicke"))
       for(Card d: playField)
-        if(d.name.equals("Esther") && d.player==c.player)
+        if(d.name.equals("Esther") && d.player == c.player)
           atk += 7;
     if(c.name.equals("Ben"))
       for(Card d: playField)
-        if(d.category.contains(2) && d.player==c.player)
+        if(d.category.contains(2) && d.player == c.player)
           atk++;
     
     if(hasEffect(c, "2X ATK") || hasEffect(c, "2X ATK (Anny)")) atk *= 2;
@@ -293,31 +293,31 @@ public void play()
     if(!hasEffect(c, "NoEffect"))
     {
       for(Card d: playField)
-        if(d.name.equals("Ridge Rhea") && !c.name.equals("Ridge Rhea") && !c.name.equals("Ultrabright") && d.player==c.player && d.x==c.x) rng += 2;
+        if(d.name.equals("Ridge Rhea") && !c.name.equals("Ridge Rhea") && !c.name.equals("Ultrabright") && d.player == c.player && d.x == c.x) rng += 2;
       for(Card d: playField)
-        if(d.name.equals("Ben") && c.category.contains(2) && d.player==c.player) atk += 3;
+        if(d.name.equals("Ben") && c.category.contains(2) && d.player == c.player) atk += 3;
       for(Card d: playField)
         if(d.name.equals("Rita") && d.player != c.player) atk = max(0, atk - 1);
     }
-    int y = c.y * 100 + 50; if(playerTurn==2) y = c.y * -100 + 750;
+    int y = c.y * 100 + 50; if(playerTurn == 2) y = c.y * -100 + 750;
     int x = c.x * 100 + 50;
     
     if(inAnimation)
     {
       if(moveAnimation) // This is a very different type of animation than everything else.
       {
-        if(playField.indexOf(c)==indexMove)
+        if(playField.indexOf(c) == indexMove)
         {
-          if(moveType==0)
+          if(moveType == 0)
           {
-            int destination = (c.y + distMove) * 100 + 50; if(playerTurn==2) destination = (c.y + distMove) * -100 + 750;
+            int destination = (c.y + distMove) * 100 + 50; if(playerTurn == 2) destination = (c.y + distMove) * -100 + 750;
             if(distMove < 0)
             {
-              if(playerTurn==1)
+              if(playerTurn == 1)
                 y -= 20 * aniTimer;
               else
                 y += 20 * aniTimer;
-              if(y==destination)
+              if(y == destination)
               {
                 c.y = c.y + distMove;
                 inAnimation = false;
@@ -326,11 +326,11 @@ public void play()
             }
             else
             {
-              if(playerTurn==1)
+              if(playerTurn == 1)
                 y += 20 * aniTimer;
               else
                 y -= 20 * aniTimer;
-              if(y==destination)
+              if(y == destination)
               {
                 c.y = c.y + distMove;
                 inAnimation = false;
@@ -344,7 +344,7 @@ public void play()
             if(distMove < 0)
             {
               x -= 20 * aniTimer;
-              if(x==destination)
+              if(x == destination)
               {
                 c.x = c.x + distMove;
                 inAnimation = false;
@@ -354,7 +354,7 @@ public void play()
             else
             {
               x += 20 * aniTimer;
-              if(x==destination)
+              if(x == destination)
               {
                 c.x = c.x + distMove;
                 inAnimation = false;
@@ -366,7 +366,7 @@ public void play()
       }
     }
     
-    if(playField.indexOf(c)==playFieldSelected) 
+    if(playField.indexOf(c) == playFieldSelected) 
     {
       strokeWeight(20); // Bigger Strokeweight
       stroke(0xffFFC400, 220); 
@@ -377,7 +377,7 @@ public void play()
       stroke(255); 
     }
     
-    if(c.player==1)
+    if(c.player == 1)
       fill(255, 0, 0, 175);
     else
       fill(0, 0, 255, 175);
@@ -398,7 +398,7 @@ public void play()
   for(int i = 0; i < p[playerTurn].hand.size(); i++)
   {
     int x = i % 5 * 120 + 660, y = i / 5 * 120 + 150;
-    if(i==cardSelected && p[playerTurn].hand.get(i).cost <= p[playerTurn].cash)
+    if(i == cardSelected && p[playerTurn].hand.get(i).cost <= p[playerTurn].cash)
     {
       x = x + cursorX - ogx;
       y = y + cursorY - ogy;
@@ -458,7 +458,7 @@ public void play()
     for(int i: p[playerTurn].hand.get(cardSelected).category)
     {
       String categName = ""; 
-      if(i==0) categName = "Class G"; else if (i==1) categName = "Class H"; else if(i==2) categName = "Elite"; else if(i==3) categName = "Traveller"; else if(i==4) categName = "Non-Elite"; else if(i==5) categName = "Prototype"; else if(i==6) categName = "Novelty";
+      if(i == 0) categName = "Class G"; else if (i == 1) categName = "Class H"; else if(i == 2) categName = "Elite"; else if(i == 3) categName = "Traveller"; else if(i == 4) categName = "Non-Elite"; else if(i == 5) categName = "Prototype"; else if(i == 6) categName = "Novelty";
 
       textSize(8);
       noFill();
@@ -480,7 +480,7 @@ public void play()
         String name = p[playerTurn].hand.get(cardSelected).name;
         for(Card c: playField)
         {
-          if(c.player==playerTurn && !hasEffect(c, "NoEffect") && !(name.equals("Defense Position") && !c.NBTTags.contains("Unhealable")) && !(name.equals("Dragon Wings") && (c.name.equals("Ultrabright"))))
+          if(c.player == playerTurn && !hasEffect(c, "NoEffect") && !(name.equals("Defense Position") && !c.NBTTags.contains("Unhealable")) && !(name.equals("Dragon Wings") && (c.name.equals("Ultrabright"))))
             hitCircle(c.x, c.y);
         }
       }
@@ -508,7 +508,7 @@ public void play()
  
   if(playFieldSelected != -1)  
   {
-    if(choice==-1)
+    if(choice == -1)
     {
       fill(100, 100);
       stroke(255);
@@ -541,7 +541,7 @@ public void play()
       for(int i: playField.get(playFieldSelected).category)
       {
         String categName = ""; 
-        if(i==0) categName = "Class G"; else if (i==1) categName = "Class H"; else if(i==2) categName = "Elite"; else if(i==3) categName = "Traveller"; else if(i==4) categName = "Non-Elite"; else if(i==5) categName = "Prototype"; else if(i==6) categName = "Novelty";
+        if(i == 0) categName = "Class G"; else if (i == 1) categName = "Class H"; else if(i == 2) categName = "Elite"; else if(i == 3) categName = "Traveller"; else if(i == 4) categName = "Non-Elite"; else if(i == 5) categName = "Prototype"; else if(i == 6) categName = "Novelty";
         textSize(8);
         noFill();
         stroke(255);
@@ -557,7 +557,7 @@ public void play()
       }
     }
     
-    if(choice==-1 && playField.get(playFieldSelected).player==playerTurn) // Buttons
+    if(choice == -1 && playField.get(playFieldSelected).player == playerTurn) // Buttons
     {  
       textSize(15); textAlign(CENTER, CENTER);
       // Move
@@ -630,20 +630,20 @@ public void play()
       }
     }
     
-    if(choice==0)
+    if(choice == 0)
     {
-      if(playField.get(playFieldSelected).name.equals("Hubert") && playField.get(playFieldSelected).player==playerTurn)
+      if(playField.get(playFieldSelected).name.equals("Hubert") && playField.get(playFieldSelected).player == playerTurn)
       {
         for(Card c: playField)
         {
-          if(c.player==(playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && !c.NBTTags.contains("Unhealable"))
+          if(c.player == (playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && !c.NBTTags.contains("Unhealable"))
           {
             hitCircle(c.x, c.y);
           }
         }
       }
       
-      if((playField.get(playFieldSelected).name.equals("Ethan") || playField.get(playFieldSelected).name.equals("Ms. Iceberg")) && playField.get(playFieldSelected).player==playerTurn)
+      if((playField.get(playFieldSelected).name.equals("Ethan") || playField.get(playFieldSelected).name.equals("Ms. Iceberg")) && playField.get(playFieldSelected).player == playerTurn)
       {
         for(Card c: playField)
         {
@@ -654,7 +654,7 @@ public void play()
         }
       }
     }
-    if(choice==1)
+    if(choice == 1)
     {   
       int mvmt = playField.get(playFieldSelected).MVMT;
       if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 2; 
@@ -670,31 +670,31 @@ public void play()
             break;
           for(Card c: playField)
           {
-            if(n==0)
+            if(n == 0)
             {         
-              if(c.x==mx && c.y==my - i || my <= i)
+              if(c.x == mx && c.y == my - i || my <= i)
                 availible = false;
             }
-            if(n==1)
+            if(n == 1)
             {
-              if(c.x==mx && c.y==my + i || my + i > 6)
+              if(c.x == mx && c.y == my + i || my + i > 6)
                 availible = false;
             }
-            if(n==2)
+            if(n == 2)
             {
-              if(c.x==mx - i && c.y==my || mx <= i)
+              if(c.x == mx - i && c.y == my || mx <= i)
                 availible = false;
             }
-            if(n==3)
+            if(n == 3)
             {
-              if(c.x==mx + i && c.y==my || mx + i > 5)
+              if(c.x == mx + i && c.y == my || mx + i > 5)
                 availible = false;
             }
           }
           if(availible)
           {
-            int updateY = my; if(n==0) updateY -= i; if(n==1) updateY += i;
-            int updateX = mx; if(n==2) updateX -= i; if(n==3) updateX += i;
+            int updateY = my; if(n == 0) updateY -= i; if(n == 1) updateY += i;
+            int updateX = mx; if(n == 2) updateX -= i; if(n == 3) updateX += i;
             hitCircle(updateX, updateY);
           }
           else break;
@@ -703,14 +703,14 @@ public void play()
 
     }
     // Attacking 
-    if(choice==2)
+    if(choice == 2)
     {
       for(int q = 0; q < 4; q++)
       {
         int rng = playField.get(playFieldSelected).RNG;
         for(Card d: playField)
         {
-          if(d.name.equals("Ridge Rhea") && !playField.get(playFieldSelected).name.equals("Ridge Rhea") && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player==playField.get(playFieldSelected).player && d.x==playField.get(playFieldSelected).x) rng += 2;
+          if(d.name.equals("Ridge Rhea") && !playField.get(playFieldSelected).name.equals("Ridge Rhea") && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player == playField.get(playFieldSelected).player && d.x == playField.get(playFieldSelected).x) rng += 2;
           if(hasEffect(playField.get(playFieldSelected), "NVW")) rng++;
         }
         // Showing places you can attack 
@@ -719,8 +719,8 @@ public void play()
           int mx = playField.get(playFieldSelected).x, my = playField.get(playFieldSelected).y;
           boolean canAttack = false;
           boolean availible = true; // Availible doesnt mean that you can attack that spot, it just means that it won't quit.
-          boolean cap; if(q==0) cap = my <= i; else if(q==1) cap = my + i > 6; else if(q==2) cap = mx + i > 5; else cap = mx <= i; // If attacking player
-          if(q==0) my -= i; if( q==1) my += i; if(q==2) mx += i; if(q==3) mx -= i;// Where to attack
+          boolean cap; if(q == 0) cap = my <= i; else if(q == 1) cap = my + i > 6; else if(q == 2) cap = mx + i > 5; else cap = mx <= i; // If attacking player
+          if(q == 0) my -= i; if( q == 1) my += i; if(q == 2) mx += i; if(q == 3) mx -= i;// Where to attack
           if(playField.get(playFieldSelected).player != playerTurn)
             break;
           if(cap)
@@ -728,7 +728,7 @@ public void play()
             boolean firstTurn = true;
             if(playField.get(playFieldSelected).turnPlacedOn != p[playerTurn].turn || (playField.get(playFieldSelected).name.equals("Mr. Pegamah"))) { firstTurn = false;}
             
-            if((playerTurn==1 && q==0) || (playerTurn==2 && q==1))
+            if((playerTurn == 1 && q == 0) || (playerTurn == 2 && q == 1))
             {
               if(firstTurn)
                 canAttack = false;
@@ -740,7 +740,7 @@ public void play()
           
           for(Card c: playField)
           {
-            if(c.x==mx && c.y==my)
+            if(c.x == mx && c.y == my)
             {
               if((!playField.get(playFieldSelected).name.equals("Matthew") && !playField.get(playFieldSelected).name.equals("Ultrabright") && c.player != playerTurn))
                 availible = false;
@@ -770,8 +770,8 @@ public void play()
     for(Card c: playField)
     {
       
-      int correctY = 6; if(playerTurn==2) correctY = 1;
-      if(c.y==correctY && c.player != playerTurn)
+      int correctY = 6; if(playerTurn == 2) correctY = 1;
+      if(c.y == correctY && c.player != playerTurn)
       {
         hitCircle(c.x, c.y);
       }
@@ -796,11 +796,11 @@ public void hitCircle(int x, int y)
     noFill();
     strokeWeight(15);
     stroke(100, 190);
-    if(playerTurn==1)
+    if(playerTurn == 1)
       ellipse(x * 100 + 50 + 3, y * 100 + 50 + 3, 80, 80);
     else
       ellipse(x * 100 + 50 + 3, y * -100 + 750 + 3, 80, 80);
-    if(playerTurn==1)
+    if(playerTurn == 1)
     {
     if((dist(cursorX, cursorY, x * 100 + 50, y * 100 + 50) < 50)) stroke(170, 190); else stroke(255);
     }
@@ -808,7 +808,7 @@ public void hitCircle(int x, int y)
     {
     if((dist(cursorX, cursorY, x * 100 + 50, y * -100 + 750) < 50)) stroke(170, 190); else stroke(255);
     }
-    if(playerTurn==1)
+    if(playerTurn == 1)
       ellipse(x * 100 + 50, y * 100 + 50, 80, 80);
     else
       ellipse(x * 100 + 50, y * -100 + 750, 80, 80);
@@ -847,7 +847,7 @@ public void cardDisplay(int x, int y, float scale, Card c, int specialCase)
   else fill(100, 190);
   
   boolean minimize = false;
-  if(specialCase==1) if(collectionSelected==-1) minimize = true; else if(collection[collectionSelected] != c) minimize = true; // Minimizing in the deck selection
+  if(specialCase == 1) if(collectionSelected == -1) minimize = true; else if(collection[collectionSelected] != c) minimize = true; // Minimizing in the deck selection
   
   if(c.isSpell || minimize)
     rect(0, 0 - 5, 95, textThickness);
@@ -895,7 +895,7 @@ public void cardDisplay(int x, int y, float scale, Card c, int specialCase)
   
   if(cardSelected != -1) // If the card selected is the card being drawn, and you don't have enough cash.
   {
-    if(p[playerTurn].cash < p[playerTurn].hand.get(cardSelected).cost && c==p[playerTurn].hand.get(cardSelected))
+    if(p[playerTurn].cash < p[playerTurn].hand.get(cardSelected).cost && c == p[playerTurn].hand.get(cardSelected))
       fill(#FF0D00, (sin(timer / 10.0) + 1) * 100 + 40); // A red aura around the money is drawn to suggest that the card is too expensive.
   }
   text("$"+c.cost, 0, 0 + 42);
@@ -971,7 +971,7 @@ public void cardDisplay(int x, int y, float scale, Card c, int atk, int mvmt, in
   
   if(cardSelected != -1) // If the card selected is the card being drawn, and you don't have enough cash.
   {
-    if(p[playerTurn].cash < p[playerTurn].hand.get(cardSelected).cost && c==p[playerTurn].hand.get(cardSelected))
+    if(p[playerTurn].cash < p[playerTurn].hand.get(cardSelected).cost && c == p[playerTurn].hand.get(cardSelected))
       fill(#FF0D00, (sin(timer / 10.0) + 1) * 100 + 40); // A red aura around the money is drawn to suggest that the card is too expensive.
   }
   text("$"+c.cost, 0, 0 + 42);
@@ -993,14 +993,14 @@ public void draggingCards()
     boolean spaceEmpty = true;
     for(int i = 0; i<playField.size(); i++) // Checks if the place which the card is at already contains a card
     {
-      if(playerTurn==1)
+      if(playerTurn == 1)
       {
-        if(((x / 100 - 1) % 5 + 1)==playField.get(i).x && ((y / 100 - 1) + 1)==playField.get(i).y)
+        if(((x / 100 - 1) % 5 + 1) == playField.get(i).x && ((y / 100 - 1) + 1) == playField.get(i).y)
           spaceEmpty = false;
       }
       else
       {
-        if(((x / 100 - 1) % 5 + 1)==playField.get(i).x && (6 - (y / 100 - 1))==playField.get(i).y)
+        if(((x / 100 - 1) % 5 + 1) == playField.get(i).x && (6 - (y / 100 - 1)) == playField.get(i).y)
           spaceEmpty = false;
       }
     }
@@ -1012,7 +1012,7 @@ public void draggingCards()
       for(Card c: playField)
       {
         int temp = resetCard(p[playerTurn].hand.get(cardSelected)).cost;
-        if(c.name.equals("Snake") && c.player==playerTurn)
+        if(c.name.equals("Snake") && c.player == playerTurn)
         {
           if(temp < 4)
             canPlaceDown = false;
@@ -1026,9 +1026,9 @@ public void draggingCards()
           String name = p[playerTurn].hand.get(cardSelected).name;
           for(Card c: playField)
           {
-            if(c.player==playerTurn && !hasEffect(c, "NoEffect") && !(p[playerTurn].hand.get(cardSelected).NBTTags.contains("AttackBoostSpell") && c.NBTTags.contains("Unbuffable")) && !(name.equals("Defense Position") && c.NBTTags.contains("Unhealable")) && !(name.equals("Dragon Wings") && (c.name.equals("Ultrabright"))))
+            if(c.player == playerTurn && !hasEffect(c, "NoEffect") && !(p[playerTurn].hand.get(cardSelected).NBTTags.contains("AttackBoostSpell") && c.NBTTags.contains("Unbuffable")) && !(name.equals("Defense Position") && c.NBTTags.contains("Unhealable")) && !(name.equals("Dragon Wings") && (c.name.equals("Ultrabright"))))
             {
-              int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
+              int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
   
               if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
               {
@@ -1060,7 +1060,7 @@ public void draggingCards()
           {
             if(c.player != playerTurn && !hasEffect(c, "NoEffect"))
             {
-              int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
+              int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
   
               if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
               {
@@ -1079,7 +1079,7 @@ public void draggingCards()
       {
         p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;   
         int tempy;
-        if(playerTurn==1) tempy = (y / 100 - 1) + 1; else tempy = 6 - (y / 100 - 1);
+        if(playerTurn == 1) tempy = (y / 100 - 1) + 1; else tempy = 6 - (y / 100 - 1);
 
         placeCard(playerTurn, p[playerTurn].hand.get(cardSelected), (x / 100 - 1) % 5 + 1, tempy, false);
         if(!p[playerTurn].hand.get(cardSelected).summoned)

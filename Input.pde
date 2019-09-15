@@ -2,14 +2,14 @@ int cursorX;
 int cursorY;
 public void mousePressed()
 {
-if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
+if(mode == 0 && clickDelay == 0 && !inAnimation && !inTransition)
 {
-  if(abilitySelected==-1)
+  if(abilitySelected == -1)
   {
     for(int i = 0; i < p[playerTurn].hand.size(); i++)
     {
       int x, y;
-      if(playerTurn==1)
+      if(playerTurn == 1)
       {
         x = i % 5 * 120 + 670; y = i / 5 * 120 + 150;
       }
@@ -18,12 +18,12 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
         x = i % 5 * 120 + 670; y = i / 5 * 120 + 150;
       }
         
-      if(i==cardSelected && p[playerTurn].hand.get(i).cost <= p[playerTurn].cash)
+      if(i == cardSelected && p[playerTurn].hand.get(i).cost <= p[playerTurn].cash)
       {
         x = x + cursorX - ogx;
         y = y + cursorY - ogy;
       }
-      if(cursorX < x + 50 && cursorX > x - 50 && cursorY < y + 50 && cursorY > y - 50 && cardSelected==-1)
+      if(cursorX < x + 50 && cursorX > x - 50 && cursorY < y + 50 && cursorY > y - 50 && cardSelected == -1)
       {
         cardSelected = i;
         ogx = cursorX;
@@ -34,7 +34,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     boolean temporary = true; // If pressing a choice button, the playFieldSelected isn't gonna reset.
     if(playFieldSelected != -1)
     { 
-      if(choice==-1 && playField.get(playFieldSelected).player==playerTurn) // Buttons Omegalul for CHOICES
+      if(choice == -1 && playField.get(playFieldSelected).player == playerTurn) // Buttons Omegalul for CHOICES
       {  
         //Move  
         if(cursorX > 705 && cursorX < 895 && cursorY > 515 && cursorY < 555 && playField.get(playFieldSelected).canMove)
@@ -72,7 +72,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
         }
       }
       // No Special Effects. Only attack and move.
-      if(choice==0 && playField.get(playFieldSelected).player==playerTurn)
+      if(choice == 0 && playField.get(playFieldSelected).player == playerTurn)
       {
         for(Card c: playField)
         {
@@ -81,9 +81,9 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
           boolean condition = true;
           if(playField.get(playFieldSelected).name.equals("Hubert")) condition = !c.NBTTags.contains("Unhealable");
           if(playField.get(playFieldSelected).name.equals("Ethan")) condition = c.cost < 5;
-          if(c.player==sideTarget && !hasEffect(c, "NoEffect") && condition)
+          if(c.player == sideTarget && !hasEffect(c, "NoEffect") && condition)
           {
-            int yOfCircle = c.y * 100 + 50; if(playerTurn==2) yOfCircle = c.y * -100 + 750;
+            int yOfCircle = c.y * 100 + 50; if(playerTurn == 2) yOfCircle = c.y * -100 + 750;
             if(dist(c.x * 100 + 50, yOfCircle, cursorX, cursorY) < 50)
             {
               specialAbility(playFieldSelected, playField.indexOf(c), playField.get(playFieldSelected).name);
@@ -96,7 +96,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
         }
       }
       
-      if(choice==1)
+      if(choice == 1)
       {
         int mvmt = playField.get(playFieldSelected).MVMT;
         if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 2; 
@@ -111,32 +111,32 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
               break;
             for(Card c: playField)
             {
-              if(n==0)
+              if(n == 0)
               {         
-                if(c.x==mx && c.y==my - j || my <= j)
+                if(c.x == mx && c.y == my - j || my <= j)
                   availible = false;
               }
-              if(n==1)
+              if(n == 1)
               {
-                if(c.x==mx && c.y==my + j || my + j > 6)
+                if(c.x == mx && c.y == my + j || my + j > 6)
                   availible = false;
               }
-              if(n==2)
+              if(n == 2)
               {
-                if(c.x==mx - j && c.y==my || mx <= j)
+                if(c.x == mx - j && c.y == my || mx <= j)
                   availible = false;
               }
-              if(n==3)
+              if(n == 3)
               {
-                if(c.x==mx + j && c.y==my || mx + j > 5)
+                if(c.x == mx + j && c.y == my || mx + j > 5)
                   availible = false;
               }
             }
             if(availible)
             {
-              int updateY = my; if(n==0) updateY -= j; if(n==1) updateY += j;
-              int updateX = mx; if(n==2) updateX -= j; if(n==3) updateX += j;
-              if(playerTurn==1)
+              int updateY = my; if(n == 0) updateY -= j; if(n == 1) updateY += j;
+              int updateX = mx; if(n == 2) updateX -= j; if(n == 3) updateX += j;
+              if(playerTurn == 1)
               {
                 if(dist(cursorX, cursorY, updateX * 100 + 50, updateY * 100 + 50) < 50)
                 {
@@ -144,25 +144,25 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
                   m.type = 5;
                   
                   m.targeter = playFieldSelected;
-                  if(n==0)
+                  if(n == 0)
                   {
                     m.distance = -j;
                     m.sideMove = false;
                     moveCard(playFieldSelected, -j);
                   }
-                  if(n==1)
+                  if(n == 1)
                   {
                     m.distance = j;
                     m.sideMove = false;
                     moveCard(playFieldSelected, j);
                   }
-                  if(n==2)
+                  if(n == 2)
                   {
                     m.distance = -j;
                     m.sideMove = true;
                     moveCardSide(playFieldSelected, -j);
                   }
-                  if(n==3)
+                  if(n == 3)
                   {
                     m.distance = j;
                     m.sideMove = true;
@@ -183,25 +183,25 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
                   Move m = new Move();
                   m.type = 5;
                   m.targeter = playFieldSelected;
-                  if(n==0)
+                  if(n == 0)
                   {
                     m.distance = -j;
                     m.sideMove = false;
                     moveCard(playFieldSelected, -j);
                   }
-                  if(n==1)
+                  if(n == 1)
                   {
                     m.distance = j;
                     m.sideMove = false;
                     moveCard(playFieldSelected, j);
                   }
-                  if(n==2)
+                  if(n == 2)
                   {
                     m.distance = -j;
                     m.sideMove = true;
                     moveCardSide(playFieldSelected, -j);
                   }
-                  if(n==3)
+                  if(n == 3)
                   {
                     m.distance = j;
                     m.sideMove = true;
@@ -222,14 +222,14 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
         
       }
       // Attacking
-      if(choice==2)
+      if(choice == 2)
       {
         for(int q = 0; q < 4; q++)
         {
           int rng = playField.get(playFieldSelected).RNG;
           for(Card d: playField)
           {
-            if(d.name.equals("Ridge Rhea") && playField.get(playFieldSelected) != d && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player==playField.get(playFieldSelected).player && d.x==playField.get(playFieldSelected).x) rng += 2;
+            if(d.name.equals("Ridge Rhea") && playField.get(playFieldSelected) != d && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player == playField.get(playFieldSelected).player && d.x == playField.get(playFieldSelected).x) rng += 2;
           }
           if(hasEffect(playField.get(playFieldSelected), "NVW")) rng++;
           // Showing places you can attack 
@@ -239,8 +239,8 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
             int takeHit = 0; // Getting attacked
             boolean canAttack = false;
             boolean availible = true; // Availible doesnt mean that you can attack that spot, it just means that it won't quit.
-            boolean cap; if(q==0) cap = my <= i; else if(q==1) cap = my + i > 6; else if(q==2) cap = mx + i > 5; else cap = mx <= i; // If attacking player
-            if(q==0) my -= i; if( q==1) my += i; if(q==2) mx += i; if(q==3) mx -= i;// Where to attack
+            boolean cap; if(q == 0) cap = my <= i; else if(q == 1) cap = my + i > 6; else if(q == 2) cap = mx + i > 5; else cap = mx <= i; // If attacking player
+            if(q == 0) my -= i; if( q == 1) my += i; if(q == 2) mx += i; if(q == 3) mx -= i;// Where to attack
             if(playField.get(playFieldSelected).player != playerTurn)
               break;
             if(cap)
@@ -248,7 +248,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
               boolean firstTurn = true;
               if(playField.get(playFieldSelected).turnPlacedOn != p[playerTurn].turn || (playField.get(playFieldSelected).name.equals("Mr. Pegamah"))) { firstTurn = false;}
               
-              if((playerTurn==1 && q==0) || (playerTurn==2 && q==1))
+              if((playerTurn == 1 && q == 0) || (playerTurn == 2 && q == 1))
               {
                 if(firstTurn)
                   canAttack = false;
@@ -260,7 +260,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
 
             for(Card c: playField)
             {
-              if(c.x==mx && c.y==my)
+              if(c.x == mx && c.y == my)
               {
                 if((!playField.get(playFieldSelected).name.equals("Matthew") && !playField.get(playFieldSelected).name.equals("Ultrabright")) && c.player != playerTurn)
                   availible = false;
@@ -291,12 +291,12 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
               else
               {
                 
-                int yBound; if(playerTurn==1) yBound = my * 100 + 50; else yBound = my * -100 + 750;
+                int yBound; if(playerTurn == 1) yBound = my * 100 + 50; else yBound = my * -100 + 750;
                 if(dist(cursorX, cursorY, mx * 100 + 50, yBound) < 50)
                 {
                   choice = -1;
                   temporary = false;
-                  if(mode==0)
+                  if(mode == 0)
                   {
                     Move m = new Move();
                     m.type = 4;
@@ -350,7 +350,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
       for(int i = 0; i < playField.size(); i++)
       {
         int x = playField.get(i).x * 100 + 50, y = playField.get(i).y * 100 + 50;
-        if(playerTurn==2)
+        if(playerTurn == 2)
           y = playField.get(i).y * -100 + 750;
         
         if(cursorX < x + 50 && cursorX > x - 50 && cursorY < y + 50 && cursorY > y - 50)
@@ -376,10 +376,10 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
       {
         for(Card c: playField)
         {
-          int correctY = 6; if(playerTurn==2) correctY = 1;
-          if(c.y==correctY && c.player != playerTurn)
+          int correctY = 6; if(playerTurn == 2) correctY = 1;
+          if(c.y == correctY && c.player != playerTurn)
           {
-            int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
+            int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
             if(dist(cursorX, cursorY, c.x * 100 + 50, yPos) < 50)
             {
               attackCard(-1, playField.indexOf(c), true);
@@ -407,7 +407,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
         condition = playField.get(abilitySelected).player;
       for(Card c: playField)
       {
-        int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
+        int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
         if(abilitySelected != -1)
         {
           if(c.player == condition && !hasEffect(c, "NoEffect"))
@@ -433,7 +433,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
       for(Card c: p[playerTurn].hand)
       {
         int x = counter % 5 * 120 + 660, y = counter / 5 * 120 + 150;
-        if(cursorX > x - 50 && cursorX < x + 50 && cursorY > y - 50 && cursorY < y + 50 && mode==0)
+        if(cursorX > x - 50 && cursorX < x + 50 && cursorY > y - 50 && cursorY < y + 50 && mode == 0)
         {
           cardSelected = -1;
           playFieldSelected = -1;
@@ -451,14 +451,14 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     }
     if(dist(cursorX, cursorY, 900, 550) < 45)
     {
-      if(p[playerTurn].hand.size() > 0 && p[playerTurn].cash >= discardsUsed + 2 && playFieldSelected==-1)
+      if(p[playerTurn].hand.size() > 0 && p[playerTurn].cash >= discardsUsed + 2 && playFieldSelected == -1)
       {
         discarding = true;
       }
     }
     else discarding = false; 
   }
-  if(mode==1 && clickDelay==0 && !inTransition) // Fix weird bug
+  if(mode == 1 && clickDelay == 0 && !inTransition) // Fix weird bug
   {
     if(animationToggle)
     {
@@ -477,7 +477,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     }
   }
   
-  if(mode==3 && clickDelay==0 && !inAnimation && !inTransition)
+  if(mode == 3 && clickDelay == 0 && !inAnimation && !inTransition)
   {
     if(cursorX > 875 && cursorX < 1125 && cursorY > 260 && cursorY < 340) ruleset = 0;
     if(cursorX > 875 && cursorX < 1125 && cursorY > 460 && cursorY < 540) ruleset = 1;
@@ -504,7 +504,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     }
   }
   
-  if((mode==4 || mode==5) && clickDelay==0 && !inAnimation && !inTransition)
+  if((mode == 4 || mode == 5) && clickDelay == 0 && !inAnimation && !inTransition)
   {
     if(cursorX > 1085 && cursorX < 1185 && cursorY > 440 && cursorY < 490)
     {
@@ -513,13 +513,13 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     if(cursorX > 1085 && cursorX < 1185 && cursorY > 510 && cursorY < 560)
     {
       int length = 0;
-      if(sort==0) length = collection.length;
-      if(sort==1) length = categTot[0];
-      if(sort==2) length = categTot[1];
-      if(sort==3) length = categTot[2];
-      if(sort==4) length = categTot[4];
-      if(sort==5) length = categTot[3];
-      if(sort==6) length = categTot[5];
+      if(sort == 0) length = collection.length;
+      if(sort == 1) length = categTot[0];
+      if(sort == 2) length = categTot[1];
+      if(sort == 3) length = categTot[2];
+      if(sort == 4) length = categTot[4];
+      if(sort == 5) length = categTot[3];
+      if(sort == 6) length = categTot[5];
       scroll = min(max(0, (length - 1) / 5 - 4), scroll + 1);
     }
     if(cursorX > 20 && cursorX < 110 && cursorY > 455 && cursorY < 545)
@@ -554,23 +554,23 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     int correctX = 0, correctY = 0, count = 0;
     for(int i = 0; i < collection.length && !addingCard; i++)
     {
-      if(sort==1) // Class G
+      if(sort == 1) // Class G
         if(!collection[i].category.contains(0)) continue;
-      if(sort==2) // Class H
+      if(sort == 2) // Class H
         if(!collection[i].category.contains(1)) continue;
-      if(sort==3) // Elite
+      if(sort == 3) // Elite
         if(!collection[i].category.contains(2)) continue;
-      if(sort==4) // Non-Elite
+      if(sort == 4) // Non-Elite
         if(!collection[i].category.contains(4)) continue;
-      if(sort==5) // Hangouts
+      if(sort == 5) // Hangouts
         if(!collection[i].category.contains(3)) continue;
-      if(sort==6) // Normie
+      if(sort == 6) // Normie
         if(!collection[i].category.contains(5)) continue;
-      if(sort==7) // Novelty
+      if(sort == 7) // Novelty
         if(!collection[i].category.contains(6)) continue;
       int x = count % 5;
       int y = count / 5 - scroll;
-      if(collectionSelected==i) { correctX = x; correctY = y; }
+      if(collectionSelected == i) { correctX = x; correctY = y; }
       count++;
     }
     if(collectionSelected != -1)
@@ -589,23 +589,23 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
     int j = 0;
     for(int i = 0; i < collection.length && !addingCard; i++)
     {
-      if(sort==1) // Class G
+      if(sort == 1) // Class G
         if(!collection[i].category.contains(0)) continue;
-      if(sort==2) // Class H
+      if(sort == 2) // Class H
         if(!collection[i].category.contains(1)) continue;
-      if(sort==3) // Elite
+      if(sort == 3) // Elite
         if(!collection[i].category.contains(2)) continue;
-      if(sort==4) // Non-Elite
+      if(sort == 4) // Non-Elite
         if(!collection[i].category.contains(4)) continue;
-      if(sort==5) // Hangouts
+      if(sort == 5) // Hangouts
         if(!collection[i].category.contains(3)) continue;
-      if(sort==6) // Normie
+      if(sort == 6) // Normie
         if(!collection[i].category.contains(5)) continue;
-      if(sort==7) // Novelty
+      if(sort == 7) // Novelty
         if(!collection[i].category.contains(6)) continue;
       int x = j % 5;
       int y = j / 5 - scroll;
-      if(collectionSelected==i) { correctX = x; correctY = y; }
+      if(collectionSelected == i) { correctX = x; correctY = y; }
       x = 570 + x * 110;
       y = 280 + y * 110;
       boolean alreadyInDeck = false;
@@ -641,14 +641,14 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
       saveStrings("Deck"+(mode-3)+".txt", s);
     }
   }
-  if((mode==7 || mode==8 || mode==9) && !inAnimation && !inTransition)
+  if((mode == 7 || mode == 8 || mode == 9) && !inAnimation && !inTransition)
   {
     if(dist(cursorX, cursorY, 1140, 60) < 50)
     {
       mode = 3;
     }
   }
-  if(mode==10 && !inAnimation && !inTransition)
+  if(mode == 10 && !inAnimation && !inTransition)
   {
     if(dist(cursorX, cursorY, 1150, 50) < 45)
     {
