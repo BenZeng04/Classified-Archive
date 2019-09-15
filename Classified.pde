@@ -431,37 +431,7 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
         c.ATK -= 5;
       }
       // Stat Buffs
-      if(name(c, "Mr. Homas")) 
-        c.ATK += 3;
-      if(c.name.equals("Mr. Websterien"))
-      {
-        c.ATK += 2;
-        c.HP += 2;
-      }
-      if(c.NBTTags.contains("SpecialMove")) // Some cards have a special 4th option besides Attacking, Moving, Discarding. 
-        c.canSpecial = true;
-      if(c.name.equals("Bonnie")) // Can attack twice each turn.
-        c.attackCount = 2;
-      if(c.name.equals("Ben")) // Deals direct damage to enemy player.
-        p[opp % 2 + 1].HP -= 2;
-      if(c.name.equals("King Henry") && mode==0) // Draws an extra card.
-        drawCard(opp);
-      if(c.name.equals("Ultrabright")) // Heals you, ticks them.
-      {
-        p[opp % 2 + 1].HP--;
-        p[opp].HP++;
-      }
-      if(c.name.equals("A.L.I.C.E.")) // Buffing
-      {
-        for(Card d: playField)
-        {
-          if(!hasEffect(d, "NoEffect") && d.player==c.player)
-          {
-            d.ATK+=1;
-            heal(d, 1);
-          }
-        }
-      }
+      c.onRoundStart(opp);
     }
     // Discarding Cards, Removing Effects
     ArrayList <Effect> tempRemove = new ArrayList <Effect>();

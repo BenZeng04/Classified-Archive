@@ -307,7 +307,7 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
                     m.name = playField.get(playFieldSelected).name;
                     moves.add(m);
                   }
-                  if(playField.get(playFieldSelected).name.equals("Simon"))
+                  if(!playField.get(playFieldSelected).name.equals("Simon"))
                     playField.get(playFieldSelected).canMove = false; 
                   playField.get(playFieldSelected).attackCount --;
                   attackCard(playFieldSelected, takeHit, true);
@@ -396,52 +396,30 @@ if(mode==0 && clickDelay==0 && !inAnimation && !inTransition)
         playerSelected = false;
       }
       if(cursorX > 115 && cursorX < 285 && cursorY > 718 && cursorY < 748 && p[playerTurn].canAttack)
-      {
         playerSelected = true;
-      }
     }
     else
     {
-      if(playField.get(abilitySelected).name.equals("Jason C") || playField.get(abilitySelected).name.equals("Esther") || playField.get(abilitySelected).name.equals("Jefferson") || playField.get(abilitySelected).name.equals("Jawnie Dirp"))
+      int condition;
+      if(playField.get(abilitySelected).NBTTags.contains("OppTargetedEffect"))
+        condition = playField.get(abilitySelected).player % 2 + 1;
+      else 
+        condition = playField.get(abilitySelected).player;
+      for(Card c: playField)
       {
-        for(Card c: playField)
+        int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
+        if(abilitySelected != -1)
         {
-          int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
-          if(abilitySelected != -1)
+          if(c.player == condition && !hasEffect(c, "NoEffect"))
           {
-            if (c.player != (playField.get(abilitySelected).player) && !hasEffect(c, "NoEffect")
-            ) // TRIGGERED
+            if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
             {
-              if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
-              {
-                spawnEffects(playField.get(abilitySelected).name, abilitySelected, playField.indexOf(c));
-                abilitySelected = -1;
-                break;
-              }
+              spawnEffects(playField.get(abilitySelected).name, abilitySelected, playField.indexOf(c));
+              abilitySelected = -1;
+              break;
             }
-          }  
-        }
-      }
-      else if(playField.get(abilitySelected).name.equals("Mandaran") || playField.get(abilitySelected).name.equals("George") || playField.get(abilitySelected).name.equals("Anthony"))
-      {
-        for(Card c: playField)
-        {
-          int yPos = c.y * 100 + 50; if(playerTurn==2) yPos = c.y * -100 + 750;
-          if(abilitySelected != -1)
-          {
-            if (c.player==(playField.get(abilitySelected).player) && !hasEffect(c, "NoEffect")
-            ) // TRIGGERED
-            {
-              if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
-              {
-                
-                spawnEffects(playField.get(abilitySelected).name, abilitySelected, playField.indexOf(c));
-                abilitySelected = -1;
-                break;
-              }
-            }
-          }  
-        }
+          }
+        }  
       }
     }
     if(dist(cursorX, cursorY, 1150, 50) < 45)

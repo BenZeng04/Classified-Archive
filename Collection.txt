@@ -11,7 +11,7 @@
 10/card/Chad/7 12 3 3 3/When attacked: This card gains +3 ATK/1 4
 11/card/Tony/18 5 3 3 3/Passive: This card gets destroyed after 3 turns./1 4
 12/card/Bonnie/2 13 2 2 4/Special: This card takes 0 damage from cards over 8 HP. This card can attack twice in a turn./1 4
-13/card/Angela/7 10 3 2 6/Special: This card, as well as the 8 cards surrounding it, take 3 less damage from all attacks./1 4
+13/card/Angela/7 10 3 2 6/Special: This card, as well as the 8 cards surrounding it, take 3 less damage from all attacks. If these cards are 8H or Non-Elite, this reduction is increased by 1./1 4
 14/card/Jason P/4 5 3 3 2/Upon place: Push all your opponent's cards as far back as they can go. These cards now have -2 MVMT for 1 turn./0 2
 15/card/Kabilan/7 10 3 3 2/Upon attacking: This card's range increases by 1./1 4
 16/card/Hubert/7 18 3 2 6/Special: Can increase a card's HP by 4, per turn./0 2

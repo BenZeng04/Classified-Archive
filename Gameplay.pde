@@ -267,42 +267,24 @@ public void play()
   // Drawing cards on playfield
   for(Card c : playField)
   {
-    int atk = c.ATK; int rng = c.RNG; int mvmt = c.MVMT; // Applying temporary card buffs. If a card is nullified or noeffect, it must be hardcoded here.
+    int atk = c.ATK; int rng = c.RNG; int mvmt = c.MVMT; // Applying temporary card buffs. 
+    // Duo Cards which get buffed from other cards
     if(c.name.equals("Joseph"))
-    {
       for(Card d: playField)
-      {
         if(d.name.equals("Annika") && d.player==c.player)
           atk *= 3;
-      }
-    }
-    
     if(c.name.equals("A.L.I.C.E."))
-    {
       for(Card d: playField)
-      {
         if(d.name.equals("Moonlight") && d.player==c.player)
           atk *= 2;
-      }
-    }
-    
     if(c.name.equals("Ms. Nicke"))
-    {
       for(Card d: playField)
-      {
         if(d.name.equals("Esther") && d.player==c.player)
           atk += 7;
-      }
-    }
-    
     if(c.name.equals("Ben"))
-    {
       for(Card d: playField)
-      {
         if(d.category.contains(2) && d.player==c.player)
           atk++;
-      }
-    }
     
     if(hasEffect(c, "2X ATK") || hasEffect(c, "2X ATK (Anny)")) atk *= 2;
     if(hasEffect(c, "NVW")) rng++;
@@ -311,19 +293,12 @@ public void play()
     if(!hasEffect(c, "NoEffect"))
     {
       for(Card d: playField)
-      {
         if(d.name.equals("Ridge Rhea") && !c.name.equals("Ridge Rhea") && !c.name.equals("Ultrabright") && d.player==c.player && d.x==c.x) rng += 2;
-      }
       for(Card d: playField)
-      {
         if(d.name.equals("Ben") && c.category.contains(2) && d.player==c.player) atk += 3;
-      }
       for(Card d: playField)
-      {
         if(d.name.equals("Rita") && d.player != c.player) atk = max(0, atk - 1);
-      }
     }
-    
     int y = c.y * 100 + 50; if(playerTurn==2) y = c.y * -100 + 750;
     int x = c.x * 100 + 50;
     
@@ -805,26 +780,14 @@ public void play()
   
   if(abilitySelected != -1)
   {
-    if(playField.get(abilitySelected).name.equals("Jason C") || playField.get(abilitySelected).name.equals("Esther") || playField.get(abilitySelected).name.equals("Jefferson") || playField.get(abilitySelected).name.equals("Jawnie Dirp"))
-    {
-      for(Card c: playField)
-      {
-        if (c.player != (playField.get(abilitySelected).player) && !hasEffect(c, "NoEffect"))
-        {
-          hitCircle(c.x, c.y);
-        }
-      }
-    }
-    if(playField.get(abilitySelected).name.equals("Mandaran") || playField.get(abilitySelected).name.equals("George") || playField.get(abilitySelected).name.equals("Anthony"))
-    {
-      for(Card c: playField)
-      {
-        if(c.player==(playField.get(abilitySelected).player) && !hasEffect(c, "NoEffect"))
-        {
-          hitCircle(c.x, c.y);
-        }
-      }
-    }
+    int condition;
+    if(playField.get(abilitySelected).NBTTags.contains("OppTargetedEffect"))
+      condition = playField.get(abilitySelected).player % 2 + 1;
+    else 
+      condition = playField.get(abilitySelected).player;
+    for(Card c: playField)
+      if (c.player == condition && !hasEffect(c, "NoEffect"))
+        hitCircle(c.x, c.y);
   }
 }
 

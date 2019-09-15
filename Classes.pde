@@ -76,6 +76,8 @@ class Card
     if(name.equals("Ben 2.0") || name.equals("Hexagonal")) NBTTags.add("Unhealable");
     if(name.equals("Mr. Pegamah")) NBTTags.add("Unbuffable");
     if(name.equals("Attack Positon") || name.equals("Raw Eggs and Soy Sauce")) NBTTags.add("AttackBoostSpell");
+    if(name.equals("Jason C") || name.equals("Esther") || name.equals("Jefferson") || name.equals("Jawnie Dirp")) NBTTags.add("OppTargetedEffect");
+    if(name.equals("Mandaran") || name.equals("George") || name.equals("Anthony")) NBTTags.add("YouTargetedEffect");
     if(name.equals("Jonathan") || name.equals("Samuel") || name.equals("Kenneth") || name.equals("Mr. Willikens") || name.equals("Mr. Billikens") || name.equals("A.L.I.C.E.") || name.equals("Yebanow") || name.equals("Jefferson")) 
     {
       NBTTags.add("InstantBuffer");
@@ -131,7 +133,43 @@ class Card
   int HPBuff = 0, conditionHPBuff = 0;
   int ATKBuff = 0, conditionATKBuff = 0;
   int condition = 0;
+  
+  public void onRoundStart(int player)
+  {
+    if(name.equals("Mr. Homas")) 
+      ATK += 3;
+    if(name.equals("Mr. Websterien"))
+    {
+      ATK += 2;
+      HP += 2;
+    }
+    if(NBTTags.contains("SpecialMove")) // Some cards have a special 4th option besides Attacking, Moving, Discarding. 
+      canSpecial = true;
+    if(name.equals("Bonnie")) // Can attack twice each turn.
+      attackCount = 2;
+    if(name.equals("Ben")) // Deals direct damage to enemy player.
+      p[player % 2 + 1].HP -= 2;
+    if(name.equals("King Henry") && mode==0) // Draws an extra card.
+      drawCard(player);
+    if(name.equals("Ultrabright")) // Heals you, ticks them.
+    {
+      p[player % 2 + 1].HP--;
+      p[player].HP++;
+    }
+    if(name.equals("A.L.I.C.E.")) // Buffing
+    {
+      for(Card d: playField)
+      {
+        if(!hasEffect(d, "NoEffect") && d.player==player)
+        {
+          d.ATK+=1;
+          heal(d, 1);
+        }
+      }
+    }
+  }
 }
+
 class Effect
 {
   int duration; // Rounds it lasts for. Negative numbers: Forever
