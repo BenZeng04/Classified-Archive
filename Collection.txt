@@ -7,7 +7,7 @@
 6/card/Kevin/5 4 3 3 2/When attacked: This card gains +2 attack. When destroyed: Ressurect this card with 1 HP and +5 attack./0 2
 7/card/Samuel/7 11 2 3 3/Upon place: All cards gain +1 attack. While alive: Newly placed cards gain +1 attack. This buff is doubled for 'Elite' Cards./0 2
 8/card/Yousif/11 15 3 3 4/Upon destroying card: Send a random card from opponent's hand, back to their deck./0 2
-9/card/Mark/11 9 2 2 7/Upon place: draw 2 cards. Upon destroying card: draw a card./1 4
+9/card/Mark/11 9 2 2 7/Upon place: draw 3 cards. Upon destroying card: draw a card./1 4
 10/card/Chad/7 12 3 3 3/When attacked: This card gains +3 ATK/1 4
 11/card/Tony/18 5 3 3 3/Passive: This card gets destroyed after 3 turns./1 4
 12/card/Bonnie/2 13 2 2 4/Special: This card takes 0 damage from cards over 8 HP. This card can attack twice in a turn./1 4

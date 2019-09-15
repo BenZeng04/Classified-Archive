@@ -464,7 +464,8 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
     if(c.name.equals("King Henry") && c.player == opp) // Double attack this turn
     {
       for(Card d: playField)
-        addEffect(1, d, "2X ATK");
+        if(c.player == opp)
+          addEffect(1, d, "2X ATK");
     }
   }
 }

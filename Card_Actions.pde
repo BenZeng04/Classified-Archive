@@ -159,7 +159,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
 
   // Everything Else
   if(temp.name.equals("Mark") && mode == 0)
-    for(int i = 0; i < 2; i++)
+    for(int i = 0; i < 3; i++)
       if(p[playerTurn].deck.size() > 0) // Draws cards
           drawCard();
   if(temp.name.equals("Richard") && mode == 0)
