@@ -15,6 +15,7 @@ class Card
   String name = ""; 
   String displayName = "";
   int x = 0, y = 0; // Position relative to playfield.
+  int displayX = 0, displayY = 0;
   int attackCount = 0; // Amount of times a card can attack this turn. (Usually 1)
   boolean canMove = false; // If the card has already moved, it cannot move any more.
   boolean canSpecial = false; // Special Attacks.
@@ -49,6 +50,8 @@ class Card
     c.displayName = displayName;
     c.x = x;
     c.y = y;
+    c.displayX = displayX;
+    c.displayY = displayY;
     c.attackCount = attackCount;
     c.canMove = canMove;
     c.canSpecial = canSpecial;
@@ -211,4 +214,11 @@ class Animation
   int x;
   int y;
   String name = "";
+}
+class moveAnimation extends Animation
+{
+  int originalPos;
+  int index;
+  int distance;
+  boolean toSide;
 }

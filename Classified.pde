@@ -82,11 +82,10 @@ boolean playerSelected = false; // Is the player (Not a card!) attacking?
 boolean inAnimation = false;
 boolean moveAnimation = false;
 int aniTimer; // Set to 0 once beginning animation
+int moveAniTimer; // Set to 0 once beginning animation
 
   // Moving
-  int distMove;
-  int indexMove;
-  int moveType;
+  ArrayList <moveAnimation> moveTargets = new ArrayList<moveAnimation>();// Moving
   
   // Ability / Attack
   ArrayList <Animation> targets = new ArrayList<Animation>();// General
@@ -778,6 +777,17 @@ public void addEffect(int duration, Card c, String name) // Adding effect to car
   if(!continues) c.effects.add(e);
 }
 
+public void startMoveAnimation(boolean toSide, int index, int distance, int original)
+{
+  moveAnimation a = new moveAnimation();
+  a.toSide = toSide;
+  a.index = index;
+  a.distance = distance;
+  a.originalPos = original;
+  moveAnimation = true; 
+  moveAniTimer = 0;
+  moveTargets.add(a);
+}
 public void startAnimation(int mode, int x, int y)
 {
   Animation a = new Animation();

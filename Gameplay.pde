@@ -14,6 +14,8 @@ public void play()
     finishAnimate();
   if(inAnimation)
     aniTimer++;
+  if(moveAnimation)
+    moveAniTimer++;
   // BASIC GRAPHICS
   background(menuBG);
   
@@ -264,8 +266,57 @@ public void play()
   textSize(48);
   text("Hand Over Turn!", 900, 700);
   
+  for(Card c: playField) // Default display positions
+  {
+    c.displayY = c.y * 100 + 50; if(playerTurn == 2) c.displayY = c.y * -100 + 750;
+    c.displayX = c.x * 100 + 50;
+  }
+  
+  ArrayList<moveAnimation> removeMoves = new ArrayList<moveAnimation>();
+  boolean finishedAllMoves = true;
+  if(moveAnimation) // This (MOVING) is a very different type of animation than everything else. Changes to a new display position
+  {
+    for(moveAnimation m: moveTargets)
+    {
+      Card moving = playField.get(m.index);
+      if(!m.toSide)
+      {
+        // Overriding the display positions if the card is being moved
+        moving.displayY = m.originalPos * 100 + 50; if(playerTurn == 2) moving.displayY = m.originalPos * -100 + 750;
+        int destination = (m.originalPos + m.distance) * 100 + 50; if(playerTurn == 2) destination = (m.originalPos + m.distance) * -100 + 750;
+        int multiplier;
+        if(m.distance < 0) multiplier = -20; else multiplier = 20;
+        if(playerTurn == 2) multiplier *= -1;
+        moving.displayY += multiplier * moveAniTimer;
+        if(moving.displayY == destination)
+            removeMoves.add(m);
+          else finishedAllMoves = false;
+      }
+      else
+      {
+        moving.displayX = m.originalPos * 100 + 50;
+        int destination = (m.originalPos + m.distance) * 100 + 50;
+        int multiplier;
+        if(m.distance < 0) multiplier = -20; else multiplier = 20;
+        moving.displayX += multiplier * moveAniTimer;
+        if(moving.displayX == destination)
+          removeMoves.add(m);
+        else finishedAllMoves = false;
+      }
+    }
+    for(moveAnimation m: removeMoves) // Once each individual move animation is finished, remove it from the target list.
+      moveTargets.remove(m);
+  }
+  
+  if(finishedAllMoves)
+  {
+    moveAnimation = false;
+    moveTargets.clear();
+  }
+  
   // Drawing cards on playfield
-  for(Card c : playField)
+  
+  for(Card c: playField)
   {
     int atk = c.ATK; int rng = c.RNG; int mvmt = c.MVMT; // Applying temporary card buffs. 
     // Duo Cards which get buffed from other cards
@@ -299,72 +350,7 @@ public void play()
       for(Card d: playField)
         if(d.name.equals("Rita") && d.player != c.player) atk = max(0, atk - 1);
     }
-    int y = c.y * 100 + 50; if(playerTurn == 2) y = c.y * -100 + 750;
-    int x = c.x * 100 + 50;
-    
-    if(inAnimation)
-    {
-      if(moveAnimation) // This is a very different type of animation than everything else.
-      {
-        if(playField.indexOf(c) == indexMove)
-        {
-          if(moveType == 0)
-          {
-            int destination = (c.y + distMove) * 100 + 50; if(playerTurn == 2) destination = (c.y + distMove) * -100 + 750;
-            if(distMove < 0)
-            {
-              if(playerTurn == 1)
-                y -= 20 * aniTimer;
-              else
-                y += 20 * aniTimer;
-              if(y == destination)
-              {
-                c.y = c.y + distMove;
-                inAnimation = false;
-                moveAnimation = false;
-              }
-            }
-            else
-            {
-              if(playerTurn == 1)
-                y += 20 * aniTimer;
-              else
-                y -= 20 * aniTimer;
-              if(y == destination)
-              {
-                c.y = c.y + distMove;
-                inAnimation = false;
-                moveAnimation = false;
-              }
-            }
-          }
-          else
-          {
-            int destination = (c.x + distMove) * 100 + 50;
-            if(distMove < 0)
-            {
-              x -= 20 * aniTimer;
-              if(x == destination)
-              {
-                c.x = c.x + distMove;
-                inAnimation = false;
-                moveAnimation = false;
-              }
-            }
-            else
-            {
-              x += 20 * aniTimer;
-              if(x == destination)
-              {
-                c.x = c.x + distMove;
-                inAnimation = false;
-                moveAnimation = false;
-              }
-            }
-          }
-        }
-      }
-    }
+    // Setting the display position of the cards being drawn
     
     if(playField.indexOf(c) == playFieldSelected) 
     {
@@ -381,18 +367,16 @@ public void play()
       fill(255, 0, 0, 175);
     else
       fill(0, 0, 255, 175);
-    rect(x, y, 95, 95);
+    rect(c.displayX, c.displayY, 95, 95);
 
-    cardDisplay(x, y, 1, c, atk, mvmt, rng);
+    cardDisplay(c.displayX, c.displayY, 1, c, atk, mvmt, rng);
   }
   
   rectMode(CENTER);
   textAlign(CENTER, CENTER);
   strokeWeight(15);
   if(inAnimation)
-  {
     actionAnimate();
-  }
       
   // Drawing cards in hand
   for(int i = 0; i < p[playerTurn].hand.size(); i++)

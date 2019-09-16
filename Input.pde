@@ -2,7 +2,7 @@ int cursorX;
 int cursorY;
 public void mousePressed()
 {
-if(mode == 0 && clickDelay == 0 && !inAnimation && !inTransition)
+if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransition)
 {
   if(abilitySelected == -1)
   {
@@ -142,7 +142,6 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !inTransition)
                 {
                   Move m = new Move();
                   m.type = 5;
-                  
                   m.targeter = playFieldSelected;
                   if(n == 0)
                   {

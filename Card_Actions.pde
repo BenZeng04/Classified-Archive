@@ -1,17 +1,15 @@
 public void moveCard(int index, int dist)
 {
   playFieldSelected = index; // Sets the selected card as the card moving.
-  distMove = dist; // Sets the distance to be moved.
-  moveType = 0; // Vertical Movement
-  indexMove = index; inAnimation = true; moveAnimation = true; aniTimer = 0; // Starts the animation
+  startMoveAnimation(false, index, dist, playField.get(index).y);
+  playField.get(index).y += dist;
 }
 
 public void moveCardSide(int index, int dist)
 {
   playFieldSelected = index; // Sets the selected card as the card moving.
-  distMove = dist; // Sets the distance to be moved.
-  moveType = 1; // Horizontal Movement
-  indexMove = index; inAnimation = true; moveAnimation = true; aniTimer = 0; // Starts the animation
+  startMoveAnimation(true, index, dist, playField.get(index).x);
+  playField.get(index).x += dist;
 }
 
 public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
@@ -225,7 +223,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
   if(temp.name.equals("Jason P"))
   {
     for(Card c: playField)
-      if(c.player != temp.player && !hasEffect(c, "NoEffect") && !hasEffect(c, "Stun"))
+      if(c.player != temp.player)
           addEffect(1, c, "Slowdown");
     if(temp.player == 1)
     {
@@ -235,6 +233,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
         {
           if(c.player == 2 && c.y == i && !hasEffect(c, "NoEffect"))
           {
+            int maxDistMove = 0;
             for(int j = i - 1; j >= 1; j--)
             {
               boolean canMove = true;
@@ -242,9 +241,11 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
                 if(d.x == c.x && d.y == j)
                   canMove = false;
               if(canMove)
-                c.y = j;
+                maxDistMove = j - c.y;
               else break;
             }
+            if(maxDistMove != 0)
+              moveCard(playField.indexOf(c), maxDistMove);
           }
         }
       }
@@ -257,6 +258,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
         {
           if(c.player == 1 && c.y == i && !hasEffect(c, "NoEffect"))
           {
+            int maxDistMove = 0;
             for(int j = i + 1; j <= 6; j++)
             {
               boolean canMove = true;
@@ -264,9 +266,11 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
                 if(d.x == c.x && d.y == j)
                   canMove = false;
               if(canMove)
-                c.y = j;
+                maxDistMove = j - c.y;
               else break;
             }
+            if(maxDistMove != 0)
+              moveCard(playField.indexOf(c), maxDistMove);
           }
         }
       }
@@ -618,26 +622,33 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
       }
       if(atkName.equals("Ms. Aftner") && !(playField.get(takeHit).HP <= 0 && !hasEffect(playField.get(takeHit), "Resurrect")))
       {
+        int knockback = 2; // Modify this to balance
         addEffect(1, takeHit, "Slowdown");
         if(playField.get(takeHit).player == 1)
         {
           int py = playField.get(takeHit).y, px = playField.get(takeHit).x;
-          for(int i = py + 1; i <= py + 1; i++)
+          int distKnock = -127;
+          for(int i = py + 1; i <= py + knockback; i++) // Basically checks tiles from the card being hit's position + 1, to their position + knockback value. If there is availible space all the way, teleport them there.
           {
             if(findCard(px, i) == -1 && i <= 6) 
-              playField.get(takeHit).y = i; 
+              distKnock = i - playField.get(takeHit).y;              
             else break; 
           }
+          if(distKnock != -127)
+            moveCard(takeHit, distKnock);
         }
         if(playField.get(takeHit).player == 2)
         {
           int py = playField.get(takeHit).y, px = playField.get(takeHit).x;
-          for(int i = py - 1; i >= py - 1; i--)
+          int distKnock = -127;
+          for(int i = py - 1; i >= py - knockback; i--)
           {
             if(findCard(px, i) == -1 && i >= 1) 
-              playField.get(takeHit).y = i; 
+              distKnock = i - playField.get(takeHit).y; 
             else break; 
           }
+          if(distKnock != -127)
+            moveCard(takeHit, distKnock);
         }
       }
     }
