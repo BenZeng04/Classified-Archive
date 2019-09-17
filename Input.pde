@@ -368,9 +368,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         }
       }
       if(cursorX < 1100 && cursorX > 700 && cursorY < 765 && cursorY > 635)
-      {
         handOverTurn();
-      }
       if(playerSelected)
       {
         for(Card c: playField)
@@ -457,7 +455,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
     }
     else discarding = false; 
   }
-  if(mode == 1 && clickDelay == 0 && !inTransition) // Fix weird bug
+  if(mode == 1 && clickDelay == 0 && !inTransition) 
   {
     if(animationToggle)
     {

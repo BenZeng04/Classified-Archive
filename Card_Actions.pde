@@ -245,7 +245,10 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
               else break;
             }
             if(maxDistMove != 0)
-              moveCard(playField.indexOf(c), maxDistMove);
+            {
+              startMoveAnimation(false, playField.indexOf(c), maxDistMove, c.y);
+              c.y += maxDistMove;
+            }
           }
         }
       }
@@ -270,7 +273,10 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
               else break;
             }
             if(maxDistMove != 0)
-              moveCard(playField.indexOf(c), maxDistMove);
+            {
+              startMoveAnimation(false, playField.indexOf(c), maxDistMove, c.y);
+              c.y += maxDistMove;
+            }
           }
         }
       }
@@ -635,7 +641,10 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
             else break; 
           }
           if(distKnock != -127)
-            moveCard(takeHit, distKnock);
+          {
+            startMoveAnimation(false, takeHit, distKnock, playField.get(takeHit).y);
+            playField.get(takeHit).y += distKnock;
+          }
         }
         if(playField.get(takeHit).player == 2)
         {
@@ -648,7 +657,10 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
             else break; 
           }
           if(distKnock != -127)
-            moveCard(takeHit, distKnock);
+          {
+            startMoveAnimation(false, takeHit, distKnock, playField.get(takeHit).y);
+            playField.get(takeHit).y += distKnock;
+          }
         }
       }
     }

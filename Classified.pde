@@ -437,8 +437,9 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
     boolean finishedDiscarding = false;
     for(Effect e: c.effects)
     {
-      if(e.givenBy == opp) // If the effect was GIVEN BY the opponent. Effects you give yourself go away on your turn, effects the opponent gives you go away on their turn.
+      if(e.givenBy == opp) // If the effect was GIVEN BY the opponent. Effects you give yourself go away on the start of your turn, effects the opponent gives you go away on their turn.
       {
+        
         e.duration--;
         if(e.duration == 0)
         {
@@ -546,9 +547,7 @@ public void oppMoves() // Animating Opponents' Moves
 {
   animateTimer++;
   if(animateTimer == 15 && animationToggle)
-  {
     handOverEffects(playerTurn % 2 + 1);
-  }
   else if(animateTimer % 60 == 15 && animationToggle) // Every Second
   {
     if(moves.size() > 0) // Looks through the moves arraylist, checks if there are any moves that need to be displayed.
@@ -673,19 +672,15 @@ public void finishAnimate() // What happens after the animation above is done.
   oldHP2 = p[2].HP;
   
   needToFinishAnimate = false;
-  
   handOverEffects(playerTurn);
   playFieldSelected = -1;
-
 }
 public void drawCard()
 {
   if(p[playerTurn].deck.size() > 0)
   {
     for(Card c: playField)
-    {
       if(c.name.equals("Mr. Filascario") && c.player == playerTurn) p[playerTurn % 2 + 1].HP -= 3;
-    }
     p[playerTurn].hand.add(p[playerTurn].deck.get(0).copy());
     p[playerTurn].deck.remove(0);
   }

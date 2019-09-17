@@ -40,6 +40,7 @@ class Card
       Effect f = new Effect();
       f.duration = e.duration;
       f.name = e.name;
+      f.givenBy = e.givenBy;
       c.effects.add(f);
     }
     c.category = new ArrayList<Integer>();
