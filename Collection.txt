@@ -1,16 +1,16 @@
-0/card/Simon/5 8 4 2 2/Special: Can attack and move in the same turn./0 2
+0/card/Simon/5 12 4 2 2/Special: Can attack and move in the same turn./0 2
 1/card/Kenneth/7 9 2 2 4/Upon place: All cards gain +2 attack. While alive: Newly placed cards gain +2 attack. In addition to gaining attack, 'Elite' Cards also gain +2 HP./0 2
-2/card/Jonathan/7 8 3 2 2/Upon place: All cards gain +1 attack. 'Non-Elite' cards gain +2 attack and +1 HP./0 4
-3/card/Uzziah/6 8 4 2 1/When attacked: Return card to hand with +2 attack and +2 HP, if not killed./0 4
-4/card/Joseph/11 4 2 3 2/Passive: This card gets destroyed after 3 turns. Special: If 'Annika' is on your playfield, this card has triple the attack to cards./0 2
+2/card/Jonathan/8 6 3 3 2/Upon place: All cards gain +1 attack. 'Non-Elite' cards gain +2 attack and +1 HP./0 4
+3/card/Uzziah/6 8 4 2 1/When attacked: Return card to hand with +4 attack and +4 HP, if not killed./0 4
+4/card/Joseph/13 4 4 3 2/Passive: This card gets destroyed after 3 turns. Special: If 'Annika' is on your playfield, this card has triple the attack to cards./0 2
 5/card/Jason C/8 13 3 3 5/Target Enemy Card: Card loses -8 attack and -1 movement./0 2
 6/card/Kevin/5 4 3 3 2/When attacked: This card gains +2 attack. When destroyed: Ressurect this card with 1 HP and +5 attack./0 2
 7/card/Samuel/7 11 2 3 3/Upon place: All cards gain +1 attack. While alive: Newly placed cards gain +1 attack. This buff is doubled for 'Elite' Cards./0 2
 8/card/Yousif/11 15 3 3 4/Upon destroying card: Send a random card from opponent's hand, back to their deck./0 2
 9/card/Mark/11 9 2 2 7/Upon place: draw 3 cards. Upon destroying card: draw a card./1 4
-10/card/Chad/7 12 3 3 3/When attacked: This card gains +3 ATK/1 4
+10/card/Chad/8 14 3 3 3/When attacked: This card gains +3 ATK/1 4
 11/card/Tony/18 5 3 3 3/Passive: This card gets destroyed after 3 turns./1 4
-12/card/Bonnie/2 13 2 2 4/Special: This card takes 0 damage from cards over 8 HP. This card can attack twice in a turn./1 4
+12/card/Bonnie/4 13 2 2 4/Special: This card takes 0 damage from cards over 8 HP. This card can attack twice in a turn./1 4
 13/card/Angela/7 10 3 2 6/Special: This card, as well as the 8 cards surrounding it, take 3 less damage from all attacks. If these cards are 8H or Non-Elite, this reduction is increased by 1./1 4
 14/card/Jason P/4 5 3 3 2/Upon place: Push all your opponent's cards as far back as they can go. These cards now have -2 MVMT for 1 turn./0 2
 15/card/Kabilan/7 10 3 3 2/Upon attacking: This card's range increases by 1./1 4
@@ -22,7 +22,7 @@
 21/card/Annika/4 6 2 3 1/Upon attacking: Card being attacked gets sent back to opponent's hand with base stats./1 4
 22/card/Antnohy/8 15 4 3 6/Upon attacking: If card being attacked costs more than $4, this does +3 damage. Special: All attacks also splash onto the 8 cards around the card being attacked./2
 23/card/Vinod/4 11 3 3 3/Special: This card takes -8 damage from all sources if there is an 'Class H' card on the field./1 4
-24/card/Jefferson/7 13 3 2 4/Upon place: Completely remove a card's special ability forever, as well as its ability to be effected. All Elite cards gain +1 attack. Passive: This card cannot be targeted by any effects./0 2
+24/card/Jefferson/7 13 3 2 4/Upon place: Completely remove a card's special ability and status effects, as well as dealing 5 damage. All Elite cards gain +1 attack. Passive: This card cannot be targeted by any effects./0 2
 25/card/Ben/9 26 4 3 8/While alive: All 'Elite' cards have an additional +3 attack. Special: This card has +1 attack per 'Elite' card on the field. At start of turn: Deal 2 damage to enemy player./1 2
 26/card/Snake/2 8 1 1 3/Upon place: This card is now your opponent's. Special: Cards less than $4 cannot be placed by the opponent. Passive: This card gets destroyed after 3 turns./5
 27/card/Ethan/8 4 2 2 3/Special: Can destroy both itself and an opponent's card of under $5 at any time./1 4
@@ -33,22 +33,22 @@
 32/card/Ben 2.0/9 22 2 2 9/Special: All attacks to other cards or the player will be dealt to this card instead, doing half the damage. Special: This card's health and survivability cannot be increased in any way./5
 33/card/Mandaran/6 9 2 3 4/Target your card: This card cannot be attacked for 1 round./0 4
 34/card/George/7 10 2 2 2/Target your card: Card gains +4 HP and +3 ATK. This card gains +5 HP and +4 ATK if it is a non-Elite Card./0 4
-35/card/Lina/9 9 2 3 2/At start of turn: Gain +1 HP if this card has not been attacked yet./1 4
+35/card/Lina/12 9 2 3 2/At start of turn: Gain +1 HP if this card has not been attacked yet./1 4
 36/card/Lucy/3 13 2 3 3/When any of your opponent's cards attack, this card gains +1 attack./1 4
 37/card/Andrew/6 4 4 3 1/This card does +3 damage when attacking a Elite card, and +5 damage when attacking the Player./1 4
 38/card/Steven/8 13 3 3 3/This card takes 1 less damage from all sources./1 4
 39/card/Neil/7 12 2 3 3/All Class G attacks only do 2 damage to this card./1 4
-40/card/Rita/4 12 3 1 3/All your opponent's cards do 1 less damage while this card is alive./1 4
+40/card/Rita/4 12 3 1 3/All your opponent's cards do 2 less damage while this card is alive./1 4
 41/card/Matthew/6 10 3 3 3/This card can attack over other cards./1 4
-42/card/Selina/7 4 2 2 1/This card cannot be damaged by cards that cost $2 or less./1 4
+42/card/Selina/10 4 3 2 1/This card cannot be damaged by cards that cost $2 or less./1 4
 43/card/Yucen/1 5 1 1 2/At the start of every turn, you gain $2 extra if the card is alive./1 4
 44/card/Anny/8 7 3 4 4/This card has double damage for the first 3 turns./1 4
-45/card/Vithiya/4 4 1 3 2/When this card attacks, draw a card./0 4
+45/card/Vithiya/4 4 1 4 3/When this card attacks, draw a card./0 4
 46/card/Odelia/9 12 3 3 4/Cards this card damages does 4 less damage, and cannot move next turn./0 4
-47/card/Anthony/14 17 3 3 7/When this card is summoned, heal any card by 8 HP, boost it's attack by 6 ATK, and movement by 1./0 2
+47/card/Anthony/14 17 3 3 7/When this card is summoned, heal any card by 8 HP, boost it's attack by 6 ATK, and movement by 1. If this card is elite, heal and boost attack by 2 extra./0 2
 48/card/Ultrabright/8 18 3 4 8/This card can attack over other cards. For every turn this card is alive, deal 1 damage to the opponent and heal 1 damage for your own player. You cannot buff the range of this card./5
 49/card/Moonlight/5 12 2 3 6/Heal player by 6 HP when placed. When this unit attacks, heal itself and player by half of the damage dealt./5
-50/card/Florence/2 7 4 4 1/Change all Class H attacks to this card to do 3 damage./0 4
+50/card/Florence/3 7 4 5 1/Change all Class H attacks to this card to do 3 damage./0 4
 51/card/Megan/8 0 2 3 2/This card's HP when summoned is the HP of your player divided by 2 (rounded up)./0 4
 52/spell/Fireball/4/Target one of your opponent's cards: Deal 12 damage./targetsOpp
 53/spell/Mini Gulag/5/Target an opponent's card and all 8 cards around it: These cards now have -4 Attack and -4 HP./targetsOpp
@@ -68,7 +68,7 @@
 67/spell/Miss Me/3/Target one of your cards: This card is untargetable by attacks for this turn./targetsYou
 68/spell/Dragon Wings/4/Target one of your cards: This card gains 2 MVMT and 1 RNG./targetsYou
 69/spell/Mr. Sketch/3/Target one of your cards: This card gains 5 ATK and 8 HP./targetsYou
-70/spell/T-Pose/6/Target one of your cards: For each card your opponent has on the field, buff your card by 1 ATK and 1 HP, and lower that card's ATK and HP by 1./targetsYou
+70/spell/T-Pose/4/Target one of your cards: For each card your opponent has on the field, buff your card by 1 ATK and 1 HP, and lower that card's ATK and HP by 1./targetsYou
 71/spell/Terminator/3/Deal 6 damage to all cards including your own./targetsAll
 72/card/Mr. Willikens/0 14 3 4 4/This card's attack is equal to the number of novelty cards on the field when placed. Upon placing this card, boost all novelty cards' HP by 3./6
 73/card/Mr. Billikens/14 0 4 3 4/This card's health is equal to the number of novelty cards on the field when placed. Upon placing this card, boost all novelty cards' ATK by 3./6
@@ -93,7 +93,7 @@
 92/spell/The Duality of an Illiken/7/Summon Mr. Willikens and Mr. Billikens in random lanes, who cannot be attacked this turn./targetsAll
 93/spell/Novelty Wings/1/Increase a card's range by 1 for 1 turn, and 2 turns if the card is a novelty card./targetsYou
 94/card/Mr. Websterien/7 7 5 4 4/Each Turn: This card gains 2 HP and 2 ATK. Upon death: Draw a Mr. Pengamah with +1 Range./6
-95/card/Mr. Pegamah/4 3 2 4 1/This card can attack the player first turn. This card does 8 damage towards the player./6
+95/card/Mr. Pegamah/6 3 2 4 1/This card can attack the player first turn. This card does 8 damage towards the player./6
 96/spell/Mr. Tornado/2/Send an opponent's card back to their hand./targetsOpp
 97/card/Ms. Nicke/2 4 2 2 0/If 'Esther' is on your field, this card does +12 damage to Elite cards and +7 damage to all other cards./6
 98/card/Ilem/9 9 4 3 9/When this card is attacked, deal 3 damage to all of your opponents' cards. When this card dies: It gets to resurrect one time. When resurrecting, change this card's ATK and HP to 20, and boost all Elite cards' attack by 2./2

@@ -348,7 +348,7 @@ public void play()
       for(Card d: playField)
         if(d.name.equals("Ben") && c.category.contains(2) && d.player == c.player) atk += 3;
       for(Card d: playField)
-        if(d.name.equals("Rita") && d.player != c.player) atk = max(0, atk - 1);
+        if(d.name.equals("Rita") && d.player != c.player) atk = max(0, atk - 2);
     }
     // Setting the display position of the cards being drawn
     

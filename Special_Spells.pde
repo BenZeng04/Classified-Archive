@@ -177,11 +177,8 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   else if(name.equals("Jefferson"))
   {
     Effected.effects.clear();
-    Effect e = new Effect();
-    e.name = "NoEffect";
-    e.duration = -1;
-    Effected.effects.add(e);
     Effected.name = "Nullified";
+    Effected.HP -= 5;
   }
   else if(name.equals("Mandaran"))
   {
@@ -204,6 +201,11 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   {
     Effected.ATK += 6;
     heal(Effected, 8);
+    if(Effected.category.contains(2))
+    {
+      Effected.ATK += 2;
+      heal(Effected, 2);
+    }
     Effected.MVMT += 1;
   }
   else if(name.equals("Jawnie Dirp"))

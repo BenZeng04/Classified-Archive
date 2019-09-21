@@ -382,7 +382,7 @@ public void attackPlayer(int attacker)
     for(Card c: playField)
     {
       if(c.name.equals("Ben") && playField.get(attacker).category.contains(2) && playField.get(attacker).player == c.player) atk += 3;
-      if(c.name.equals("Rita") && c.player != playField.get(attacker).player) atk = max(0, atk - 1);
+      if(c.name.equals("Rita") && c.player != playField.get(attacker).player) atk = max(0, atk - 2);
       if(hasEffect(playField.get(attacker), "BuffsLucy")) if(c.player == opp && hasEffect(c, "GetsBuffed")) c.ATK++;
     }
   }
@@ -485,7 +485,7 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
       for(Card c: playField)
       {
         if(c.name.equals("Ben") && playField.get(attacker).category.contains(2) && playField.get(attacker).player == c.player) atk += 3;
-        if(c.name.equals("Rita") && c.player != playField.get(attacker).player) atk = max(0, atk - 1);
+        if(c.name.equals("Rita") && c.player != playField.get(attacker).player) atk = max(0, atk - 2);
         if(hasEffect(playField.get(attacker), "BuffsLucy")) if(c.player == opp && hasEffect(c, "GetsBuffed")) c.ATK++;
       }
     }
@@ -610,9 +610,10 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
         playField.get(takeHit).ATK = max(0, playField.get(takeHit).ATK - 4);
         addEffect(1, takeHit, "Stun");
       }
-      if(atkName.equals("Annika") && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")) && !defName.equals("Uzziah"))
+      if(atkName.equals("Annika") && !playField.get(takeHit).returningToHand && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")) && !defName.equals("Uzziah"))
       {
-        specialRemove = takeHit;
+        playField.get(takeHit).returningToHand = true;
+        specialRemove.add(takeHit);
         if(defName.equals("Money Farm") && mode == 0) p[opp].cash += 4;
         for(Card c: collection)
         {
@@ -732,17 +733,18 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
     }
   }
   
-  if(defName.equals("Uzziah") && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")))// If it died ofc it wont go back to their hand
+  if(defName.equals("Uzziah") && !playField.get(takeHit).returningToHand && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")))// If it died ofc it wont go back to their hand
   {
     if(mode == 0)
     {
       Card c = playField.get(takeHit).copy();
-      c.ATK += 2;
-      c.HP += 2;
+      c.ATK += 4;
+      c.HP += 4;
       c.summoned = true;
       p[opp].hand.add(c); 
     }
-    specialRemove = takeHit;
+    playField.get(takeHit).returningToHand = true;
+    specialRemove.add(takeHit);
   }
 }
 
@@ -753,13 +755,7 @@ public boolean name(Card c, String name)
 
 public void checkDeaths() // Death Effects, and removing cards when dead
 {
-  if(specialRemove != -1)
-  {
-    playField.remove(specialRemove);
-    specialRemove = -1;
-    playFieldSelected = -1;
-  }
-  ArrayList <Card> tempRemove = new ArrayList <Card>(); // Adding all cards that are about to die, in this list.
+  ArrayList <Card> tempRemove = new ArrayList <Card>(); // Adding all cards that are about to die, in this list. 
   for(Card c: playField)
   { 
     c.ATK = max(c.ATK, 0); // No negative attacks.
@@ -777,21 +773,13 @@ public void checkDeaths() // Death Effects, and removing cards when dead
           int xPos = i % 5 + 1;
           int yPos = i / 5 + 1;
           if(findCard(xPos, yPos, c.player % 2 + 1) != -1)
-          {
             attackCard(-4, findCard(xPos, yPos, c.player % 2 + 1), true);
-          }
         }
       }
       if(c.name.equals("Mr. Ustenglibo"))
-      {
         for(Card d: playField)
-        {
           if(c.player == d.player && d.category.contains(6) && !hasEffect(d, "NoEffect"))
-          {
             addEffect(1, d, "Invincible");
-          }
-        }
-      }
       if(c.name.equals("Physouie") && mode == 0)
       {
         ArrayList <Card> temp = new ArrayList<Card>();
@@ -843,14 +831,17 @@ public void checkDeaths() // Death Effects, and removing cards when dead
       {
         playFieldSelected = -1;
         cardSelected = -1;
-        tempRemove.add(c);
+        if(!c.returningToHand)
+          tempRemove.add(c);
       }
     }
   }
-  
-  if(tempRemove.size() > 0)
+  for(int i: specialRemove)
   {
-    for(Card c: tempRemove)
-      playField.remove(c); // BOOOM DEAD CARD
+    tempRemove.add(playField.get(i));
+    playFieldSelected = -1;
   }
+  specialRemove.clear();
+  for(Card c: tempRemove)
+    playField.remove(c); // BOOOM DEAD CARD
 }

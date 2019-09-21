@@ -19,6 +19,7 @@ class Card
   int attackCount = 0; // Amount of times a card can attack this turn. (Usually 1)
   boolean canMove = false; // If the card has already moved, it cannot move any more.
   boolean canSpecial = false; // Special Attacks.
+  boolean returningToHand = false;
   //
   
   int player = -1; // Which side is the card on?
@@ -34,6 +35,7 @@ class Card
     c.MVMT = MVMT;
     c.RNG = RNG;
     c.turnPlacedOn = turnPlacedOn;
+    c.returningToHand = returningToHand;
     c.effects = new ArrayList<Effect>();
     for(Effect e: effects)
     {

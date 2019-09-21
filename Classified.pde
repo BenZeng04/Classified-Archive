@@ -63,7 +63,7 @@ Modes:
 10: Win Screen (P1)
 11: Win Screen (P2)
 */
-int specialRemove = -1; // Special cases where cards can get removed directly upon attacking (Like Uzziah)
+ArrayList<Integer> specialRemove = new ArrayList<Integer>(); // Special cases where cards can get removed directly upon attacking (Like Uzziah)
 int clickDelay = 0;
 int playerTurn; // Player Turn
 int cardSelected = -1; // Selected Card (Hand)
