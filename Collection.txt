@@ -33,7 +33,7 @@
 32/card/Ben 2.0/9 22 2 2 9/Special: All attacks to other cards or the player will be dealt to this card instead, doing half the damage. Special: This card's health and survivability cannot be increased in any way./5
 33/card/Mandaran/7 20 2 2 7/This card takes -5 damage from all attacks. All 8 cards adjacent to this card, including this card, have +4 ATK and +1 range, if they are non-elite./0 4
 34/card/George/7 10 2 2 2/Target your card: Card gains +4 HP and +3 ATK. This card gains +5 HP and +4 ATK if it is a non-Elite Card./0 4
-35/card/Lina/12 9 2 3 2/At start of turn: Gain +1 HP if this card has not been attacked yet./1 4
+35/card/Lina/10 9 2 3 2/At start of turn: Gain +1 HP if this card has not been attacked yet./1 4
 36/card/Lucy/3 13 2 3 3/When any of your opponent's cards attack, this card gains +1 attack./1 4
 37/card/Andrew/6 4 4 3 1/This card does +3 damage when attacking a Elite card, and +5 damage when attacking the Player./1 4
 38/card/Steven/8 13 3 3 3/This card takes 1 less damage from all sources./1 4
