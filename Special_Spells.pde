@@ -214,7 +214,7 @@ public void specialAbility(int indexUser, int indexOpp, String type)
   if(type.equals("Neil"))
   {
     playFieldSelected = indexUser;
-    playField.get(indexOpp).ATK += 4;
+    playField.get(indexOpp).ATK += 3;
     startAnimation(11, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
   if(type.equals("Ethan"))
