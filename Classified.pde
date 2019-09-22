@@ -23,7 +23,6 @@ String p2Deck = "";
 Card [] [] offlineDecks = new Card [2] [8];
 ArrayList<Card> playField = new ArrayList<Card>();
 Player [] p = new Player [3]; // p[1]: Player1, p[2]: Player 2.
-Card moneyFarm = new Card();
 
 // Animate Opponents' Moves
 ArrayList<Move> moves = new ArrayList<Move>(); // Showing moves done. Last number = move type. 1: Place Card. 2: Place Spell. 3: Use ability (AbilitySelected). 4: Attack. 5: Move. 6. Discard. 7. Attack Player 11: Heal. 12: Suicide Bomb.
@@ -63,7 +62,7 @@ Modes:
 10: Win Screen (P1)
 11: Win Screen (P2)
 */
-ArrayList<Integer> specialRemove = new ArrayList<Integer>(); // Special cases where cards can get removed directly upon attacking (Like Uzziah)
+ArrayList<Integer> specialRemove = new ArrayList<Integer>(); // Special cases where cards can get removed directly upon attacking 
 int clickDelay = 0;
 int playerTurn; // Player Turn
 int cardSelected = -1; // Selected Card (Hand)
@@ -122,7 +121,7 @@ public void setup()
   menuBG.resize(width, height);
   p[1] = new Player();
   p[2] = new Player();
-  moneyFarm.name = "Money Farm"; moneyFarm.ATK = 0; moneyFarm.HP = 1; moneyFarm.MVMT = 1; moneyFarm.RNG = 0; moneyFarm.cost = 5; moneyFarm.ability = "This card will generate $1 extra in cash each turn. This card can be attacked over.";
+  
   // Setting Stats of Cards!
   String [] cards = loadStrings("Collection.txt");
   collection = new Card [cards.length];
@@ -162,7 +161,6 @@ public void setup()
   }
   sortCollection();
   for(Card c: collection) c.setupNBT(); // Setting up NBT Values.
-  moneyFarm.setupNBT();
   
   // Setting up the deck selection
   for(int i = 0; i < 2; i++)
@@ -313,15 +311,17 @@ public void setupGame() // Starting Game
     p[i].deck.clear();
     p[i].hand.clear();
     p[i].graveyard.clear();
-    p[i].HP = 30;
+    p[i].HP = 40;
   }
   p[1].turn = 1;
   p[2].turn = 0;
   p[1].canAttack = true;
-  p[1].cash = 3;
+  p[1].cash = 2;
   p[2].cash = 0;
-  oldHP1 = 30;
-  oldHP2 = 30;
+  if(ruleset == 1) p[1].cash = 1000000;
+  if(ruleset == 1) p[2].cash = 1000000;
+  oldHP1 = 50;
+  oldHP2 = 50;
   moves.clear();
   specialMoves.clear();
   playField.clear();
@@ -345,14 +345,6 @@ public void setupGame() // Starting Game
     temp2.remove(tempValue);
   }
   
-  if(ruleset == 1) // WIP ruleset, has twice the card size but only a limited amount
-  {
-    for(int i = 0; i < offlineDecks[0].length; i++)
-    {
-      p[1].deck.add(p[1].deck.get(i));
-      p[2].deck.add(p[2].deck.get(i));
-    }
-  }
   // Each player starts with 3 cards. Player 1 starts with 3, Player 2 starts with 2 but will get the 3rd once Player 1 hands over their turn.
   drawCard(1);
   for(int i = 0; i < 2; i++)
@@ -362,8 +354,11 @@ public void setupGame() // Starting Game
   }
   if(ruleset == 1)
   {
-    p[1].hand.add(moneyFarm);
-    p[2].hand.add(moneyFarm);
+    for(int i = 0; i < 20; i++)
+    {
+      drawCard(1);
+      drawCard(2);
+    }
   }
 }
 
@@ -375,15 +370,11 @@ public void handOverTurn() // Logic for handing over turns (Game-wise)
   int opp = playerTurn % 2 + 1;
   p[opp].turn++;
   if(ruleset == 0) // Default Money Generation
-    p[opp].cash = p[opp].turn + 2;
+    p[opp].cash = p[opp].turn + 1;
   else
     p[opp].cash += 3;
   for(Card c : playField) // Money Generation (Cards)
-  {
-    if(c.name.equals("Money Farm") && c.player == opp)
-          p[opp].cash += 1;
-    if(c.name.equals("Yucen") && c.player == opp) p[opp].cash+=2;
-  }
+    if(c.name.equals("Yucen") && c.player == opp) p[opp].cash+=1;
   p[opp].canAttack = true; // Sets the player to be able to attack again
   if(ruleset == 0)
   {
@@ -392,18 +383,9 @@ public void handOverTurn() // Logic for handing over turns (Game-wise)
   }
   if(ruleset == 1)
   {
-    if(p[opp].deck.size() > 0)
-    {
-      p[opp].hand.add(p[opp].deck.get(0));
-      p[opp].deck.remove(0);
-    }
-    boolean hasFarm = false;
-    for(Card c: p[opp].hand)
-    {
-      if(c.name.equals("Money Farm"))
-        hasFarm = true;
-    }
-    if(!hasFarm) p[opp].hand.add(moneyFarm);
+    for(int i = 0; i < 8; i++)
+      if(p[opp].deck.size() > 0)
+        drawCard(opp);
   }
   
   // Deselecting all cards
@@ -717,7 +699,6 @@ public Card resetCard(Card c)
 {
   for(Card d: collection)
     if(c.displayName.equals(d.name)) return d; 
-  if(c.name.equals("Money Farm")) return moneyFarm;
   return c;
 }
 

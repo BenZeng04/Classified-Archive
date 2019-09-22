@@ -81,7 +81,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
   if(temp.name.equals("Jefferson"))
     temp.ATK++;
   if(temp.name.equals("Megan"))
-    temp.HP = ceil(p[temp.player].HP / 2); // HP is player's HP / 2
+    temp.HP = ceil(p[temp.player].HP / 3.0); // HP is player's HP / 2
   int countNovelty = 0;
   for(Card c: playField)
     if(c.category.contains(6) && c.player == player)
@@ -157,7 +157,7 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
 
   // Everything Else
   if(temp.name.equals("Mark") && mode == 0)
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 2; i++)
       if(p[playerTurn].deck.size() > 0) // Draws cards
           drawCard();
   if(temp.name.equals("Richard") && mode == 0)
@@ -484,6 +484,7 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
     {
       for(Card c: playField)
       {
+        if(c.name.equals("Mandaran") && max(abs(c.x - hit.x), abs(c.y - hit.y)) <= 1 && hit.category.contains(4) && hit.player == c.player) atk += 3;
         if(c.name.equals("Ben") && playField.get(attacker).category.contains(2) && playField.get(attacker).player == c.player) atk += 3;
         if(c.name.equals("Rita") && c.player != playField.get(attacker).player) atk = max(0, atk - 2);
         if(hasEffect(playField.get(attacker), "BuffsLucy")) if(c.player == opp && hasEffect(c, "GetsBuffed")) c.ATK++;
@@ -523,13 +524,18 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
     if(atkName.equals("Andrew") && def.category.contains(2)) atk += 3;
     if(defName.equals("Selina") && playField.get(attacker).cost <= 2) atk = 0; 
     if(defName.equals("Bonnie") && playField.get(attacker).HP > 8) atk = 0;
-    if(playField.get(attacker).category.contains(0) && defName.equals("Neil")) atk = 2;
     if(playField.get(attacker).category.contains(1) && defName.equals("Florence")) atk = 3;
   }
   // General Damage reduction effects that are not reliant on there being an attacker.
   boolean has8H = false;
   for(Card c: playField)
   {
+    if(c.name.equals("Angela") && !hasEffect(def, "NoEffect") && !def.NBTTags.contains("Unhealable") && max(abs(c.x - def.x), abs(c.y - def.y)) <= 1 && def.player == c.player)
+    {
+      atk = max(0, atk - 3);
+      if(def.category.contains(4)) atk = max(0, atk - 1);
+      if(def.category.contains(1)) atk = max(0, atk - 1);
+    }
     if(c.category.contains(1) && c != playField.get(takeHit) && defName.equals("Vinod")) has8H = true;
     if(c.player == playField.get(takeHit).player && c.name.equals("A.L.I.C.E.") && !def.NBTTags.contains("Unhealable")) atk = max(0, atk - 3);
   }
@@ -537,24 +543,8 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
   if(hasEffect(def, "RawEggs")) atk += 3;
   if(hasBen20) atk /= 2;
   if(defName.equals("Steven")) atk = max(0, atk - 1);
+  if(defName.equals("Mandaran")) atk = max(0, atk - 5);
   if(hasEffect(def, "Defense")) atk = max(0, atk - 3);
-  // Angela's Effect
-  for(int i = -1; i <= 1 && !hasEffect(def, "NoEffect") && !def.NBTTags.contains("Unhealable"); i++)
-  {
-    for(int j = -1; j <= 1; j++)
-    {
-      int index = findCard(def.x + i, def.y + j, def.player);
-      if(index != -1)
-      {
-        if(playField.get(index).name.equals("Angela")) 
-        {
-          atk = max(0, atk - 3);
-          if(def.category.contains(4)) atk = max(0, atk - 1);
-          if(def.category.contains(1)) atk = max(0, atk - 1);
-        }
-      }
-    }
-  }
 
   playField.get(takeHit).HP -= atk; // Dealing Damage
   
@@ -566,6 +556,8 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
     // Buffed upon attacking card doing their attack
     if(atkName.equals("Jennifer"))
       playField.get(attacker).ATK += 2; 
+    if(atkName.equals("Uzziah"))
+      playField.get(attacker).HP += 2; 
     if(atkName.equals("Mr. Utnapis"))
     {
       playField.get(attacker).ATK+=2;
@@ -593,6 +585,8 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
       if(atkName.equals("Mark") && mode == 0)
         if(p[playerTurn].deck.size() > 0)
             drawCard();
+      if(atkName.equals("Esther") && mode == 0)
+          p[playerTurn].cash += 3;
       if(atkName.equals("Yousif") && p[opp].hand.size() > 0 && mode == 0)
       {
         int tempValue;
@@ -610,11 +604,10 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
         playField.get(takeHit).ATK = max(0, playField.get(takeHit).ATK - 4);
         addEffect(1, takeHit, "Stun");
       }
-      if(atkName.equals("Annika") && !playField.get(takeHit).returningToHand && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")) && !defName.equals("Uzziah"))
+      if(atkName.equals("Annika") && !playField.get(takeHit).returningToHand && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")))
       {
         playField.get(takeHit).returningToHand = true;
         specialRemove.add(takeHit);
-        if(defName.equals("Money Farm") && mode == 0) p[opp].cash += 4;
         for(Card c: collection)
         {
           if(c.name.equals(def.displayName))
@@ -731,20 +724,6 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
       def.effects.remove(e);
       break;
     }
-  }
-  
-  if(defName.equals("Uzziah") && !playField.get(takeHit).returningToHand && (playField.get(takeHit).HP > 0 || hasEffect(playField.get(takeHit), "Resurrect")))// If it died ofc it wont go back to their hand
-  {
-    if(mode == 0)
-    {
-      Card c = playField.get(takeHit).copy();
-      c.ATK += 4;
-      c.HP += 4;
-      c.summoned = true;
-      p[opp].hand.add(c); 
-    }
-    playField.get(takeHit).returningToHand = true;
-    specialRemove.add(takeHit);
   }
 }
 

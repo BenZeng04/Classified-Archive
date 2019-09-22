@@ -111,7 +111,7 @@ public void useSpell(String name, int indexEffect)
     Effected.ATK += 4;
     addEffect(-1, indexEffect, "RawEggs");
   }
-  if(name.equals("Sebastian's Tea"))
+  if(name.equals("Sebastian's Tea")) 
     addEffect(-1, indexEffect, "Tea");
   if(name.equals("Novelty Wings"))
   {
@@ -159,33 +159,11 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     Effected.ATK = max(Effected.ATK - 8, 0);
     Effected.MVMT = max(Effected.MVMT - 1, 0);
   }
-  else if(name.equals("Esther"))
-  {
-    Card temp = playField.get(indexName);
-    int index = -1;
-    for(int i = 0; i < collection.length; i++)
-    {
-      if(collection[i].name.equals(Effected.displayName))
-        { index = i; temp = collection[i].copy(); }
-    }
-    temp.summoned = true;
-    if(mode == 0 && index != -1)
-      p[playerTurn % 2 + 1].hand.add(temp);
-    playField.remove(indexSpawn);
-    playFieldSelected = playField.indexOf(temp);
-  }
   else if(name.equals("Jefferson"))
   {
     Effected.effects.clear();
     Effected.name = "Nullified";
     Effected.HP -= 5;
-  }
-  else if(name.equals("Mandaran"))
-  {
-    Effect e = new Effect();
-    e.name = "Invincible";
-    e.duration = 1;
-    Effected.effects.add(e);
   }
   else if(name.equals("George"))
   {
@@ -232,6 +210,12 @@ public void specialAbility(int indexUser, int indexOpp, String type)
     playFieldSelected = indexUser;
     heal(playField.get(indexOpp), 4);
     startAnimation(2, playField.get(indexOpp).x, playField.get(indexOpp).y);
+  }
+  if(type.equals("Neil"))
+  {
+    playFieldSelected = indexUser;
+    playField.get(indexOpp).ATK += 4;
+    startAnimation(11, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
   if(type.equals("Ethan"))
   {

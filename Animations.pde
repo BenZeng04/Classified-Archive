@@ -67,6 +67,8 @@ void actionAnimate()
           lighter = 0xff5DF247; darker = 0xff86FF74; textDisplay = a.name; break;  
         case 10:
           lighter = 0xffFF0A85; darker = 0xff810945; textDisplay = "Special"; break;  
+        case 11:
+          lighter = #E3CA67; darker = #6C590D; textDisplay = "Buff"; break;  
       }
       fill(lighter, transparency);
       stroke(darker, transparency);

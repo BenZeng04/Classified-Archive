@@ -77,7 +77,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         for(Card c: playField)
         {
           int sideTarget;
-          if(playField.get(playFieldSelected).name.equals("Hubert")) sideTarget = playField.get(playFieldSelected).player; else sideTarget = playField.get(playFieldSelected).player % 2 + 1;
+          if(playField.get(playFieldSelected).name.equals("Hubert") || playField.get(playFieldSelected).name.equals("Neil")) sideTarget = playField.get(playFieldSelected).player; else sideTarget = playField.get(playFieldSelected).player % 2 + 1;
           boolean condition = true;
           if(playField.get(playFieldSelected).name.equals("Hubert")) condition = !c.NBTTags.contains("Unhealable");
           if(playField.get(playFieldSelected).name.equals("Ethan")) condition = c.cost < 5;
@@ -99,7 +99,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       if(choice == 1)
       {
         int mvmt = playField.get(playFieldSelected).MVMT;
-        if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 2; 
+        if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 1; 
         for(int n = 0; n < 4; n++)
         {
           if(n > 1 && !hasEffect(playField.get(playFieldSelected), "SideMove")) break;
@@ -228,6 +228,11 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
           int rng = playField.get(playFieldSelected).RNG;
           for(Card d: playField)
           {
+            if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(4) && d.player == playField.get(playFieldSelected).player) 
+            {
+              if(!playField.get(playFieldSelected).name.equals("Ultrabright"))
+                rng += 1;
+            }
             if(d.name.equals("Ridge Rhea") && playField.get(playFieldSelected) != d && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player == playField.get(playFieldSelected).player && d.x == playField.get(playFieldSelected).x) rng += 2;
           }
           if(hasEffect(playField.get(playFieldSelected), "NVW")) rng++;

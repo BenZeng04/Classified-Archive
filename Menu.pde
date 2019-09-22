@@ -112,10 +112,10 @@ public void mainMenu()
   text("CLASSIC MODE!", 1000, 300);
   
   fill(100, 190);
-  text("W.I.P. MODE...", 1000 + 3, 500 + 3);
+  text("SANDBOX MODE!", 1000 + 3, 500 + 3);
   
   fill(255);
-  text("W.I.P. MODE...", 1000, 500);
+  text("SANDBOX MODE!", 1000, 500);
   
   if(animationToggle)
   {

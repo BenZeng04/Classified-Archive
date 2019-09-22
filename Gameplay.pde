@@ -339,10 +339,19 @@ public void play()
     
     if(hasEffect(c, "2X ATK") || hasEffect(c, "2X ATK (Anny)")) atk *= 2;
     if(hasEffect(c, "NVW")) rng++;
-    if(hasEffect(c, "Slowdown")) mvmt -= 2; 
+    if(hasEffect(c, "Slowdown")) mvmt -= 1; 
     
     if(!hasEffect(c, "NoEffect"))
     {
+      for(Card d: playField)
+      {
+        if(d.name.equals("Mandaran") && max(abs(c.x - d.x), abs(c.y - d.y)) <= 1 && c.category.contains(4) && d.player == c.player) 
+        {
+          atk += 3;
+          if(!c.name.equals("Ultrabright"))
+            rng += 1;
+        }
+      }
       for(Card d: playField)
         if(d.name.equals("Ridge Rhea") && !c.name.equals("Ridge Rhea") && !c.name.equals("Ultrabright") && d.player == c.player && d.x == c.x) rng += 2;
       for(Card d: playField)
@@ -595,12 +604,15 @@ public void play()
       color lighter = 0;
       if(pName.equals("Hubert")) darker = 0xff095A81; 
       if(pName.equals("Ethan")) darker = 0xff013107;
+      if(pName.equals("Neil")) darker = #6C590D; 
       if(pName.equals("Ms. Iceberg")) darker = 0xff810945;
       if(pName.equals("Hubert")) lighter = 0xff03ADFF; 
       if(pName.equals("Ethan")) lighter = 0xff36A744;
+      if(pName.equals("Neil")) lighter = #E3CA67; 
       if(pName.equals("Ms. Iceberg")) lighter = 0xffFF0582;
       if(pName.equals("Hubert")) displayText = "Heal"; 
       if(pName.equals("Ethan")) displayText = "Bomb";
+      if(pName.equals("Neil")) displayText = "Buff"; 
       if(pName.equals("Ms. Iceberg")) displayText = "Special Attack";
       
       if(playField.get(playFieldSelected).NBTTags.contains("SpecialMove"))
@@ -616,32 +628,20 @@ public void play()
     
     if(choice == 0)
     {
-      if(playField.get(playFieldSelected).name.equals("Hubert") && playField.get(playFieldSelected).player == playerTurn)
-      {
+      if(playField.get(playFieldSelected).name.equals("Hubert") || playField.get(playFieldSelected).name.equals("Neil") && playField.get(playFieldSelected).player == playerTurn)
         for(Card c: playField)
-        {
-          if(c.player == (playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && !c.NBTTags.contains("Unhealable"))
-          {
+          if(c.player == (playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && (!playField.get(playFieldSelected).name.equals("Hubert")) || c.NBTTags.contains("Unhealable"))
             hitCircle(c.x, c.y);
-          }
-        }
-      }
       
       if((playField.get(playFieldSelected).name.equals("Ethan") || playField.get(playFieldSelected).name.equals("Ms. Iceberg")) && playField.get(playFieldSelected).player == playerTurn)
-      {
         for(Card c: playField)
-        {
           if(c.player != (playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && (c.cost < 5 || !playField.get(playFieldSelected).name.equals("Ethan")))
-          {
             hitCircle(c.x, c.y);
-          }
-        }
-      }
     }
     if(choice == 1)
     {   
       int mvmt = playField.get(playFieldSelected).MVMT;
-      if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 2; 
+      if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 1; 
       // Showing places you can move to. 
       for(int n = 0; n < 4; n++)
       {
@@ -694,6 +694,11 @@ public void play()
         int rng = playField.get(playFieldSelected).RNG;
         for(Card d: playField)
         {
+          if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(4) && d.player == playField.get(playFieldSelected).player) 
+          {
+            if(!playField.get(playFieldSelected).name.equals("Ultrabright"))
+              rng += 1;
+          }
           if(d.name.equals("Ridge Rhea") && !playField.get(playFieldSelected).name.equals("Ridge Rhea") && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player == playField.get(playFieldSelected).player && d.x == playField.get(playFieldSelected).x) rng += 2;
           if(hasEffect(playField.get(playFieldSelected), "NVW")) rng++;
         }
@@ -998,7 +1003,7 @@ public void draggingCards()
         int temp = resetCard(p[playerTurn].hand.get(cardSelected)).cost;
         if(c.name.equals("Snake") && c.player == playerTurn)
         {
-          if(temp < 4)
+          if(temp < 5)
             canPlaceDown = false;
         }
       }
