@@ -116,8 +116,8 @@ public void placeCard(int player, Card baseCard, int x, int y, boolean spawned)
         addEffect(-1, temp, "BuffsLucy");
       if(name(c, "Mr. Filascario") && c.player != player)
       {
-        temp.ATK -= 4; 
-        temp.HP -= 4;
+        temp.ATK -= 2; 
+        temp.HP -= 2;
         temp.ATK = max(0, temp.ATK);
       }
     }

@@ -116,8 +116,8 @@ class Card
           conditionATKBuff = 3;
           break;
         case "A.L.I.C.E.":
-          ATKBuff = 3;
-          HPBuff = 3;
+          ATKBuff = 4;
+          HPBuff = 4;
           condition = 5;
           conditionHPBuff = 6;
           conditionATKBuff = 6;

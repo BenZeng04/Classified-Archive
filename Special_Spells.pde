@@ -111,7 +111,7 @@ public void useSpell(String name, int indexEffect)
     Effected.ATK += 4;
     addEffect(-1, indexEffect, "RawEggs");
   }
-  if(name.equals("Sebastian’s Tea"))
+  if(name.equals("Sebastian's Tea"))
     addEffect(-1, indexEffect, "Tea");
   if(name.equals("Novelty Wings"))
   {
@@ -210,8 +210,8 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   }
   else if(name.equals("Jawnie Dirp"))
   {
-    Effected.ATK -= 8; Effected.ATK = max(0, Effected.ATK);
-    Effected.HP -= 8;
+    Effected.ATK -= 6; Effected.ATK = max(0, Effected.ATK);
+    Effected.HP -= 6;
   }
 }
 
