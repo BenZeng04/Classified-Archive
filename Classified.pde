@@ -651,7 +651,7 @@ public void finishAnimate() // What happens after the animation above is done.
 }
 public void drawCard()
 {
-  if(p[playerTurn].deck.size() > 0)
+  if(p[playerTurn].deck.size() > 0 && (ruleset == 1 || p[playerTurn].hand.size() < 5))
   {
     for(Card c: playField)
       if(c.name.equals("Mr. Filascario") && c.player == playerTurn) p[playerTurn % 2 + 1].HP -= 3;
@@ -661,7 +661,7 @@ public void drawCard()
 }
 public void drawCard(int opp)
 {
-  if(p[opp].deck.size() > 0)
+  if(p[opp].deck.size() > 0 && (ruleset == 1 || p[opp].hand.size() < 5))
   {
     for(Card c: playField)
     {
@@ -677,12 +677,8 @@ public void drawCard(String mode)
   if(p[playerTurn].deck.size() > 0)
   {
     if(!mode.equals("Cycle"))
-    {
       for(Card c: playField)
-      {
         if(c.name.equals("Mr. Filascario") && c.player == playerTurn) p[playerTurn % 2 + 1].HP -= 3;
-      }
-    }
     p[playerTurn].hand.add(p[playerTurn].deck.get(0).copy());
     p[playerTurn].deck.remove(0);
   }

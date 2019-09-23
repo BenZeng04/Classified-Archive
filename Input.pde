@@ -1,5 +1,3 @@
-int mouseX;
-int mouseY;
 public void mousePressed()
 {
 if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransition)
