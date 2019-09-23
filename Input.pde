@@ -1,5 +1,5 @@
-int cursorX;
-int cursorY;
+int mouseX;
+int mouseY;
 public void mousePressed()
 {
 if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransition)
@@ -20,14 +20,14 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         
       if(i == cardSelected && p[playerTurn].hand.get(i).cost <= p[playerTurn].cash)
       {
-        x = x + cursorX - ogx;
-        y = y + cursorY - ogy;
+        x = x + mouseX - ogx;
+        y = y + mouseY - ogy;
       }
-      if(cursorX < x + 50 && cursorX > x - 50 && cursorY < y + 50 && cursorY > y - 50 && cardSelected == -1)
+      if(mouseX < x + 50 && mouseX > x - 50 && mouseY < y + 50 && mouseY > y - 50 && cardSelected == -1)
       {
         cardSelected = i;
-        ogx = cursorX;
-        ogy = cursorY;
+        ogx = mouseX;
+        ogy = mouseY;
         break;
       }
     }
@@ -37,13 +37,13 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       if(choice == -1 && playField.get(playFieldSelected).player == playerTurn) // Buttons Omegalul for CHOICES
       {  
         //Move  
-        if(cursorX > 705 && cursorX < 895 && cursorY > 515 && cursorY < 555 && playField.get(playFieldSelected).canMove)
+        if(mouseX > 705 && mouseX < 895 && mouseY > 515 && mouseY < 555 && playField.get(playFieldSelected).canMove)
         {
           choice = 1;
           temporary = false;
         }
         //attack
-        if(cursorX > 905 && cursorX < 1095 && cursorY > 515 && cursorY < 555 && playField.get(playFieldSelected).attackCount > 0)
+        if(mouseX > 905 && mouseX < 1095 && mouseY > 515 && mouseY < 555 && playField.get(playFieldSelected).attackCount > 0)
         {
           choice = 2;
           temporary = false;
@@ -51,12 +51,12 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         
         if(playField.get(playFieldSelected).NBTTags.contains("SpecialMove"))
         {
-          if(cursorX > 905 && cursorX < 1095 && cursorY > 565 && cursorY < 605 && playField.get(playFieldSelected).canSpecial)
+          if(mouseX > 905 && mouseX < 1095 && mouseY > 565 && mouseY < 605 && playField.get(playFieldSelected).canSpecial)
           {
             choice = 0;
             temporary = false;
           }
-          if(cursorX > 705 && cursorX < 895 && cursorY > 565 && cursorY < 605 && !hasEffect(playField.get(playFieldSelected), "Alive"))
+          if(mouseX > 705 && mouseX < 895 && mouseY > 565 && mouseY < 605 && !hasEffect(playField.get(playFieldSelected), "Alive"))
           {
             discard(playFieldSelected);
             temporary = false;
@@ -64,7 +64,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         }
         else
         {
-          if(cursorX > 805 && cursorX < 995 && cursorY > 565 && cursorY < 605 && !hasEffect(playField.get(playFieldSelected), "Alive"))
+          if(mouseX > 805 && mouseX < 995 && mouseY > 565 && mouseY < 605 && !hasEffect(playField.get(playFieldSelected), "Alive"))
           {
             discard(playFieldSelected);
             temporary = false;
@@ -84,7 +84,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
           if(c.player == sideTarget && !hasEffect(c, "NoEffect") && condition)
           {
             int yOfCircle = c.y * 100 + 50; if(playerTurn == 2) yOfCircle = c.y * -100 + 750;
-            if(dist(c.x * 100 + 50, yOfCircle, cursorX, cursorY) < 50)
+            if(dist(c.x * 100 + 50, yOfCircle, mouseX, mouseY) < 50)
             {
               specialAbility(playFieldSelected, playField.indexOf(c), playField.get(playFieldSelected).name);
               playField.get(playFieldSelected).canSpecial = false;
@@ -138,7 +138,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
               int updateX = mx; if(n == 2) updateX -= j; if(n == 3) updateX += j;
               if(playerTurn == 1)
               {
-                if(dist(cursorX, cursorY, updateX * 100 + 50, updateY * 100 + 50) < 50)
+                if(dist(mouseX, mouseY, updateX * 100 + 50, updateY * 100 + 50) < 50)
                 {
                   Move m = new Move();
                   m.type = 5;
@@ -177,7 +177,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
               }
               else
               {
-                if(dist(cursorX, cursorY, updateX * 100 + 50, updateY * -100 + 750) < 50)
+                if(dist(mouseX, mouseY, updateX * 100 + 50, updateY * -100 + 750) < 50)
                 {
                   Move m = new Move();
                   m.type = 5;
@@ -282,7 +282,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
               int opp = playerTurn % 2 + 1;
               if(cap) // Attacking Player 
               {
-                if(dist(cursorX, cursorY, 350, 50) < 50)
+                if(dist(mouseX, mouseY, 350, 50) < 50)
                 {
                   choice = -1;
                   temporary = false;
@@ -296,7 +296,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
               {
                 
                 int yBound; if(playerTurn == 1) yBound = my * 100 + 50; else yBound = my * -100 + 750;
-                if(dist(cursorX, cursorY, mx * 100 + 50, yBound) < 50)
+                if(dist(mouseX, mouseY, mx * 100 + 50, yBound) < 50)
                 {
                   choice = -1;
                   temporary = false;
@@ -357,7 +357,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         if(playerTurn == 2)
           y = playField.get(i).y * -100 + 750;
         
-        if(cursorX < x + 50 && cursorX > x - 50 && cursorY < y + 50 && cursorY > y - 50)
+        if(mouseX < x + 50 && mouseX > x - 50 && mouseY < y + 50 && mouseY > y - 50)
         {
           if(temporary)
           {
@@ -372,7 +372,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
           choice = -1;
         }
       }
-      if(cursorX < 1100 && cursorX > 700 && cursorY < 765 && cursorY > 635)
+      if(mouseX < 1100 && mouseX > 700 && mouseY < 765 && mouseY > 635)
         handOverTurn();
       if(playerSelected)
       {
@@ -382,7 +382,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
           if(c.y == correctY && c.player != playerTurn)
           {
             int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
-            if(dist(cursorX, cursorY, c.x * 100 + 50, yPos) < 50)
+            if(dist(mouseX, mouseY, c.x * 100 + 50, yPos) < 50)
             {
               attackCard(-1, playField.indexOf(c), true);
               Move m = new Move();
@@ -397,7 +397,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         }
         playerSelected = false;
       }
-      if(cursorX > 115 && cursorX < 285 && cursorY > 718 && cursorY < 748 && p[playerTurn].canAttack)
+      if(mouseX > 115 && mouseX < 285 && mouseY > 718 && mouseY < 748 && p[playerTurn].canAttack)
         playerSelected = true;
     }
     else
@@ -414,7 +414,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         {
           if(c.player == condition && !hasEffect(c, "NoEffect"))
           {
-            if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
+            if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
             {
               spawnEffects(playField.get(abilitySelected).name, abilitySelected, playField.indexOf(c));
               abilitySelected = -1;
@@ -424,7 +424,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
         }  
       }
     }
-    if(dist(cursorX, cursorY, 1150, 50) < 45)
+    if(dist(mouseX, mouseY, 1150, 50) < 45)
     {
       transitionTime = 0; inTransition = true; transitionToMode =3;
       clickDelay = 10;
@@ -435,7 +435,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       for(Card c: p[playerTurn].hand)
       {
         int x = counter % 5 * 120 + 660, y = counter / 5 * 120 + 150;
-        if(cursorX > x - 50 && cursorX < x + 50 && cursorY > y - 50 && cursorY < y + 50 && mode == 0)
+        if(mouseX > x - 50 && mouseX < x + 50 && mouseY > y - 50 && mouseY < y + 50 && mode == 0)
         {
           cardSelected = -1;
           playFieldSelected = -1;
@@ -451,7 +451,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       }
       discarding = false;
     }
-    if(dist(cursorX, cursorY, 900, 550) < 45)
+    if(dist(mouseX, mouseY, 900, 550) < 45)
     {
       if(p[playerTurn].hand.size() > 0 && p[playerTurn].cash >= discardsUsed + 2 && playFieldSelected == -1)
       {
@@ -481,26 +481,26 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
   
   if(mode == 3 && clickDelay == 0 && !inAnimation && !inTransition)
   {
-    if(cursorX > 875 && cursorX < 1125 && cursorY > 260 && cursorY < 340) ruleset = 0;
-    if(cursorX > 875 && cursorX < 1125 && cursorY > 460 && cursorY < 540) ruleset = 1;
-    if(cursorX > 75 && cursorX < 325 && cursorY > 360 && cursorY < 440) { if(animationToggle) animationToggle = false; else animationToggle = true; }
-    if(dist(cursorX, cursorY, 600, 400) < 150) { transitionTime = 0; inTransition = true; transitionToMode = 0; setupGame(); }
-    if(cursorX > 210 && cursorX < 590 && cursorY > 600 && cursorY < 750) { transitionTime = 0; inTransition = true; transitionToMode =4; scroll = 0; sort = 0; clickDelay = 2; deckSelected = -1; addingCard = false; collectionSelected = -1;}
-    if(cursorX > 610 && cursorX < 990 && cursorY > 600 && cursorY < 750) { transitionTime = 0; inTransition = true; transitionToMode =5; scroll = 0; sort = 0; clickDelay = 2; deckSelected = -1; addingCard = false; collectionSelected = -1;}
-    if(dist(cursorX, cursorY, 1140, 60) < 50)
+    if(mouseX > 875 && mouseX < 1125 && mouseY > 260 && mouseY < 340) ruleset = 0;
+    if(mouseX > 875 && mouseX < 1125 && mouseY > 460 && mouseY < 540) ruleset = 1;
+    if(mouseX > 75 && mouseX < 325 && mouseY > 360 && mouseY < 440) { if(animationToggle) animationToggle = false; else animationToggle = true; }
+    if(dist(mouseX, mouseY, 600, 400) < 150) { transitionTime = 0; inTransition = true; transitionToMode = 0; setupGame(); }
+    if(mouseX > 210 && mouseX < 590 && mouseY > 600 && mouseY < 750) { transitionTime = 0; inTransition = true; transitionToMode =4; scroll = 0; sort = 0; clickDelay = 2; deckSelected = -1; addingCard = false; collectionSelected = -1;}
+    if(mouseX > 610 && mouseX < 990 && mouseY > 600 && mouseY < 750) { transitionTime = 0; inTransition = true; transitionToMode =5; scroll = 0; sort = 0; clickDelay = 2; deckSelected = -1; addingCard = false; collectionSelected = -1;}
+    if(dist(mouseX, mouseY, 1140, 60) < 50)
     {
       exit();
     }
-    if(dist(cursorX, cursorY, 60, 60) < 50)
+    if(dist(mouseX, mouseY, 60, 60) < 50)
     {
       mode =7;
     }
-    if(dist(cursorX, cursorY, 60, 740) < 50)
+    if(dist(mouseX, mouseY, 60, 740) < 50)
     {
       mode =8;
       instructionPage = 0;
     }
-    if(dist(cursorX, cursorY, 1140, 740) < 50)
+    if(dist(mouseX, mouseY, 1140, 740) < 50)
     {
       mode =9;
     }
@@ -508,11 +508,11 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
   
   if((mode == 4 || mode == 5) && clickDelay == 0 && !inAnimation && !inTransition)
   {
-    if(cursorX > 1085 && cursorX < 1185 && cursorY > 440 && cursorY < 490)
+    if(mouseX > 1085 && mouseX < 1185 && mouseY > 440 && mouseY < 490)
     {
       scroll = max(0, scroll - 1);
     }
-    if(cursorX > 1085 && cursorX < 1185 && cursorY > 510 && cursorY < 560)
+    if(mouseX > 1085 && mouseX < 1185 && mouseY > 510 && mouseY < 560)
     {
       int length = 0;
       if(sort == 0) length = collection.length;
@@ -524,7 +524,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       if(sort == 6) length = categTot[5];
       scroll = min(max(0, (length - 1) / 5 - 4), scroll + 1);
     }
-    if(cursorX > 20 && cursorX < 110 && cursorY > 455 && cursorY < 545)
+    if(mouseX > 20 && mouseX < 110 && mouseY > 455 && mouseY < 545)
     {
       sort++;
       addingCard = false;
@@ -540,7 +540,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       int y = i / 2;
       x = PApplet.parseInt(204 + x * 137.5f);
       y = PApplet.parseInt(294 + y * 137.5f);
-      if(cursorX > x - 55 && cursorX < x + 55 && cursorY > y - 55 && cursorY < y + 55)
+      if(mouseX > x - 55 && mouseX < x + 55 && mouseY > y - 55 && mouseY < y + 55)
       {
         
         if(addingCard)
@@ -581,7 +581,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       x = 570 + x * 110;
       y = 280 + y * 110;
       if(y > 600) y -= 320;
-      if(cursorX > x - 50 && cursorX < x + 50 && cursorY > y + 70 && cursorY < y + 100)
+      if(mouseX > x - 50 && mouseX < x + 50 && mouseY > y + 70 && mouseY < y + 100)
       {
         addingCard = true;
       }
@@ -617,7 +617,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       }
       if(y >= 280 && y <= 730)
       {
-        if(cursorX > x - 45 && cursorX < x + 45 && cursorY > y - 45 && cursorY < y + 45)
+        if(mouseX > x - 45 && mouseX < x + 45 && mouseY > y - 45 && mouseY < y + 45)
         {
           if(!alreadyInDeck)
           {
@@ -628,11 +628,11 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       }
       j++;
     }
-    if(dist(cursorX, cursorY, 1140, 60) < 50)
+    if(dist(mouseX, mouseY, 1140, 60) < 50)
     {
       transitionTime = 0; inTransition = true; transitionToMode =3;
     }
-    if(dist(cursorX, cursorY, 60, 60) < 50)
+    if(dist(mouseX, mouseY, 60, 60) < 50)
     {
       String s [] = new String [1];
       s[0] = "";
@@ -645,14 +645,14 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
   }
   if((mode == 7 || mode == 8 || mode == 9) && !inAnimation && !inTransition)
   {
-    if(dist(cursorX, cursorY, 1140, 60) < 50)
+    if(dist(mouseX, mouseY, 1140, 60) < 50)
     {
       mode = 3;
     }
   }
   if(mode == 10 && !inAnimation && !inTransition)
   {
-    if(dist(cursorX, cursorY, 1150, 50) < 45)
+    if(dist(mouseX, mouseY, 1150, 50) < 45)
     {
       transitionTime = 0; inTransition = true; transitionToMode = 3;
       clickDelay = 10;

@@ -33,7 +33,7 @@ public void mainMenu()
   noFill();
   ellipse(600 + 3, 400 + 3, 300, 300);
   
-  if(dist(cursorX, cursorY, 600, 400) < 150)
+  if(dist(mouseX, mouseY, 600, 400) < 150)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -44,7 +44,7 @@ public void mainMenu()
   stroke(100, 190);
   rect(400 + 3, 675 + 3, 380, 150, 20, 20, 20, 20);
   
-  if(cursorX > 210 && cursorX < 590 && cursorY > 600 && cursorY < 750)
+  if(mouseX > 210 && mouseX < 590 && mouseY > 600 && mouseY < 750)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -53,7 +53,7 @@ public void mainMenu()
   stroke(100, 190);
   rect(800 + 3, 675 + 3, 380, 150, 20, 20, 20, 20);
   
-  if(cursorX > 610 && cursorX < 990 && cursorY > 600 && cursorY < 750)
+  if(mouseX > 610 && mouseX < 990 && mouseY > 600 && mouseY < 750)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -66,7 +66,7 @@ public void mainMenu()
   rect(1000 + 3, 500 + 3, 250, 80);
   rect(200 + 3, 400 + 3, 250, 80);
   
-  if(cursorX > 875 && cursorX < 1125 && cursorY > 260 && cursorY < 340)
+  if(mouseX > 875 && mouseX < 1125 && mouseY > 260 && mouseY < 340)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -74,7 +74,7 @@ public void mainMenu()
   fill(200, 190);
   rect(1000, 300, 250, 80);
   
-  if(cursorX > 875 && cursorX < 1125 && cursorY > 460 && cursorY < 540)
+  if(mouseX > 875 && mouseX < 1125 && mouseY > 460 && mouseY < 540)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -82,7 +82,7 @@ public void mainMenu()
   fill(200, 190);
   rect(1000, 500, 250, 80);
   
-  if(cursorX > 75 && cursorX < 325 && cursorY > 360 && cursorY < 440)
+  if(mouseX > 75 && mouseX < 325 && mouseY > 360 && mouseY < 440)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -136,7 +136,7 @@ public void mainMenu()
   noStroke();
   fill(100, 190);
   triangle(540 + 3, 330 + 3, 540 + 3, 470 + 3, 680 + 3, 400 + 3);
-  if(dist(cursorX, cursorY, 600, 400) < 150)
+  if(dist(mouseX, mouseY, 600, 400) < 150)
     fill(0xffFFC60A, 150);
   else
     fill(255);
@@ -150,7 +150,7 @@ public void mainMenu()
   ellipse(60 + 3, 60 + 3, 100, 100); // Shadow
   textSize(24);
   
-  if(dist(cursorX, cursorY, 60, 60) < 50)
+  if(dist(mouseX, mouseY, 60, 60) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -166,7 +166,7 @@ public void mainMenu()
   ellipse(60 + 3, 740 + 3, 100, 100); // Shadow
   textSize(24);
   
-  if(dist(cursorX, cursorY, 60, 740) < 50)
+  if(dist(mouseX, mouseY, 60, 740) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -183,7 +183,7 @@ public void mainMenu()
   ellipse(1140 + 3, 740 + 3, 100, 100); // Shadow
   textSize(24);
   
-  if(dist(cursorX, cursorY, 1140, 740) < 50)
+  if(dist(mouseX, mouseY, 1140, 740) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -203,7 +203,7 @@ public void mainMenu()
   fill(100, 180);
   text("QUIT!", 1200 - 60 + 3, 60 + 3);
   
-  if(dist(cursorX, cursorY, 1200 - 60, 60) < 50)
+  if(dist(mouseX, mouseY, 1200 - 60, 60) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -315,7 +315,7 @@ public void chooseDeck(int playerDeck)
   fill(100, 180);
   text("BACK..", 1200 - 60 + 3, 60 + 3);
   
-  if(dist(cursorX, cursorY, 1140, 60) < 50)
+  if(dist(mouseX, mouseY, 1140, 60) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -334,7 +334,7 @@ public void chooseDeck(int playerDeck)
   fill(100, 180);
   text("SAVE!", 60 + 3, 60 + 3);
   
-  if(dist(cursorX, cursorY, 60, 60) < 50)
+  if(dist(mouseX, mouseY, 60, 60) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);
@@ -612,7 +612,7 @@ public void options(String type)
   fill(100, 180);
   text("BACK..", 1200 - 60 + 3, 60 + 3);
   
-  if(dist(cursorX, cursorY, 1140, 60) < 50)
+  if(dist(mouseX, mouseY, 1140, 60) < 50)
     stroke(0xffFFC60A, 150);
   else
     stroke(255);

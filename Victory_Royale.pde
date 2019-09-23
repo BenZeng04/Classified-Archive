@@ -44,7 +44,7 @@ void victory()
   fill(100, 180);
   text("BACK..", 1200 - 50 + 3, 50 + 3);
   
-  if(dist(cursorX, cursorY, 1150, 50) < 45) // Highlights Button
+  if(dist(mouseX, mouseY, 1150, 50) < 45) // Highlights Button
     stroke(0xff8FA5FC, 150);
   else
     stroke(255);

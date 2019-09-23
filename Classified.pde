@@ -227,13 +227,6 @@ public void sortCollection() // Sorts collection by category.
 
 public void draw() // Modes
 {
-  // For different resolutions. WIP
-  
-  cursorX = round((mouseX * 800.0 / height));
-  cursorY = round((mouseY * 800.0 / height));
-  pushMatrix();
-  scale(height / 800.0, height / 800.0);
-  
   //
   
   // Modes
@@ -285,7 +278,6 @@ public void draw() // Modes
     rectMode(CORNER);
     rect(0, 0, 1200, 800);
   }
-  popMatrix();
 }
 
 public void transition() // Other Player's Turn

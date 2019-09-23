@@ -159,7 +159,7 @@ public void play()
   fill(100, 180);
   text("BACK..", 1200 - 50 + 3, 50 + 3);
   
-  if(dist(cursorX, cursorY, 1150, 50) < 45) // Highlights Button
+  if(dist(mouseX, mouseY, 1150, 50) < 45) // Highlights Button
     stroke(0xff8FA5FC, 150);
   else
     stroke(255);
@@ -178,7 +178,7 @@ public void play()
   fill(100, 180);
   text("DISCARD & CYCLE ($"+(discardsUsed + 2)+")", 900 + 3, 550 + 3, 100, 100);
   
-  if(dist(cursorX, cursorY, 900, 550) < 45) // Highlights Button
+  if(dist(mouseX, mouseY, 900, 550) < 45) // Highlights Button
     stroke(0xff8FA5FC, 150);
   else
     stroke(255);
@@ -393,8 +393,8 @@ public void play()
     int x = i % 5 * 120 + 660, y = i / 5 * 120 + 150;
     if(i == cardSelected && p[playerTurn].hand.get(i).cost <= p[playerTurn].cash)
     {
-      x = x + cursorX - ogx;
-      y = y + cursorY - ogy;
+      x = x + mouseX - ogx;
+      y = y + mouseY - ogy;
     }
    
     Card c = p[playerTurn].hand.get(i);    
@@ -424,8 +424,8 @@ public void play()
   
     if(p[playerTurn].hand.get(cardSelected).cost <= p[playerTurn].cash)
     {
-      x += cursorX - ogx;
-      y += cursorY - ogy;
+      x += mouseX - ogx;
+      y += mouseY - ogy;
     }
 
     strokeWeight(20); // Bigger Strokeweight
@@ -791,11 +791,11 @@ public void hitCircle(int x, int y)
       ellipse(x * 100 + 50 + 3, y * -100 + 750 + 3, 80, 80);
     if(playerTurn == 1)
     {
-    if((dist(cursorX, cursorY, x * 100 + 50, y * 100 + 50) < 50)) stroke(170, 190); else stroke(255);
+    if((dist(mouseX, mouseY, x * 100 + 50, y * 100 + 50) < 50)) stroke(170, 190); else stroke(255);
     }
     else
     {
-    if((dist(cursorX, cursorY, x * 100 + 50, y * -100 + 750) < 50)) stroke(170, 190); else stroke(255);
+    if((dist(mouseX, mouseY, x * 100 + 50, y * -100 + 750) < 50)) stroke(170, 190); else stroke(255);
     }
     if(playerTurn == 1)
       ellipse(x * 100 + 50, y * 100 + 50, 80, 80);
@@ -808,7 +808,7 @@ public void hitCircle(int x, int y, boolean ignore)
     strokeWeight(15);
     stroke(100, 190);
     ellipse(x * 100 + 50 + 3, y * 100 + 50 + 3, 80, 80);
-    if((dist(cursorX, cursorY, x * 100 + 50, y * 100 + 50) < 50)) stroke(170, 190); else stroke(255);
+    if((dist(mouseX, mouseY, x * 100 + 50, y * 100 + 50) < 50)) stroke(170, 190); else stroke(255);
     ellipse(x * 100 + 50, y * 100 + 50, 80, 80);
 }
 public void cardDisplay(int x, int y, float scale, Card c, int specialCase)
@@ -973,8 +973,8 @@ public void draggingCards()
   // Setting x (Position of card that is being dragged)
   if(cardSelected != -1)
   {
-    x += cursorX - ogx;
-    y += cursorY - ogy;
+    x += mouseX - ogx;
+    y += mouseY - ogy;
   }
   
   if(!mousePressed && cardSelected != -1) // When a card is released
@@ -1019,7 +1019,7 @@ public void draggingCards()
             {
               int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
   
-              if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
+              if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
               {
                 useSpell(p[playerTurn].hand.get(cardSelected).name, playField.indexOf(c));
                 p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
@@ -1051,7 +1051,7 @@ public void draggingCards()
             {
               int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
   
-              if(dist(c.x * 100 + 50, yPos, cursorX, cursorY) < 50)
+              if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
               {
                 useSpell(p[playerTurn].hand.get(cardSelected).name, playField.indexOf(c));
                 p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
