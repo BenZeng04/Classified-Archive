@@ -1,6 +1,6 @@
 class Card
 {
-  PImage icon; // Currently WIP As of 2019-09-07
+  PImage icon = new PImage(); // Currently WIP As of 2019-09-07
   ArrayList<String> NBTTags = new ArrayList<String>(); // Currently WIP As of 2019-09-07
   // Card Stats
   int cost = -1;

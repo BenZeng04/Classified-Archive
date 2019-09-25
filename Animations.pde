@@ -1,6 +1,11 @@
 void actionAnimate()
 {
   int transparency = 255 - 7 * aniTimer;
+  if(transparency <= -70 || !animationToggle)
+  {
+    inAnimation = false;
+    targets.clear();
+  }
   for(Animation a: targets)
   {
     if(a.type == 1)
@@ -87,10 +92,5 @@ void actionAnimate()
         ellipse(selfX * 100 + 50, yF, 220, 220);
       }
     }
-  }
-  if(transparency <= -70)
-  {
-    inAnimation = false;
-    targets.clear();
   }
 }

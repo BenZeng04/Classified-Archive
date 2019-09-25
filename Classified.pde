@@ -144,7 +144,9 @@ public void setup()
       setCard.ability = decode[4];
       for(String category: categories)
         setCard.category.add(Integer.parseInt(category));
+      if(loadImage("Icon"+decode[2]+".png") != null) setCard.icon = loadImage("Icon"+decode[2]+".png");
       collection[Integer.parseInt(decode[0])] = setCard;
+      
     }
     else
     {
@@ -156,6 +158,7 @@ public void setup()
       if(decode[5].equals("targetsYou")) setCard.spellTarget = "You";
       if(decode[5].equals("targetsOpp")) setCard.spellTarget = "Opp";
       if(decode[5].equals("targetsAll")) setCard.spellTarget = "All";
+      if(loadImage("Icon"+decode[2]+".png") != null) setCard.icon = loadImage("Icon"+decode[2]+".png");
       collection[Integer.parseInt(decode[0])] = setCard;
     }
   }
@@ -673,7 +676,6 @@ public void drawCard(int opp)
 }
 public void drawCard(String mode)
 {
-  
   if(p[playerTurn].deck.size() > 0)
   {
     if(!mode.equals("Cycle"))
@@ -743,14 +745,17 @@ public void addEffect(int duration, Card c, String name) // Adding effect to car
 
 public void startMoveAnimation(boolean toSide, int index, int distance, int original)
 {
-  moveAnimation a = new moveAnimation();
-  a.toSide = toSide;
-  a.index = index;
-  a.distance = distance;
-  a.originalPos = original;
-  moveAnimation = true; 
-  moveAniTimer = 0;
-  moveTargets.add(a);
+  if(animationToggle)
+  {
+    moveAnimation a = new moveAnimation();
+    a.toSide = toSide;
+    a.index = index;
+    a.distance = distance;
+    a.originalPos = original;
+    moveAnimation = true; 
+    moveAniTimer = 0;
+    moveTargets.add(a);
+  }
 }
 public void startAnimation(int mode, int x, int y)
 {

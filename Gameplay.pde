@@ -26,7 +26,7 @@ public void play()
   if(playerSelected && mode == 0) fill(255, 0, 0, 100); else
   fill(#CB9F0C, 200);
   
-  if(cardSelected != -1)
+  if(cardSelected != -1 && animationToggle)
     if(!p[playerTurn].hand.get(cardSelected).isSpell && p[playerTurn].cash >= p[playerTurn].hand.get(cardSelected).cost) fill(#CB9F0C, (sin(timer / 10.0) + 1) * 120);
     
   rectMode(CORNER);
@@ -74,21 +74,43 @@ public void play()
   text("ATTACK WITH PLAYER!", 200, 733);
   
   // 
-  
-  tint(100, 190);
-  image(health, 353, 56, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
-  image(health, 353, 746, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
-  noTint();
-  image(health, 350, 53, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
-  image(health, 350, 743, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
+  if(animationToggle)
+  {
+    tint(100, 190);
+    image(health, 353, 56, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
+    image(health, 353, 746, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
+    noTint();
+    image(health, 350, 53, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
+    image(health, 350, 743, 5 * (sin(timer / 10.00) + 1) + 60, 5 * (sin(timer / 10.00) + 1) + 60);
+  } 
+  else
+  {
+    tint(100, 190);
+    image(health, 353, 56, 60, 60);
+    image(health, 353, 746, 60, 60);
+    noTint();
+    image(health, 350, 53, 60, 60);
+    image(health, 350, 743, 60, 60);
+  }
 
   noStroke();
   fill(100, 190);
-  ellipse(53, 403, 83 + 5 * sin(timer / 13.00), 83 + 5 * sin(timer / 13.00));
-  stroke(255);
-  strokeWeight(3);
-  fill(#FFC548, 190);
-  ellipse(50, 400, 80 + 5 * sin(timer / 13.00), 80 + 5 * sin(timer / 13.00));
+  if(animationToggle)
+  {
+    ellipse(53, 403, 83 + 5 * sin(timer / 13.00), 83 + 5 * sin(timer / 13.00));
+    stroke(255);
+    strokeWeight(3);
+    fill(#FFC548, 190);
+    ellipse(50, 400, 80 + 5 * sin(timer / 13.00), 80 + 5 * sin(timer / 13.00));
+  }
+  else
+  {
+    ellipse(53, 403, 83, 83);
+    stroke(255);
+    strokeWeight(3);
+    fill(#FFC548, 190);
+    ellipse(50, 400, 80, 80);
+  }
   
   textSize(24);
   fill(100, 190);
@@ -825,6 +847,9 @@ public void cardDisplay(int x, int y, float scale, Card c, int specialCase)
   rectMode(CENTER);
   rect(0, 0, 95, 95); // Square Outline
   
+  tint(255, 100);
+  image(c.icon, 0, 0, 95, 95);
+  noTint();
   // Icons
   imageMode(CENTER);
   textSize(12);
@@ -904,6 +929,9 @@ public void cardDisplay(int x, int y, float scale, Card c, int atk, int mvmt, in
   rectMode(CENTER);
   rect(0, 0, 95, 95); // Square Outline
   
+  tint(255, 100);
+  image(c.icon, 0, 0, 95, 95);
+  noTint();
   // Icons
   imageMode(CENTER);
   textSize(12);
