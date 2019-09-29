@@ -226,7 +226,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
           int rng = playField.get(playFieldSelected).RNG;
           for(Card d: playField)
           {
-            if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(4) && d.player == playField.get(playFieldSelected).player) 
+            if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(3) && d.player == playField.get(playFieldSelected).player) 
             {
               if(!playField.get(playFieldSelected).name.equals("Ultrabright"))
                 rng += 1;
@@ -513,13 +513,8 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
     if(mouseX > 1085 && mouseX < 1185 && mouseY > 510 && mouseY < 560)
     {
       int length = 0;
-      if(sort == 0) length = collection.length;
-      if(sort == 1) length = categTot[0];
-      if(sort == 2) length = categTot[1];
-      if(sort == 3) length = categTot[2];
-      if(sort == 4) length = categTot[4];
-      if(sort == 5) length = categTot[3];
-      if(sort == 6) length = categTot[5];
+      if(sort == 0) length = collection.length; 
+      else length = categTot[sort - 1];
       scroll = min(max(0, (length - 1) / 5 - 4), scroll + 1);
     }
     if(mouseX > 20 && mouseX < 110 && mouseY > 455 && mouseY < 545)
@@ -554,20 +549,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
     int correctX = 0, correctY = 0, count = 0;
     for(int i = 0; i < collection.length && !addingCard; i++)
     {
-      if(sort == 1) // Class G
-        if(!collection[i].category.contains(0)) continue;
-      if(sort == 2) // Class H
-        if(!collection[i].category.contains(1)) continue;
-      if(sort == 3) // Elite
-        if(!collection[i].category.contains(2)) continue;
-      if(sort == 4) // Non-Elite
-        if(!collection[i].category.contains(4)) continue;
-      if(sort == 5) // Hangouts
-        if(!collection[i].category.contains(3)) continue;
-      if(sort == 6) // Normie
-        if(!collection[i].category.contains(5)) continue;
-      if(sort == 7) // Novelty
-        if(!collection[i].category.contains(6)) continue;
+      if(!collection[i].category.contains(sort - 1)) continue;
       int x = count % 5;
       int y = count / 5 - scroll;
       if(collectionSelected == i) { correctX = x; correctY = y; }
@@ -589,20 +571,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
     int j = 0;
     for(int i = 0; i < collection.length && !addingCard; i++)
     {
-      if(sort == 1) // Class G
-        if(!collection[i].category.contains(0)) continue;
-      if(sort == 2) // Class H
-        if(!collection[i].category.contains(1)) continue;
-      if(sort == 3) // Elite
-        if(!collection[i].category.contains(2)) continue;
-      if(sort == 4) // Non-Elite
-        if(!collection[i].category.contains(4)) continue;
-      if(sort == 5) // Hangouts
-        if(!collection[i].category.contains(3)) continue;
-      if(sort == 6) // Normie
-        if(!collection[i].category.contains(5)) continue;
-      if(sort == 7) // Novelty
-        if(!collection[i].category.contains(6)) continue;
+      if(!collection[i].category.contains(sort - 1) && sort != 0) continue;
       int x = j % 5;
       int y = j / 5 - scroll;
       if(collectionSelected == i) { correctX = x; correctY = y; }

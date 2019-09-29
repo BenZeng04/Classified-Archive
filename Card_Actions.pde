@@ -484,7 +484,7 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
     {
       for(Card c: playField)
       {
-        if(c.name.equals("Mandaran") && max(abs(c.x - hit.x), abs(c.y - hit.y)) <= 1 && hit.category.contains(4) && hit.player == c.player) atk += 3;
+        if(c.name.equals("Mandaran") && max(abs(c.x - hit.x), abs(c.y - hit.y)) <= 1 && hit.category.contains(3) && hit.player == c.player) atk += 3;
         if(c.name.equals("Ben") && playField.get(attacker).category.contains(2) && playField.get(attacker).player == c.player) atk += 3;
         if(c.name.equals("Rita") && c.player != playField.get(attacker).player) atk = max(0, atk - 2);
         if(hasEffect(playField.get(attacker), "BuffsLucy")) if(c.player == opp && hasEffect(c, "GetsBuffed")) c.ATK++;
@@ -533,7 +533,7 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
     if(c.name.equals("Angela") && !hasEffect(def, "NoEffect") && !def.NBTTags.contains("Unhealable") && max(abs(c.x - def.x), abs(c.y - def.y)) <= 1 && def.player == c.player)
     {
       atk = max(0, atk - 3);
-      if(def.category.contains(4)) atk = max(0, atk - 1);
+      if(def.category.contains(3)) atk = max(0, atk - 1);
       if(def.category.contains(1)) atk = max(0, atk - 1);
     }
     if(c.category.contains(1) && c != playField.get(takeHit) && defName.equals("Vinod")) has8H = true;

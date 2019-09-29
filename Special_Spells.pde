@@ -169,7 +169,7 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
   {
     Effected.ATK += 3;
     heal(Effected, 4);
-    if(Effected.category.contains(4))
+    if(Effected.category.contains(3))
     {
       Effected.ATK += 1;
       heal(Effected, 1);

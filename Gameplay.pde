@@ -1,3 +1,16 @@
+/*
+Table of Contents:
+7 - 300: General Decoration
+301 - 343: Animations (Specifically Moving)
+344 - 409: Drawing cards on playfield. This requires accounting for cards' who have abilities that do not permanently change a card's stats, in order to properly display their stats.
+410 - 449: Drawing cards in hand. Easy and Simple, no special things needed.
+450 - 529: Drawing the selected card (HAND)'s special stats, such as categories, ability, etc.
+530 - 785: Drawing the selected card in playfield's special things. This includes effects, ACTIONS (Like moving, attacking), Hitcircles when in attacking or moving move, etc.
+If you want to add a new action for a card, scroll to 631. This is where Hubert, Ethan, Ms. Iceberg, and Neil's special actions are displayed. In terms of the actual input and button pressing logic, NOTHING is neccesary, unless there are special conditions for which cards can be targeted. In that case, go to Input Line 80.
+786 - 817: Player attacking, and targeted effects upon spawning.
+818 - 1011: General Design for circles and cards.
+1012 - End: Placing card logic. NOT the effects! This only checks if you can place the card or not. 
+*/
 public void play()
 {  
   textAlign(CENTER, CENTER);
@@ -367,7 +380,7 @@ public void play()
     {
       for(Card d: playField)
       {
-        if(d.name.equals("Mandaran") && max(abs(c.x - d.x), abs(c.y - d.y)) <= 1 && c.category.contains(4) && d.player == c.player) 
+        if(d.name.equals("Mandaran") && max(abs(c.x - d.x), abs(c.y - d.y)) <= 1 && c.category.contains(3) && d.player == c.player) 
         {
           atk += 3;
           if(!c.name.equals("Ultrabright"))
@@ -472,9 +485,7 @@ public void play()
     int counter = 0;
     for(int i: p[playerTurn].hand.get(cardSelected).category)
     {
-      String categName = ""; 
-      if(i == 0) categName = "Class G"; else if (i == 1) categName = "Class H"; else if(i == 2) categName = "Elite"; else if(i == 3) categName = "Traveller"; else if(i == 4) categName = "Non-Elite"; else if(i == 5) categName = "Prototype"; else if(i == 6) categName = "Novelty";
-
+      String categName = categNames[i];
       textSize(8);
       noFill();
       stroke(255);
@@ -555,8 +566,7 @@ public void play()
       counter = 0;
       for(int i: playField.get(playFieldSelected).category)
       {
-        String categName = ""; 
-        if(i == 0) categName = "Class G"; else if (i == 1) categName = "Class H"; else if(i == 2) categName = "Elite"; else if(i == 3) categName = "Traveller"; else if(i == 4) categName = "Non-Elite"; else if(i == 5) categName = "Prototype"; else if(i == 6) categName = "Novelty";
+        String categName = categNames[i];
         textSize(8);
         noFill();
         stroke(255);
@@ -624,6 +634,7 @@ public void play()
       String displayText = "";
       color darker = 0;
       color lighter = 0;
+      // To add new SPECIAL effects, please enter here
       if(pName.equals("Hubert")) darker = 0xff095A81; 
       if(pName.equals("Ethan")) darker = 0xff013107;
       if(pName.equals("Neil")) darker = #6C590D; 
@@ -650,15 +661,16 @@ public void play()
     
     if(choice == 0)
     {
-      if(playField.get(playFieldSelected).name.equals("Hubert") || playField.get(playFieldSelected).name.equals("Neil") && playField.get(playFieldSelected).player == playerTurn)
-        for(Card c: playField)
-          if(c.player == (playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && (!playField.get(playFieldSelected).name.equals("Hubert")) || c.NBTTags.contains("Unhealable"))
-            hitCircle(c.x, c.y);
-      
-      if((playField.get(playFieldSelected).name.equals("Ethan") || playField.get(playFieldSelected).name.equals("Ms. Iceberg")) && playField.get(playFieldSelected).player == playerTurn)
-        for(Card c: playField)
-          if(c.player != (playField.get(playFieldSelected).player) && !hasEffect(c, "NoEffect") && (c.cost < 5 || !playField.get(playFieldSelected).name.equals("Ethan")))
-            hitCircle(c.x, c.y);
+      for(Card c: playField)
+      {
+        int sideTarget;
+        if(playField.get(playFieldSelected).name.equals("Hubert") || playField.get(playFieldSelected).name.equals("Neil")) sideTarget = playField.get(playFieldSelected).player; else sideTarget = playField.get(playFieldSelected).player % 2 + 1;
+        boolean condition = true;
+        if(playField.get(playFieldSelected).name.equals("Hubert")) condition = !c.NBTTags.contains("Unhealable");
+        if(playField.get(playFieldSelected).name.equals("Ethan")) condition = c.cost < 5;
+        if(c.player == sideTarget && !hasEffect(c, "NoEffect") && condition)
+          hitCircle(c.x, c.y);
+      }
     }
     if(choice == 1)
     {   
@@ -716,7 +728,7 @@ public void play()
         int rng = playField.get(playFieldSelected).RNG;
         for(Card d: playField)
         {
-          if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(4) && d.player == playField.get(playFieldSelected).player) 
+          if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(3) && d.player == playField.get(playFieldSelected).player) 
           {
             if(!playField.get(playFieldSelected).name.equals("Ultrabright"))
               rng += 1;
@@ -789,16 +801,19 @@ public void play()
     }
   }
   
-  if(abilitySelected != -1)
+  if(abilitySelected != -1) // Jason C, Jefferson, George, Anthony, Etc.
   {
-    int condition;
+    int playerCondition;
     if(playField.get(abilitySelected).NBTTags.contains("OppTargetedEffect"))
-      condition = playField.get(abilitySelected).player % 2 + 1;
+      playerCondition = playField.get(abilitySelected).player % 2 + 1;
     else 
-      condition = playField.get(abilitySelected).player;
+      playerCondition = playField.get(abilitySelected).player;
     for(Card c: playField)
-      if (c.player == condition && !hasEffect(c, "NoEffect"))
+    {
+      boolean targetCondition = true; 
+      if(c.player == playerCondition && !hasEffect(c, "NoEffect") && targetCondition)
         hitCircle(c.x, c.y);
+    }
   }
 }
 
@@ -855,7 +870,7 @@ public void cardDisplay(int x, int y, float scale, Card c, int specialCase)
   textSize(12);
   int textThickness = (int) (textWidth(c.displayName) / 90) * 20 + 20;
   int co = 0; // Colour
-  if(c.category.contains(2)) co = 0xffE51515; if(c.category.contains(4)) co = 0xff529EFF; if(c.category.contains(3)) co = 0xff16BC0B; if(c.category.contains(5)) co = 200; if(c.category.contains(6)) co = 0xffB536F5; 
+  for(int index: c.category) co = categColour[index];
   if(co != 0)
     fill(co, 190);
   else fill(100, 190);
@@ -937,7 +952,7 @@ public void cardDisplay(int x, int y, float scale, Card c, int atk, int mvmt, in
   textSize(12);
   int textThickness = (int) (textWidth(c.displayName) / 90) * 20 + 20;
   int co = 0; // Colour
-  if(c.category.contains(2)) co = 0xffE51515; if(c.category.contains(4)) co = 0xff529EFF; if(c.category.contains(3)) co = 0xff16BC0B; if(c.category.contains(5)) co = 200; if(c.category.contains(6)) co = 0xffB536F5; 
+  for(int index: c.category) co = categColour[index];
   if(co != 0)
     fill(co, 190);
   else fill(100, 190);
@@ -1021,88 +1036,83 @@ public void draggingCards()
           spaceEmpty = false;
       }
     }
-    
-    if(true) // OOPS
+  
+    boolean canPlaceDown = true;
+    for(Card c: playField)
     {
-      boolean canPlaceDown = true;
-
-      for(Card c: playField)
+      int temp = resetCard(p[playerTurn].hand.get(cardSelected)).cost;
+      if(c.name.equals("Snake") && c.player == playerTurn)
       {
-        int temp = resetCard(p[playerTurn].hand.get(cardSelected)).cost;
-        if(c.name.equals("Snake") && c.player == playerTurn)
+        if(temp < 5)
+          canPlaceDown = false;
+      }
+    }
+    if(p[playerTurn].hand.get(cardSelected).isSpell && p[playerTurn].hand.get(cardSelected).cost <= p[playerTurn].cash && canPlaceDown)
+    {
+      if(p[playerTurn].hand.get(cardSelected).spellTarget.equals("You")) // placed on your own cards
+      {
+        String name = p[playerTurn].hand.get(cardSelected).name;
+        for(Card c: playField)
         {
-          if(temp < 5)
-            canPlaceDown = false;
+          if(c.player == playerTurn && !hasEffect(c, "NoEffect") && !(p[playerTurn].hand.get(cardSelected).NBTTags.contains("AttackBoostSpell") && c.NBTTags.contains("Unbuffable")) && !(name.equals("Defense Position") && c.NBTTags.contains("Unhealable")) && !(name.equals("Dragon Wings") && (c.name.equals("Ultrabright"))))
+          {
+            int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
+
+            if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
+            {
+              useSpell(p[playerTurn].hand.get(cardSelected).name, playField.indexOf(c));
+              p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
+              if(!p[playerTurn].hand.get(cardSelected).summoned)
+                p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
+              p[playerTurn].hand.remove(cardSelected);
+              break;
+            }
+          }
         }
       }
-      
-      if(p[playerTurn].hand.get(cardSelected).isSpell && p[playerTurn].hand.get(cardSelected).cost <= p[playerTurn].cash && canPlaceDown)
+      else if(p[playerTurn].hand.get(cardSelected).spellTarget.equals("All"))
       {
-        if(p[playerTurn].hand.get(cardSelected).spellTarget.equals("You")) // placed on your own cards
+        if(x < 600 && x > 100 && y > 100 && y < 700)
         {
           String name = p[playerTurn].hand.get(cardSelected).name;
-          for(Card c: playField)
-          {
-            if(c.player == playerTurn && !hasEffect(c, "NoEffect") && !(p[playerTurn].hand.get(cardSelected).NBTTags.contains("AttackBoostSpell") && c.NBTTags.contains("Unbuffable")) && !(name.equals("Defense Position") && c.NBTTags.contains("Unhealable")) && !(name.equals("Dragon Wings") && (c.name.equals("Ultrabright"))))
-            {
-              int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
-  
-              if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
-              {
-                useSpell(p[playerTurn].hand.get(cardSelected).name, playField.indexOf(c));
-                p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
-                if(!p[playerTurn].hand.get(cardSelected).summoned)
-                  p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
-                p[playerTurn].hand.remove(cardSelected);
-                break;
-              }
-            }
-          }
+          p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
+          if(!p[playerTurn].hand.get(cardSelected).summoned)
+            p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
+          p[playerTurn].hand.remove(cardSelected);
+          useSpell(playerTurn, name);
         }
-        else if(p[playerTurn].hand.get(cardSelected).spellTarget.equals("All"))
-        {
-          if(x < 600 && x > 100 && y > 100 && y < 700)
-          {
-            String name = p[playerTurn].hand.get(cardSelected).name;
-            p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
-            if(!p[playerTurn].hand.get(cardSelected).summoned)
-              p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
-            p[playerTurn].hand.remove(cardSelected);
-            useSpell(playerTurn, name);
-          }
-        }
-        else if(p[playerTurn].hand.get(cardSelected).spellTarget.equals("Opp"))
-        {
-          for(Card c: playField)
-          {
-            if(c.player != playerTurn && !hasEffect(c, "NoEffect"))
-            {
-              int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
-  
-              if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
-              {
-                useSpell(p[playerTurn].hand.get(cardSelected).name, playField.indexOf(c));
-                p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
-                if(!p[playerTurn].hand.get(cardSelected).summoned)
-                  p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
-                p[playerTurn].hand.remove(cardSelected);
-                break;
-              }
-            }
-          }
-        }
-      } 
-      else if(x < 600 && x > 100 && y > 600 && y < 700 && p[playerTurn].hand.get(cardSelected).cost <= p[playerTurn].cash && canPlaceDown && spaceEmpty) // Places the card down if it's in a valid spot
-      {
-        p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;   
-        int tempy;
-        if(playerTurn == 1) tempy = (y / 100 - 1) + 1; else tempy = 6 - (y / 100 - 1);
-
-        placeCard(playerTurn, p[playerTurn].hand.get(cardSelected), (x / 100 - 1) % 5 + 1, tempy, false);
-        if(!p[playerTurn].hand.get(cardSelected).summoned)
-                  p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
-        p[playerTurn].hand.remove(cardSelected);
       }
+      else if(p[playerTurn].hand.get(cardSelected).spellTarget.equals("Opp"))
+      {
+        for(Card c: playField)
+        {
+          if(c.player != playerTurn && !hasEffect(c, "NoEffect"))
+          {
+            int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
+
+            if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
+            {
+              useSpell(p[playerTurn].hand.get(cardSelected).name, playField.indexOf(c));
+              p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;
+              if(!p[playerTurn].hand.get(cardSelected).summoned)
+                p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
+              p[playerTurn].hand.remove(cardSelected);
+              break;
+            }
+          }
+        }
+      }
+    } 
+    else if(x < 600 && x > 100 && y > 600 && y < 700 && p[playerTurn].hand.get(cardSelected).cost <= p[playerTurn].cash && canPlaceDown && spaceEmpty) // Places the card down if it's in a valid spot
+    {
+      p[playerTurn].cash -= p[playerTurn].hand.get(cardSelected).cost;   
+      int tempy;
+      if(playerTurn == 1) tempy = (y / 100 - 1) + 1; else tempy = 6 - (y / 100 - 1);
+
+      placeCard(playerTurn, p[playerTurn].hand.get(cardSelected), (x / 100 - 1) % 5 + 1, tempy, false);
+      if(!p[playerTurn].hand.get(cardSelected).summoned)
+                p[playerTurn].deck.add(resetCard(p[playerTurn].hand.get(cardSelected)));
+      p[playerTurn].hand.remove(cardSelected);
     }
     cardSelected = -1; // Sets no card to be selected
   }

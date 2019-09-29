@@ -120,17 +120,17 @@ public void mainMenu()
   if(animationToggle)
   {
     fill(100, 190);
-    text("REPLAY ON!", 200 + 3, 400 + 3);
+    text("ANIMATIONS ON!", 200 + 3, 400 + 3);
     
     fill(255);
-    text("REPLAY ON!", 200, 400);
+    text("ANIMATIONS ON!", 200, 400);
   } else
   {
     fill(100, 190);
-    text("REPLAY OFF!", 200 + 3, 400 + 3);
+    text("ANIMATIONS OFF!", 200 + 3, 400 + 3);
     
     fill(255);
-    text("REPLAY OFF!", 200, 400);
+    text("ANIMATIONS OFF!", 200, 400);
   }
    
   noStroke();
@@ -283,7 +283,8 @@ public void chooseDeck(int playerDeck)
   
   strokeWeight(3);
   String sortBy = "";
-  if(sort == 0) sortBy = "All"; if(sort == 1) sortBy = "Class G"; if(sort == 2) sortBy = "Class H"; if(sort == 3) sortBy = "Elite"; if(sort == 4) sortBy = "Non-Elite"; if(sort == 5) sortBy = "Traveller"; if(sort == 6) sortBy = "Prototype"; if(sort == 7) sortBy = "Novelty";
+  if(sort == 0) sortBy = "All"; 
+  else sortBy = categNames[sort - 1];
   noFill();
   stroke(100, 190);
   rect(65 + 3, 500 + 3, 90, 90);
@@ -291,18 +292,19 @@ public void chooseDeck(int playerDeck)
   fill(100, 190);
   textAlign(CENTER, CENTER);
   text("Sorting By: ", 65 + 3, 497 + 3, 80, 80);
-  textSize(15);
+  textSize(13);
   text(sortBy, 65 + 3, 510 + 3, 80, 80);
   
   int co = 0; 
-  if(sort == 0) co = 0xff767676; if(sort == 1) co = 0xff759AE8; if(sort == 2) co = 0xffF2C42C; if(sort == 3) co = 0xffE51515; if(sort == 4) co = 0xff529EFF; if(sort == 5) co = 0xff16BC0B; if(sort == 6) co = 200; if(sort == 7) co = 0xffB536F5;
+  if(sort == 0) co = 0xff767676; 
+  else co = categColour[sort - 1];
   fill(co, 190);
   stroke(255);
   rect(65, 500, 90, 90);
   textSize(15);
   fill(255);
   text("Sorting By: ", 65, 497, 80, 80);
-  textSize(15);
+  textSize(13);
   text(sortBy, 65 , 510 , 80, 80);
   
   // Back button
@@ -371,20 +373,7 @@ public void chooseDeck(int playerDeck)
   int correctX = 0, correctY = 0;
   for(int i = 0; i < collection.length; i++)
   {
-    if(sort == 1) // Class G
-      if(!collection[i].category.contains(0)) continue;
-    if(sort == 2) // Class H
-      if(!collection[i].category.contains(1)) continue;
-    if(sort == 3) // Elite
-      if(!collection[i].category.contains(2)) continue;
-    if(sort == 4) // Non-Elite
-      if(!collection[i].category.contains(4)) continue;
-    if(sort == 5) // Traveller
-      if(!collection[i].category.contains(3)) continue;
-    if(sort == 6) // Prototype
-      if(!collection[i].category.contains(5)) continue;
-    if(sort == 7) // Novelty
-      if(!collection[i].category.contains(6)) continue;
+    if(!collection[i].category.contains(sort - 1) && sort != 0) continue;
     int x = j % 5;
     int y = j / 5 - scroll;
     if(collectionSelected == i) { correctX = x; correctY = y; }
@@ -399,7 +388,8 @@ public void chooseDeck(int playerDeck)
     if(y >= 280 && y <= 730)
     {
       int cC = 0;
-      if(collection[i].category.contains(1)) cC = 0xffF2C42C; if(collection[i].category.contains(2)) cC = 0xffE51515; if(collection[i].category.contains(4)) cC = 0xff529EFF; if(collection[i].category.contains(3)) cC = 0xff16BC0B; if(collection[i].category.contains(5)) cC = 200; if(collection[i].category.contains(6)) cC = 0xffB536F5; 
+      for(int index: collection[i].category) cC = categColour[index];
+      
       fill(cC, 50);
       if(collection[i].isSpell) noFill();
       if(alreadyInDeck) fill(100, 100);
@@ -453,10 +443,7 @@ public void chooseDeck(int playerDeck)
     int counter = 0;
     for(int i: offlineDecks[playerDeck] [deckSelected].category)
     {
-      String categName = ""; 
-      if(i == 0) categName = "Class G"; else if (i == 1) categName = "Class H"; else if(i == 2) categName = "Elite"; else if(i == 3) categName = "Traveller"; else if(i == 4) categName = "Non-Elite"; else if(i == 5) categName = "Prototype"; else if(i == 6) categName = "Novelty";
-      
-
+      String categName = categNames[i];
       textSize(8);
       noFill();
       stroke(255);
@@ -511,9 +498,7 @@ public void chooseDeck(int playerDeck)
       int counter = 0;
       for(int i: collection[collectionSelected].category)
       {
-        String categName = ""; 
-      if(i == 0) categName = "Class G"; else if (i == 1) categName = "Class H"; else if(i == 2) categName = "Elite"; else if(i == 3) categName = "Traveller"; else if(i == 4) categName = "Non-Elite"; else if(i == 5) categName = "Prototype"; else if(i == 6) categName = "Novelty";
-  
+        String categName = categNames[i];
         textSize(8);
         noFill();
         stroke(255);
