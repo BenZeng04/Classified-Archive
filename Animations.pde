@@ -42,10 +42,10 @@ void actionAnimate()
       textSize(60);
       
       fill(170, transparency - 40);
-      text("Gone", a.x * 100 + 50 + 3, yF + 3);
+      text("GONE", a.x * 100 + 50 + 3, yF + 3);
       
       fill(0, transparency);
-      text("Gone", a.x * 100 + 50, yF);
+      text("GONE", a.x * 100 + 50, yF);
     }
     else
     {
@@ -59,21 +59,23 @@ void actionAnimate()
       switch(a.type) 
       {
         case 2:
-          lighter = 0xff1D87CB; darker = 0xff74C8FF; textDisplay = "Heal"; break;
+          lighter = 0xff1D87CB; darker = 0xff74C8FF; textDisplay = "HEAL"; break;
         case 3:
-          lighter = 0xff5DF247; darker = 0xff86FF74; textDisplay = "Effected"; break;  
+          lighter = 0xff5DF247; darker = 0xff86FF74; textDisplay = "EFFECTED"; break;  
         case 4:
           lighter = 0xffA21DCB; darker = 0xffB91AEA; break;  
         case 5:
           lighter = 255; darker = 190; break;  
         case 6:
-          lighter = 50; darker = 0; textDisplay = "Discard"; break;  
+          lighter = 50; darker = 0; textDisplay = "DISCARD"; break;  
         case 7:
-          lighter = 0xff5DF247; darker = 0xff86FF74; textDisplay = a.name; break;  
+          lighter = 0xff5DF247; darker = 0xff86FF74; textDisplay = a.name.toUpperCase(); break;  
         case 10:
-          lighter = 0xffFF0A85; darker = 0xff810945; textDisplay = "Special"; break;  
+          lighter = 0xffFF0A85; darker = 0xff810945; textDisplay = "SPECIAL"; break;  
         case 11:
-          lighter = #E3CA67; darker = #6C590D; textDisplay = "Buff"; break;  
+          lighter = #E3CA67; darker = #6C590D; textDisplay = "BUFF"; break;  
+        case 12:
+          lighter = #762BFA; darker = #3B1383; textDisplay = "DESTROY"; break;  
       }
       fill(lighter, transparency);
       stroke(darker, transparency);

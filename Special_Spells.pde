@@ -191,6 +191,11 @@ public void spawnEffects(String name, int indexName, int indexSpawn)
     Effected.ATK -= 6; Effected.ATK = max(0, Effected.ATK);
     Effected.HP -= 6;
   }
+  else if(name.equals("UNNAMED"))
+  {
+    Effected.HP = 0;
+    Effected.effects.clear();
+  }
 }
 
 public void specialAbility(int indexUser, int indexOpp, String type)
@@ -230,6 +235,12 @@ public void specialAbility(int indexUser, int indexOpp, String type)
     playFieldSelected = indexUser;
     attackCard(-4, indexOpp, false);
     startAnimation(10, playField.get(indexOpp).x, playField.get(indexOpp).y);
+  }
+  if(type.equals("UNNAMED"))
+  {
+    playField.get(indexOpp).HP = 0;
+    playField.get(indexOpp).effects.clear();
+    startAnimation(12, playField.get(indexOpp).x, playField.get(indexOpp).y);
   }
 }
 

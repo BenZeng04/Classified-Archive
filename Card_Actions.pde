@@ -453,9 +453,6 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
   // Here, nullified cards automatically get their effects removed as their name is changed. Some cards still need to be hardcoded however.
   if(attacker == -1) playerSelected = true;
   if(attacker < -1) { spellAttack = attacker; attacker = -1; loop = false;} // FIREBALL
-  if(spellAttack == -1) 
-    startAnimation(1, playField.get(takeHit).x, playField.get(takeHit).y);
-  
   if(attacker == -1)
     atkName = "NonCard";
   else 
@@ -475,7 +472,9 @@ public void attackCard(int attacker, int takeHit, boolean loop) // Logic for whe
   if(hasBen20) {
     takeHit = indexOfBen20; defName = "Ben 2.0"; def = playField.get(indexOfBen20);
   }
-  
+  if(spellAttack == -1) 
+    startAnimation(1, playField.get(takeHit).x, playField.get(takeHit).y);
+    
   // Precalculations - How much damage needs to be dealt! NO OTHER EFFECTS HERE.  
   
   if(attacker > -1) // Setting up attack nerfs/ buffs. Generally this requires the attacker to be a card and not a spell.

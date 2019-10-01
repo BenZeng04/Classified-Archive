@@ -6,6 +6,13 @@ Lead Developer: Ben Zeng (yeahbennou#5727)
  Current Date: 2019-09-10
  */
 
+/* TODO List
+Fix Action buttons so that they are grayed out if there is no possible move. (CHECK)
+When Placing card, make the spawn area red if cannot place. (CHECK)
+Add more new world cards
+Settings!
+Renaming Spells
+*/
 boolean testMode = true;
 
 Card [] collection; // All cards and spells in the game.
@@ -96,6 +103,7 @@ int selfX, selfY; // Ethan's suicide bomb
 PImage menuBG;
 PImage icon, qMark, credit;
 PImage health, attack, movement, range;
+PImage shield, lock;
 PImage playFieldIcon;
 /*
 To-Do
@@ -119,6 +127,8 @@ public void setup()
   health = loadImage("HP.png");
   attack = loadImage("ATK.png");
   movement = loadImage("MVMT.png");
+  shield = loadImage("Shield.png");
+  lock = loadImage("Lock.png");
   range = loadImage("RNG.png");
   menuBG.resize(width, height);
   p[1] = new Player();
@@ -455,10 +465,10 @@ public void handOverEffects(int opp) // Actual card effects when handing over tu
   }
   for (Card c : playField)
   {
-    if (c.name.equals("King Henry") && c.player == opp) // Double attack this turn
+    if(c.name.equals("King Henry") && c.player == opp) // Double attack this turn
     {
-      for (Card d : playField)
-        if (c.player == opp)
+      for(Card d : playField)
+        if(d.player == opp)
           addEffect(1, d, "2X ATK");
     }
   }

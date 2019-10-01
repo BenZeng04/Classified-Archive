@@ -74,12 +74,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       {
         for(Card c: playField)
         {
-          int sideTarget;
-          if(playField.get(playFieldSelected).name.equals("Hubert") || playField.get(playFieldSelected).name.equals("Neil")) sideTarget = playField.get(playFieldSelected).player; else sideTarget = playField.get(playFieldSelected).player % 2 + 1;
-          boolean condition = true;
-          if(playField.get(playFieldSelected).name.equals("Hubert")) condition = !c.NBTTags.contains("Unhealable");
-          if(playField.get(playFieldSelected).name.equals("Ethan")) condition = c.cost < 5;
-          if(c.player == sideTarget && !hasEffect(c, "NoEffect") && condition)
+          if(canSpecial(c))
           {
             int yOfCircle = c.y * 100 + 50; if(playerTurn == 2) yOfCircle = c.y * -100 + 750;
             if(dist(c.x * 100 + 50, yOfCircle, mouseX, mouseY) < 50)
@@ -96,189 +91,61 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       
       if(choice == 1)
       {
-        int mvmt = playField.get(playFieldSelected).MVMT;
-        if(hasEffect(playField.get(playFieldSelected), "Slowdown")) mvmt -= 1; 
+        // Logic when clicking on places you can move to.
         for(int n = 0; n < 4; n++)
         {
           if(n > 1 && !hasEffect(playField.get(playFieldSelected), "SideMove")) break;
-          for(int j = 1; j <= mvmt; j++) // Moving
+          for(int j = 1; j <= calculateMovement(playField.get(playFieldSelected)); j++) // Moving
           {
             int mx = playField.get(playFieldSelected).x, my = playField.get(playFieldSelected).y;
-            boolean availible = true;
-            if(playField.get(playFieldSelected).player != playerTurn)
-              break;
-            for(Card c: playField)
-            {
-              if(n == 0)
-              {         
-                if(c.x == mx && c.y == my - j || my <= j)
-                  availible = false;
-              }
-              if(n == 1)
-              {
-                if(c.x == mx && c.y == my + j || my + j > 6)
-                  availible = false;
-              }
-              if(n == 2)
-              {
-                if(c.x == mx - j && c.y == my || mx <= j)
-                  availible = false;
-              }
-              if(n == 3)
-              {
-                if(c.x == mx + j && c.y == my || mx + j > 5)
-                  availible = false;
-              }
-            }
-            if(availible)
+            if(availibleMove(mx, my, n, j))
             {
               int updateY = my; if(n == 0) updateY -= j; if(n == 1) updateY += j;
               int updateX = mx; if(n == 2) updateX -= j; if(n == 3) updateX += j;
-              if(playerTurn == 1)
+              int circleY = updateY * 100 + 50; if(playerTurn == 2) circleY = updateY * -100 + 750;
+              if(dist(mouseX, mouseY, updateX * 100 + 50, circleY) < 50)
               {
-                if(dist(mouseX, mouseY, updateX * 100 + 50, updateY * 100 + 50) < 50)
+                int moveMultiplier = 1; // Multiplier for the amount of tiles moved. 
+                if(n % 2 == 0) moveMultiplier = -1; // Negative if n (move type, since it runs through all 4 of them to check for availible move slots) is a multiple of 2
+                if(n < 2) moveCard(playFieldSelected, j * moveMultiplier); // If n < 2, the move type is normal moving, not side moving.
+                else moveCardSide(playFieldSelected, j * moveMultiplier);
+                // Adding the move
+                if(mode == 0)
                 {
                   Move m = new Move();
                   m.type = 5;
                   m.targeter = playFieldSelected;
-                  if(n == 0)
-                  {
-                    m.distance = -j;
-                    m.sideMove = false;
-                    moveCard(playFieldSelected, -j);
-                  }
-                  if(n == 1)
-                  {
-                    m.distance = j;
-                    m.sideMove = false;
-                    moveCard(playFieldSelected, j);
-                  }
-                  if(n == 2)
-                  {
-                    m.distance = -j;
-                    m.sideMove = true;
-                    moveCardSide(playFieldSelected, -j);
-                  }
-                  if(n == 3)
-                  {
-                    m.distance = j;
-                    m.sideMove = true;
-                    moveCardSide(playFieldSelected, j);
-                  }
+                  m.sideMove = false;
+                  m.distance = j * moveMultiplier;
                   moves.add(m);
-                  playField.get(playFieldSelected).canMove = false;
-                  if(!playField.get(playFieldSelected).name.equals("Simon"))
-                    playField.get(playFieldSelected).attackCount = 0;
-                  choice = -1;
-                  temporary = false;
                 }
-              }
-              else
-              {
-                if(dist(mouseX, mouseY, updateX * 100 + 50, updateY * -100 + 750) < 50)
-                {
-                  Move m = new Move();
-                  m.type = 5;
-                  m.targeter = playFieldSelected;
-                  if(n == 0)
-                  {
-                    m.distance = -j;
-                    m.sideMove = false;
-                    moveCard(playFieldSelected, -j);
-                  }
-                  if(n == 1)
-                  {
-                    m.distance = j;
-                    m.sideMove = false;
-                    moveCard(playFieldSelected, j);
-                  }
-                  if(n == 2)
-                  {
-                    m.distance = -j;
-                    m.sideMove = true;
-                    moveCardSide(playFieldSelected, -j);
-                  }
-                  if(n == 3)
-                  {
-                    m.distance = j;
-                    m.sideMove = true;
-                    moveCardSide(playFieldSelected, j);
-                  }
-                  moves.add(m);
-                  playField.get(playFieldSelected).canMove = false;
-                  if(!playField.get(playFieldSelected).name.equals("Simon"))
-                    playField.get(playFieldSelected).attackCount = 0;
-                  choice = -1;
-                  temporary = false;
-                }
+                // Effects
+                playField.get(playFieldSelected).canMove = false;
+                if(!playField.get(playFieldSelected).name.equals("Simon"))
+                  playField.get(playFieldSelected).attackCount = 0;
+                choice = -1;
+                temporary = false;
               }
             }
             else break;
           }
         }
-        
       }
       // Attacking
       if(choice == 2)
       {
         for(int q = 0; q < 4; q++)
         {
-          int rng = playField.get(playFieldSelected).RNG;
-          for(Card d: playField)
-          {
-            if(d.name.equals("Mandaran") && max(abs(playField.get(playFieldSelected).x - d.x), abs(playField.get(playFieldSelected).y - d.y)) <= 1 && playField.get(playFieldSelected).category.contains(3) && d.player == playField.get(playFieldSelected).player) 
-            {
-              if(!playField.get(playFieldSelected).name.equals("Ultrabright"))
-                rng += 1;
-            }
-            if(d.name.equals("Ridge Rhea") && playField.get(playFieldSelected) != d && !playField.get(playFieldSelected).name.equals("Ultrabright") && d.player == playField.get(playFieldSelected).player && d.x == playField.get(playFieldSelected).x) rng += 2;
-          }
-          if(hasEffect(playField.get(playFieldSelected), "NVW")) rng++;
+          int rng = calculateRange(playField.get(playFieldSelected));
           // Showing places you can attack 
           for(int i = 1; i <= rng; i++) //
           {
             int mx = playField.get(playFieldSelected).x, my = playField.get(playFieldSelected).y;
-            int takeHit = 0; // Getting attacked
-            boolean canAttack = false;
-            boolean availible = true; // Availible doesnt mean that you can attack that spot, it just means that it won't quit.
-            boolean cap; if(q == 0) cap = my <= i; else if(q == 1) cap = my + i > 6; else if(q == 2) cap = mx + i > 5; else cap = mx <= i; // If attacking player
-            if(q == 0) my -= i; if( q == 1) my += i; if(q == 2) mx += i; if(q == 3) mx -= i;// Where to attack
-            if(playField.get(playFieldSelected).player != playerTurn)
-              break;
-            if(cap)
-            {
-              boolean firstTurn = true;
-              if(playField.get(playFieldSelected).turnPlacedOn != p[playerTurn].turn || (playField.get(playFieldSelected).name.equals("Mr. Pegamah"))) { firstTurn = false;}
-              
-              if((playerTurn == 1 && q == 0) || (playerTurn == 2 && q == 1))
-              {
-                if(firstTurn)
-                  canAttack = false;
-                else
-                  canAttack = true; // Attacking the player 
-              }
-              availible = false;
-            }
-
-            for(Card c: playField)
-            {
-              if(c.x == mx && c.y == my)
-              {
-                if((!playField.get(playFieldSelected).name.equals("Matthew") && !playField.get(playFieldSelected).name.equals("Ultrabright")) && c.player != playerTurn)
-                  availible = false;
-                if(c.player != playerTurn)
-                {
-                  canAttack = true; // Basically finds closest card that isnt yours. 
-                  takeHit = playField.indexOf(c);
-                }
-                if(hasEffect(c, "Invincible")) canAttack = false;
-              }      
-            }
-            
-            if(canAttack) 
+            if(q == 0) my -= i; if(q == 1) my += i; if(q == 2) mx += i; if(q == 3) mx -= i;// Where to attack
+            if(canAttack(mx, my, q)) 
             {
               int opp = playerTurn % 2 + 1;
-              if(cap) // Attacking Player 
+              if(outOfField(mx, my, q)) // Attacking Player 
               {
                 if(dist(mouseX, mouseY, 350, 50) < 50)
                 {
@@ -292,7 +159,6 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
               }
               else
               {
-                
                 int yBound; if(playerTurn == 1) yBound = my * 100 + 50; else yBound = my * -100 + 750;
                 if(dist(mouseX, mouseY, mx * 100 + 50, yBound) < 50)
                 {
@@ -303,7 +169,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
                     Move m = new Move();
                     m.type = 4;
                     m.targeter = playFieldSelected;
-                    m.targeted = takeHit;
+                    m.targeted = findCard(mx, my);
                     m.x = playField.get(playFieldSelected).x;
                     m.y = playField.get(playFieldSelected).y;
                     m.name = playField.get(playFieldSelected).name;
@@ -312,12 +178,12 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
                   if(!playField.get(playFieldSelected).name.equals("Simon"))
                     playField.get(playFieldSelected).canMove = false; 
                   playField.get(playFieldSelected).attackCount --;
-                  attackCard(playFieldSelected, takeHit, true);
+                  attackCard(playFieldSelected, findCard(mx, my), true);
                   
                   // Antnohy effect 
-                  if(playField.get(playFieldSelected).name.equals("Antnohy") && !hasEffect(playField.get(takeHit), "Invincible"))
+                  if(playField.get(playFieldSelected).name.equals("Antnohy") && !hasEffect(playField.get(findCard(mx, my)), "Invincible"))
                   {
-                    int x = playField.get(takeHit).x, y = playField.get(takeHit).y;
+                    int x = mx, y = my;
                     for(int l = 0; l < 9; l++)
                     {
                       if(l != 4)
@@ -329,9 +195,9 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
                       }
                     }
                   }
-                  if(playField.get(playFieldSelected).name.equals("GeeTraveller") && !hasEffect(playField.get(takeHit), "Invincible"))
+                  if(playField.get(playFieldSelected).name.equals("GeeTraveller") && !hasEffect(playField.get(findCard(mx, my)), "Invincible"))
                   {
-                    int x = playField.get(takeHit).x, y = playField.get(takeHit).y;
+                    int x = mx, y = my;
                     for(int l = 1; l <= 6; l++)
                       if(l != y)                     
                         if(findCard(x, l, opp) != -1)
@@ -340,10 +206,8 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
                 }
               }
             }
-            if(!availible)
-            {
+            if(!availibleAttack(mx, my, q))
               break;
-            }
           }
         }
       }
@@ -408,9 +272,12 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
       for(Card c: playField)
       {
         int yPos = c.y * 100 + 50; if(playerTurn == 2) yPos = c.y * -100 + 750;
+
+        boolean targetCondition = true; 
+        if(playField.get(abilitySelected).name.equals("UNNAMED")) targetCondition = c.cost >= 5 && c != playField.get(abilitySelected);
         if(abilitySelected != -1)
         {
-          if(c.player == condition && !hasEffect(c, "NoEffect"))
+          if(c.player == condition && !hasEffect(c, "NoEffect") && targetCondition)
           {
             if(dist(c.x * 100 + 50, yPos, mouseX, mouseY) < 50)
             {
@@ -549,7 +416,7 @@ if(mode == 0 && clickDelay == 0 && !inAnimation && !moveAnimation && !inTransiti
     int correctX = 0, correctY = 0, count = 0;
     for(int i = 0; i < collection.length && !addingCard; i++)
     {
-      if(!collection[i].category.contains(sort - 1)) continue;
+      if(!collection[i].category.contains(sort - 1) && sort != 0) continue;
       int x = count % 5;
       int y = count / 5 - scroll;
       if(collectionSelected == i) { correctX = x; correctY = y; }

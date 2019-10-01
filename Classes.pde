@@ -78,12 +78,11 @@ class Card
   public void setupNBT() // WIP
   {
     displayName = name;
-    if(name.equals("Ethan") || name.equals("Hubert") || name.equals("Ms. Iceberg") || name.equals("Neil")) NBTTags.add("SpecialMove");
+    if(name.equals("Ethan") || name.equals("Hubert") || name.equals("Ms. Iceberg") || name.equals("Neil") || name.equals("UNNAMED")) NBTTags.add("SpecialMove");
     if(name.equals("Ben 2.0") || name.equals("Hexagonal")) NBTTags.add("Unhealable");
-    if(name.equals("Mr. Pegamah")) NBTTags.add("Unbuffable");
     if(name.equals("Attack Positon") || name.equals("Raw Eggs and Soy Sauce")) NBTTags.add("AttackBoostSpell");
     if(name.equals("Jason C") || name.equals("Jefferson") || name.equals("Jawnie Dirp")) NBTTags.add("OppTargetedEffect");
-    if(name.equals("George") || name.equals("Anthony")) NBTTags.add("YouTargetedEffect");
+    if(name.equals("George") || name.equals("Anthony") || name.equals("UNNAMED")) NBTTags.add("YouTargetedEffect");
     if(name.equals("Jonathan") || name.equals("Samuel") || name.equals("Kenneth") || name.equals("Mr. Willikens") || name.equals("Mr. Billikens") || name.equals("A.L.I.C.E.") || name.equals("Yebanow") || name.equals("Jefferson")) 
     {
       NBTTags.add("InstantBuffer");
@@ -123,7 +122,7 @@ class Card
           conditionATKBuff = 6;
           break;
         case "Yebanow":
-          condition = 3;
+          condition = 4;
           conditionHPBuff = 1;
           conditionATKBuff = 1;
           break;
