@@ -1,0 +1,4 @@
+101/card/UNNAMED/7 16 1 1 9/Upon Place: Destroy one of your $5 or over cards. This card can only be placed if you have another $5 or over card on the playfield. Each Turn: Target one of your opponent's $5 or under cards and destroy it./7
+102/card/UNNAMED2/14 18 2 2 5/This card can attack over your opponents' cards. When destroyed, deal 8 damage to the 8 surrounding cards around this card./7
+103/card/UNNAMED3/1 20 3 1 3/Upon Death, Summon two 7|5|4|4 "Disastrous Experiment"s in random lanes at this row./7
+104/card/Disastrous Experiment/7 5 4 4 1/When attacked, this card now belongs to the other player./7
